@@ -5,8 +5,19 @@ from rpgram_setup.domain.exceptions import WorldException
 
 
 @pytest.fixture
+def empty_balance():
+    return Balance({})
+
+
+@pytest.fixture
 def start_balance():
     return Balance({Token: Token(299)})
+
+
+def test_empty(empty_balance):
+    assert "nothing" in str(empty_balance)
+    empty_balance += Token(20)
+    assert "20 Tokens" in str(empty_balance)
 
 
 def test_ops(start_balance):
