@@ -3,7 +3,6 @@ import math
 from typing import Protocol, Self
 
 from rpgram_setup.domain.exceptions import BalanceTooLow
-from rpgram_setup.domain.user_types import Ledger
 
 
 class Currency(Protocol):
@@ -25,10 +24,20 @@ class Currency(Protocol):
     @abc.abstractmethod
     def __lt__(self, other) -> bool: ...
 
+    @abc.abstractmethod
+    def __str__(self) -> str:
+        ...
+
+
+Ledger = dict[type[Currency], Currency]
+
 
 class Token(Currency):
     def __init__(self, units: int):
         self.units = units
+
+    def __str__(self):
+        return f"{self.units} Tokens"
 
     def __sub__(self, other):
         if not isinstance(other, Token):
@@ -47,6 +56,11 @@ class Token(Currency):
     def __iadd__(self, other):
         sum_ = self.__add__(other)
         return sum_
+
+    def __lt__(self, other):
+        if not isinstance(other, Token):
+            raise NotImplementedError
+        return self.units < other.units
 
     def mul(self, coefficient: float, *, rize: bool) -> Self:
         result = self.units * coefficient
@@ -79,3 +93,7 @@ class Balance:
             raise BalanceTooLow
         self.ledger[type(other)] -= other
         return self
+
+    def __str__(self):
+        reprs = ', '.join(map(str, self.ledger.values())) if self.ledger else "nothing"
+        return f"You have... {reprs}."
