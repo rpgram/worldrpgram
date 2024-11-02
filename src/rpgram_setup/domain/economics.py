@@ -7,26 +7,25 @@ from rpgram_setup.domain.exceptions import BalanceTooLow
 
 class Currency(Protocol):
     @abc.abstractmethod
-    def __add__(self, other) -> Self: ...
+    def __add__(self, other: object) -> Self: ...
 
     @abc.abstractmethod
-    def __sub__(self, other) -> Self: ...
+    def __sub__(self, other: object) -> Self: ...
 
     @abc.abstractmethod
-    def __isub__(self, other) -> Self: ...
+    def __isub__(self, other: object) -> Self: ...
 
     @abc.abstractmethod
-    def __iadd__(self, other) -> Self: ...
+    def __iadd__(self, other: object) -> Self: ...
 
     @abc.abstractmethod
     def mul(self, coefficient: float, *, rize: bool) -> Self: ...
 
     @abc.abstractmethod
-    def __lt__(self, other) -> bool: ...
+    def __lt__(self, other: object) -> bool: ...
 
     @abc.abstractmethod
-    def __str__(self) -> str:
-        ...
+    def __str__(self) -> str: ...
 
 
 Ledger = dict[type[Currency], Currency]
@@ -36,28 +35,28 @@ class Token(Currency):
     def __init__(self, units: int):
         self.units = units
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.units} Tokens"
 
-    def __sub__(self, other):
+    def __sub__(self, other: object) -> Self:
         if not isinstance(other, Token):
             raise NotImplemented
-        return Token(self.units - other.units)
+        return self.__class__(self.units - other.units)
 
-    def __add__(self, other):
+    def __add__(self, other: object) -> Self:
         if not isinstance(other, Token):
             raise NotImplemented
-        return Token(self.units + other.units)
+        return self.__class__(self.units + other.units)
 
-    def __isub__(self, other):
+    def __isub__(self, other: object) -> Self:
         sub = self.__sub__(other)
         return sub
 
-    def __iadd__(self, other):
+    def __iadd__(self, other: object) -> Self:
         sum_ = self.__add__(other)
         return sum_
 
-    def __lt__(self, other):
+    def __lt__(self, other: object) -> bool:
         if not isinstance(other, Token):
             raise NotImplementedError
         return self.units < other.units
@@ -76,7 +75,7 @@ class Balance:
     def __init__(self, ledger: Ledger):
         self.ledger = ledger
 
-    def __iadd__(self, other):
+    def __iadd__(self, other: object) -> Self:
         assert isinstance(other, Money)
         currency_balance = self.ledger.get(type(other))
         if currency_balance is None:
@@ -85,7 +84,7 @@ class Balance:
             self.ledger[type(other)] += other
         return self
 
-    def __isub__(self, other):
+    def __isub__(self, other: object) -> Self:
         assert isinstance(other, Money)
         if self.ledger.get(type(other)) is None:
             raise NotImplemented
@@ -94,6 +93,6 @@ class Balance:
         self.ledger[type(other)] -= other
         return self
 
-    def __str__(self):
-        reprs = ', '.join(map(str, self.ledger.values())) if self.ledger else "nothing"
+    def __str__(self) -> str:
+        reprs = ", ".join(map(str, self.ledger.values())) if self.ledger else "nothing"
         return f"You have... {reprs}."
