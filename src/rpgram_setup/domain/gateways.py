@@ -25,5 +25,3 @@ class BattleGateway(APIGateway):
 
     def _gateway_call(self, request: RequestData[T]) -> T:
         raise NotImplementedError
-
-

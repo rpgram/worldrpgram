@@ -1,7 +1,7 @@
 from typing import Protocol
 
 from rpgram_setup.domain.economics import Money
-from rpgram_setup.domain.entities import HeroStats, HeroClass
+from rpgram_setup.domain.heroes import HeroStats, HeroClass
 
 
 class Good(Protocol):
