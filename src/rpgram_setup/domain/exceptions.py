@@ -24,3 +24,9 @@ class NotUnique(WorldException):
 
     def __str__(self):
         return f"""{self.subject} is not unique({self.value} already exists)."""
+
+
+class ActionFailed(WorldException):
+
+    def __str__(self):
+        return """Unbelievable happens."""
