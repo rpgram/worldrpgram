@@ -15,3 +15,12 @@ class BalanceTooLow(WorldException):
 class BattleContinues(WorldException):
     def __str__(self) -> str:
         return """You are in battle now."""
+
+
+class NotUnique(WorldException):
+    def __init__(self, subject: str, value: str):
+        self.subject = subject
+        self.value = value
+
+    def __str__(self):
+        return f"""{self.subject} is not unique({self.value} already exists)."""

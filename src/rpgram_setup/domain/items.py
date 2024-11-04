@@ -1,10 +1,14 @@
-from typing import Protocol
+import dataclasses
+from typing import Protocol, TYPE_CHECKING
 
 from rpgram_setup.domain.economics import Money
-from rpgram_setup.domain.heroes import HeroStats, HeroClass
+
+if TYPE_CHECKING:
+    from rpgram_setup.domain.heroes import HeroStats, HeroClass
 
 
-class Good(Protocol):
+@dataclasses.dataclass
+class Good:
     price: Money
     quantity: int
     name: str
@@ -17,10 +21,10 @@ class Equipment(Good):
 
     def __init__(
         self,
-        hero_stats: HeroStats,
+        hero_stats: "HeroStats",
         price: Money,
         level: int,
-        class_: HeroClass,
+        class_: "HeroClass",
         name: str,
     ):
         self.name = name

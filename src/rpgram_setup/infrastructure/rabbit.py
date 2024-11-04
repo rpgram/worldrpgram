@@ -4,10 +4,10 @@ import json
 from typing import Any
 
 import aio_pika
-from aio_pika import Channel
 from aio_pika.abc import AbstractRobustChannel
 
-from rpgram_setup.domain.core import ConnectorProto, I, O, ClientProto
+from rpgram_setup.domain.protocols.core import ConnectorProto, ClientProto
+from rpgram_setup.infrastructure.models import StartBattleHeroDTO, StartBattlePlayerDTO
 
 
 @dataclasses.dataclass
@@ -29,9 +29,11 @@ class RabbitConnector(ConnectorProto[RabbitCall, None]):
 
 class Client(ClientProto):
     def __init__(self, connector: RabbitConnector):
-        self.connector = connector
+        self._connector = connector
 
-    async def start_battle(self, player, opponent) -> None:
+    async def start_battle(
+        self, player: StartBattlePlayerDTO, opponent: StartBattlePlayerDTO
+    ) -> None:
         dto = RabbitCall(
             "starts",
             {
@@ -39,20 +41,7 @@ class Client(ClientProto):
                 "opponent": dataclasses.asdict(opponent),
             },
         )
-        await self.connector.make_call(dto)
-
-
-@dataclasses.dataclass
-class StartBattleHeroDTO:
-    health: int
-    combo_root_id: int
-
-
-@dataclasses.dataclass
-class StartBattlePlayerDTO:
-    name: str
-    player_id: int
-    hero: StartBattleHeroDTO
+        await self._connector.make_call(dto)
 
 
 async def runs_start():

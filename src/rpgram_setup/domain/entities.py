@@ -1,8 +1,8 @@
 import abc
 from typing import Protocol
 
-from rpgram_setup.domain.economics import Money, Balance
-from rpgram_setup.domain.heroes import HeroClass, PlayersHero
+from rpgram_setup.domain.economics import Money
+from rpgram_setup.domain.heroes import HeroClass
 from rpgram_setup.domain.items import Equipment, Good
 from rpgram_setup.domain.user_types import MinMax
 
@@ -27,27 +27,3 @@ class Shop(Protocol):
     def put(self, item: Good) -> Money: ...
 
     def get(self, item: Good) -> Money: ...
-
-
-class Player:
-    def __init__(
-        self,
-        balance: Balance,
-        inventory: list[Good],
-        heroes: list[PlayersHero],
-        username: str,
-        player_id: int,
-    ):
-        self.player_id = player_id
-        self.username = username
-        self.inventory = inventory
-        self.balance = balance
-        self.heroes = heroes
-
-    def buy(self, item: Good) -> None:
-        self.balance -= item.price
-        self.inventory.append(item)
-
-    def sell(self, item: Good) -> None:
-        self.inventory.remove(item)
-        self.balance += item.price

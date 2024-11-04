@@ -11,7 +11,13 @@ class ConnectorProto(Protocol[I, O]):
 
 
 class ClientProto(Protocol):
-    connector: ConnectorProto
+    _connector: ConnectorProto
 
     @abc.abstractmethod
     async def start_battle(self, player, opponent) -> None: ...
+
+
+class Interactor(Protocol[I, O]):
+
+    @abc.abstractmethod
+    def execute(self, in_dto: I) -> O: ...
