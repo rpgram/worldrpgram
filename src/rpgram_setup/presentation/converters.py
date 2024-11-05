@@ -1,13 +1,11 @@
-from adaptix.conversion import link, coercer
+from adaptix.conversion import coercer
 from adaptix.conversion import get_converter
-from adaptix import P
 
-from rpgram_setup.application.models import PlayerDTO, GoodDTO
-from rpgram_setup.domain.economics import Balance, Token
+from rpgram_setup.presentation.models import PlayerDTO, GoodDTO
+from rpgram_setup.domain.economics import Balance
 from rpgram_setup.domain.heroes import PlayersHero, HeroClass
 from rpgram_setup.domain.items import Good
 from rpgram_setup.domain.player import Player
-from rpgram_setup.domain.user_types import PlayerId
 
 
 def good_to_good_dto(good: Good) -> GoodDTO:

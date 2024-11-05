@@ -1,0 +1,41 @@
+
+classDiagram
+direction LR
+namespace ScopeAPP {
+class factory3["📥 AsyncContainer"]{
+ 
+}
+
+class factory4["🏭 Ⓘ PlayersMapper"]{
+    PlayerMemoryMapper()
+}
+
+}
+
+namespace ScopeREQUEST {
+class factory7["📥 AsyncContainer"]{
+ 
+}
+
+class factory8["🏭 NewPlayerInteractor"]{
+    NewPlayerInteractor()
+    PlayersMapper
+}
+
+class factory9["🏭 ReadPlayersInteractor"]{
+    ReadPlayersInteractor()
+    PlayersMapper
+}
+
+class factory10["🏭 ReadPlayerInteractor"]{
+    ReadPlayerInteractor()
+    PlayersMapper
+}
+
+}
+
+factory4 <.. factory8
+factory4 <.. factory9
+factory4 <.. factory10
+
+

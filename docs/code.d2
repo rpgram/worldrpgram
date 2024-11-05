@@ -1,0 +1,44 @@
+scope1: "Scope.APP"{
+component2: "Scope.APP"{
+factory3: "📥 AsyncContainer"{
+    shape: class
+}
+
+factory4: "🏭 Ⓘ PlayersMapper"{
+    shape: class
+    "PlayerMemoryMapper()": ""
+}
+
+}
+
+}
+scope5: "Scope.REQUEST"{
+component6: "Scope.REQUEST"{
+factory7: "📥 AsyncContainer"{
+    shape: class
+}
+
+factory8: "🏭 NewPlayerInteractor"{
+    shape: class
+    "NewPlayerInteractor()": ""
+    PlayersMapper
+}
+
+factory9: "🏭 ReadPlayersInteractor"{
+    shape: class
+    "ReadPlayersInteractor()": ""
+    PlayersMapper
+}
+
+factory10: "🏭 ReadPlayerInteractor"{
+    shape: class
+    "ReadPlayerInteractor()": ""
+    PlayersMapper
+}
+
+}
+
+}
+scope1.component2.factory4 --> scope5.component6.factory8
+scope1.component2.factory4 --> scope5.component6.factory9
+scope1.component2.factory4 --> scope5.component6.factory10

@@ -17,6 +17,12 @@ class CreatePlayer:
     username: str
 
 
+@dataclasses.dataclass
+class GetPlayersQuery:
+    limit: int
+    skip: int
+
+
 class PlayersMapper(Protocol):
     db: Any
 
@@ -31,4 +37,4 @@ class PlayersMapper(Protocol):
         return PlayerId(0)
 
     @abc.abstractmethod
-    def get_players(self) -> list[Player]: ...
+    def get_players(self, query: GetPlayersQuery) -> list[Player]: ...
