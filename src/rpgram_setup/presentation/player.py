@@ -3,13 +3,20 @@ from dishka.integrations.fastapi import inject
 from fastapi import APIRouter, HTTPException
 from starlette import status
 
-from rpgram_setup.application.players.read import ReadPlayersInteractor, ReadPlayerInteractor
+from rpgram_setup.application.players.read import (
+    ReadPlayersInteractor,
+    ReadPlayerInteractor,
+)
 from rpgram_setup.domain.user_types import PlayerId
 from rpgram_setup.presentation.converters import convert_player_to_dto
 from rpgram_setup.presentation.models import PlayerDTO
 from rpgram_setup.application.players.register import NewPlayerInteractor
 from rpgram_setup.domain.exceptions import NotUnique, ActionFailed
-from rpgram_setup.domain.protocols.data.players import CreatePlayer, GetPlayersQuery, GetPlayerQuery
+from rpgram_setup.domain.protocols.data.players import (
+    CreatePlayer,
+    GetPlayersQuery,
+    GetPlayerQuery,
+)
 
 router = APIRouter(prefix="/player")
 
@@ -35,20 +42,31 @@ async def create_user(
         )
 
 
-@router.get('')
+@router.get("")
 @inject
-async def get_players(interactor: FromDishka[ReadPlayersInteractor], limit: int = 0, skip: int = 0) -> list[PlayerDTO]:
-    return [convert_player_to_dto(p) for p in interactor.execute(GetPlayersQuery(limit, skip))]
+async def get_players(
+    interactor: FromDishka[ReadPlayersInteractor], limit: int = 0, skip: int = 0
+) -> list[PlayerDTO]:
+    return [
+        convert_player_to_dto(p)
+        for p in interactor.execute(GetPlayersQuery(limit, skip))
+    ]
 
 
-@router.get('/by')
+@router.get("/by")
 @inject
-async def get_player(interactor: FromDishka[ReadPlayerInteractor], player_id: PlayerId | None = None, username: str | None = None) -> PlayerDTO:
+async def get_player(
+    interactor: FromDishka[ReadPlayerInteractor],
+    player_id: PlayerId | None = None,
+    username: str | None = None,
+) -> PlayerDTO:
     if not (player_id or username):
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "No params.")
     if player_id and username:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Too much params.")
     try:
-        return convert_player_to_dto(interactor.execute(GetPlayerQuery(player_id, username)))
+        return convert_player_to_dto(
+            interactor.execute(GetPlayerQuery(player_id, username))
+        )
     except ActionFailed:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "No such player.")

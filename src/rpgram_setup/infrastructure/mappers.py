@@ -6,7 +6,8 @@ from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.data.players import (
     PlayersMapper,
     GetPlayerQuery,
-    CreatePlayer, GetPlayersQuery,
+    CreatePlayer,
+    GetPlayersQuery,
 )
 from rpgram_setup.domain.user_types import PlayerId
 
@@ -32,7 +33,7 @@ class PlayerMemoryMapper(PlayersMapper):
 
     def get_players(self, query: GetPlayersQuery) -> list[Player]:
         end_pointer = query.skip + query.limit if query.limit else None
-        return self.db[query.skip: end_pointer]
+        return self.db[query.skip : end_pointer]
 
     def _generate_id(self) -> PlayerId:
         return PlayerId(len(self.db) + 1)

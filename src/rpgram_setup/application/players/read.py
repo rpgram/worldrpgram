@@ -1,7 +1,11 @@
 from rpgram_setup.domain.exceptions import ActionFailed
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.core import Interactor, I, O
-from rpgram_setup.domain.protocols.data.players import PlayersMapper, GetPlayersQuery, GetPlayerQuery
+from rpgram_setup.domain.protocols.data.players import (
+    PlayersMapper,
+    GetPlayersQuery,
+    GetPlayerQuery,
+)
 
 
 class ReadPlayersInteractor(Interactor[GetPlayersQuery, list[Player]]):
