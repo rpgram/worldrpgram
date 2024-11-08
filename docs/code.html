@@ -1,0 +1,102 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<pre class="mermaid">
+classDiagram
+direction LR
+namespace Scope.APP {
+class factory3["📥 AsyncContainer"]{
+ 
+}
+
+class factory4["🏭 ConnectorProto_RequestData_BattleId___BattleId_"]{
+    SessionManager[T]()
+}
+
+class factory5["🏭 list"]{
+    IoC.db()
+}
+
+class factory6["🏭 Ⓘ ClientProto"]{
+    BattleAPIClient()
+    ConnectorProto[RequestData[BattleId], BattleId]
+    AppConfig
+}
+
+class factory7["🏭 Ⓘ PlayersMapper"]{
+    PlayerMemoryMapper()
+    list
+}
+
+class factory8["📥 AppConfig"]{
+ 
+}
+
+class factory9["🏭 None"]{
+    IoC.db()
+}
+
+}
+
+factory4 <.. factory6
+factory8 <.. factory6
+factory5 <.. factory7
+namespace Scope.REQUEST {
+class factory12["📥 AsyncContainer"]{
+ 
+}
+
+class factory13["🏭 AsyncInteractor_CreateHeroDTO__NoneType_"]{
+    InitHeroInteractor()
+    PlayersMapper
+    HeroFactory
+}
+
+class factory14["🏭 HeroFactory"]{
+    HeroFactory()
+}
+
+class factory15["🏭 AsyncInteractor_StartBattleDTO__BattleId_"]{
+    StartBattleInteractor()
+    ClientProto
+    PlayersMapper
+}
+
+class factory16["🏭 Interactor_CreatePlayer__Player_"]{
+    NewPlayerInteractor()
+    PlayersMapper
+}
+
+class factory17["🏭 Interactor_GetPlayersQuery__list_Player__"]{
+    ReadPlayersInteractor()
+    PlayersMapper
+}
+
+class factory18["🏭 Interactor_GetPlayerQuery__Player_"]{
+    ReadPlayerInteractor()
+    PlayersMapper
+}
+
+}
+
+factory7 <.. factory13
+factory14 <.. factory13
+factory6 <.. factory15
+factory7 <.. factory15
+factory7 <.. factory16
+factory7 <.. factory17
+factory7 <.. factory18
+
+</pre>
+
+<script type="module">
+    import mermaid
+    from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize(config);
+</script>
+</body>
+</html>
+

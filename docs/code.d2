@@ -4,33 +4,82 @@ factory3: "📥 AsyncContainer"{
     shape: class
 }
 
-factory4: "🏭 Ⓘ PlayersMapper"{
+factory4: "🏭 ConnectorProto_RequestData_BattleId___BattleId_"{
+    shape: class
+    "SessionManager_T_()": ""
+}
+
+factory5: "🏭 list"{
+    shape: class
+    "IoC.db()": ""
+}
+
+factory6: "🏭 Ⓘ ClientProto"{
+    shape: class
+    "BattleAPIClient()": ""
+    ConnectorProto_RequestData_BattleId___BattleId_
+    AppConfig
+}
+
+factory7: "🏭 Ⓘ PlayersMapper"{
     shape: class
     "PlayerMemoryMapper()": ""
+    list
 }
 
-}
-
-}
-scope5: "Scope.REQUEST"{
-component6: "Scope.REQUEST"{
-factory7: "📥 AsyncContainer"{
+factory8: "📥 AppConfig"{
     shape: class
 }
 
-factory8: "🏭 NewPlayerInteractor"{
+factory9: "🏭 None"{
+    shape: class
+    "IoC.db()": ""
+}
+
+}
+
+}
+scope1.component2.factory4 --> scope1.component2.factory6
+scope1.component2.factory8 --> scope1.component2.factory6
+scope1.component2.factory5 --> scope1.component2.factory7
+scope10: "Scope.REQUEST"{
+component11: "Scope.REQUEST"{
+factory12: "📥 AsyncContainer"{
+    shape: class
+}
+
+factory13: "🏭 AsyncInteractor_CreateHeroDTO__NoneType_"{
+    shape: class
+    "InitHeroInteractor()": ""
+    PlayersMapper
+    HeroFactory
+}
+
+factory14: "🏭 HeroFactory"{
+    shape: class
+    "HeroFactory()": ""
+}
+
+factory15: "🏭 AsyncInteractor_StartBattleDTO__BattleId_"{
+    shape: class
+    "StartBattleInteractor()": ""
+    ClientProto
+    PlayersMapper
+}
+
+factory16: "🏭 Interactor_CreatePlayer__Player_"{
     shape: class
     "NewPlayerInteractor()": ""
     PlayersMapper
 }
 
-factory9: "🏭 ReadPlayersInteractor"{
+factory17: "🏭 Interactor_GetPlayersQuery__list_Player__"{
     shape: class
     "ReadPlayersInteractor()": ""
     PlayersMapper
 }
 
-factory10: "🏭 ReadPlayerInteractor"{
+factory18: "🏭 Interactor_GetPlayerQuery__Player_"{
     shape: class
     "ReadPlayerInteractor()": ""
     PlayersMapper
@@ -39,6 +88,10 @@ factory10: "🏭 ReadPlayerInteractor"{
 }
 
 }
-scope1.component2.factory4 --> scope5.component6.factory8
-scope1.component2.factory4 --> scope5.component6.factory9
-scope1.component2.factory4 --> scope5.component6.factory10
+scope1.component2.factory7 --> scope10.component11.factory13
+scope10.component11.factory14 --> scope10.component11.factory13
+scope1.component2.factory6 --> scope10.component11.factory15
+scope1.component2.factory7 --> scope10.component11.factory15
+scope1.component2.factory7 --> scope10.component11.factory16
+scope1.component2.factory7 --> scope10.component11.factory17
+scope1.component2.factory7 --> scope10.component11.factory18
