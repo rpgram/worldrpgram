@@ -34,7 +34,7 @@ class PlayersHero:
     """Holds characteristics related to hero class. Can level up."""
 
     def __init__(self, hero: Hero):
-        self._hero = hero
+        self.hero = hero
         self.hero_stats = hero.default_stats
         self.item: Equipment | None = hero.equipment
         self.locked = False
@@ -64,4 +64,4 @@ class PlayersHero:
         self._wear(item)
 
     def level_up(self):
-        self._hero.level_up(self.hero_stats)
+        self.hero.level_up(self.hero_stats)

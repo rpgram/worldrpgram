@@ -1,6 +1,11 @@
 import abc
 from typing import Protocol, TypeVar, Any
 
+from rpgram_setup.domain.heroes import HeroClass
+from rpgram_setup.domain.player import Player
+from rpgram_setup.domain.user_types import BattleId
+from rpgram_setup.infrastructure.models import StartBattlePlayerDTO
+
 I = TypeVar("I", bound=Any, contravariant=True)
 O = TypeVar("O", bound=Any, covariant=True)
 
@@ -14,10 +19,18 @@ class ClientProto(Protocol):
     _connector: ConnectorProto
 
     @abc.abstractmethod
-    async def start_battle(self, player, opponent) -> None: ...
+    async def start_battle(
+        self, player: Player, opponent: Player, hero_class: HeroClass
+    ) -> BattleId: ...
 
 
 class Interactor(Protocol[I, O]):
 
     @abc.abstractmethod
     def execute(self, in_dto: I) -> O: ...
+
+
+class AsyncInteractor(Protocol[I, O]):
+
+    @abc.abstractmethod
+    async def execute(self, in_dto: I) -> O: ...

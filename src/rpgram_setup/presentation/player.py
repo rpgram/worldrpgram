@@ -7,6 +7,8 @@ from rpgram_setup.application.players.read import (
     ReadPlayersInteractor,
     ReadPlayerInteractor,
 )
+from rpgram_setup.domain.player import Player
+from rpgram_setup.domain.protocols.core import Interactor
 from rpgram_setup.domain.user_types import PlayerId
 from rpgram_setup.presentation.converters import convert_player_to_dto
 from rpgram_setup.presentation.models import PlayerDTO
@@ -29,7 +31,7 @@ router = APIRouter(prefix="/player")
 @router.post("", status_code=status.HTTP_201_CREATED)
 @inject
 async def create_user(
-    username: str, interactor: FromDishka[NewPlayerInteractor]
+    username: str, interactor: FromDishka[Interactor[CreatePlayer, Player]]
 ) -> PlayerDTO:
     create_player = CreatePlayer(username)
     try:
@@ -45,7 +47,9 @@ async def create_user(
 @router.get("")
 @inject
 async def get_players(
-    interactor: FromDishka[ReadPlayersInteractor], limit: int = 0, skip: int = 0
+    interactor: FromDishka[Interactor[GetPlayersQuery, list[Player]]],
+    limit: int = 0,
+    skip: int = 0,
 ) -> list[PlayerDTO]:
     return [
         convert_player_to_dto(p)
@@ -56,7 +60,7 @@ async def get_players(
 @router.get("/by")
 @inject
 async def get_player(
-    interactor: FromDishka[ReadPlayerInteractor],
+    interactor: FromDishka[Interactor[GetPlayerQuery, Player]],
     player_id: PlayerId | None = None,
     username: str | None = None,
 ) -> PlayerDTO:

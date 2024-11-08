@@ -2,6 +2,8 @@ from contextlib import suppress
 
 from rpgram_setup.domain.economics import Balance, Token
 from rpgram_setup.domain.exceptions import NotUnique
+from rpgram_setup.domain.factory import HeroFactory
+from rpgram_setup.domain.heroes import HeroClass, PlayersHero
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.data.players import (
     PlayersMapper,
@@ -9,15 +11,15 @@ from rpgram_setup.domain.protocols.data.players import (
     CreatePlayer,
     GetPlayersQuery,
 )
-from rpgram_setup.domain.user_types import PlayerId
+from rpgram_setup.domain.user_types import PlayerId, DB
 
 
 class PlayerMemoryMapper(PlayersMapper):
 
     db: list[Player]
 
-    def __init__(self):
-        self.db = []
+    def __init__(self, db: DB):
+        self.db = db
 
     def _apply_get_player(self, query: GetPlayerQuery, player: Player) -> bool:
         by_id = query.player_id and query.player_id == player.player_id

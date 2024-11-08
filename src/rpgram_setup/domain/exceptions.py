@@ -1,3 +1,6 @@
+from rpgram_setup.domain.protocols.general import Display
+
+
 class WorldException(Exception):
     """Base RPGram exception"""
 
@@ -18,7 +21,7 @@ class BattleContinues(WorldException):
 
 
 class NotUnique(WorldException):
-    def __init__(self, subject: str, value: str):
+    def __init__(self, subject: Display, value: Display):
         self.subject = subject
         self.value = value
 
@@ -30,3 +33,11 @@ class ActionFailed(WorldException):
 
     def __str__(self):
         return """Unbelievable happens."""
+
+
+class SomethingIsMissing(WorldException):
+    def __init__(self, subject: Display):
+        self.subject = subject
+
+    def __str__(self):
+        return f"Seems {self.subject} is missing..."
