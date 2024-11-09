@@ -33,9 +33,9 @@ class SessionManager(ConnectorProto[RequestData[T], T]):
                     call_data.api_url,
                     f"{req.status} - {(await req.content.read()).decode()}",
                 )
-        if dataclasses.is_dataclass(call_data.return_type):
-            return call_data.return_type(**data)
-        return call_data.return_type(data)
+        if isinstance(call_data.return_type, type) and dataclasses.is_dataclass(call_data.return_type):
+            return call_data.return_type(**data)  # type:ignore[return-value]
+        return call_data.return_type(data)  # type:ignore[call-arg]
 
     def _refresh(self):
         pass

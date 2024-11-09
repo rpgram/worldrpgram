@@ -28,10 +28,8 @@ class Good:
 class Equipment(Good):
     """Grants characteristics by wearing, can be taken from somewhere."""
 
-    # name: str
     class_: HeroClass
     stats_diff: HeroStats
-    # price: Money
     required_level: int
     quantity = 1
 

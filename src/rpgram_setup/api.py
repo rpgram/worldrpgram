@@ -1,6 +1,5 @@
 import contextlib
 
-import uvicorn
 from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
 
