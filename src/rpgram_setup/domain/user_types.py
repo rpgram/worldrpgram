@@ -1,7 +1,7 @@
 from typing import TypeVar, NewType, Any
 
 MinMax = tuple[int | None, int | None]
-T = TypeVar("T", bound=type, contravariant=True)
+T = TypeVar("T", covariant=True)
 B = TypeVar("B", bound=Any)
 DB = list
 PlayerId = NewType("PlayerId", int)

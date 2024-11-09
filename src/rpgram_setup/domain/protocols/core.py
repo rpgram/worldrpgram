@@ -1,7 +1,7 @@
 import abc
 from typing import Protocol, TypeVar, Any
 
-from rpgram_setup.domain.heroes import HeroClass
+from rpgram_setup.domain.heroes import HeroClass, PlayersHero
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.user_types import BattleId
 from rpgram_setup.infrastructure.models import StartBattlePlayerDTO
@@ -20,7 +20,11 @@ class ClientProto(Protocol):
 
     @abc.abstractmethod
     async def start_battle(
-        self, player: Player, opponent: Player, players_hero: ..., opponents_hero: ...
+        self,
+        player: Player,
+        opponent: Player,
+        players_hero: PlayersHero,
+        opponents_hero: PlayersHero,
     ) -> BattleId: ...
 
 

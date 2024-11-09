@@ -35,6 +35,6 @@ convert_players_hero_to_dto = get_converter(
         link(P[Player].username, P[StartBattlePlayerDTO].name),
     ]
 )
-def player_to_dto_converter(
+def player_to_dto_converter(  # type: ignore[empty-body]
     player: Player, hero: PlayersHero
 ) -> StartBattlePlayerDTO: ...
