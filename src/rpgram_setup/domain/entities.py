@@ -2,8 +2,7 @@ import abc
 from typing import Protocol
 
 from rpgram_setup.domain.economics import Money
-from rpgram_setup.domain.heroes import HeroClass
-from rpgram_setup.domain.items import Equipment, Good
+from rpgram_setup.domain.heroes import HeroClass, Good, Equipment
 from rpgram_setup.domain.user_types import MinMax
 
 

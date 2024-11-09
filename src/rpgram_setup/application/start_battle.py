@@ -40,6 +40,15 @@ class StartBattleInteractor(AsyncInteractor[StartBattleDTO, BattleId]):
         )
         if opponent is None:
             raise SomethingIsMissing("participant")
+        try:
+            players_hero = next(
+                h for h in player.heroes if h.hero.class_ == in_dto.hero_class
+            )
+            opponents_hero = next(
+                h for h in opponent.heroes if h.hero.class_ == in_dto.hero_class
+            )
+        except StopIteration:
+            raise SomethingIsMissing("hero")
         return await self.battlefield_gateway.start_battle(
-            player, opponent, in_dto.hero_class
+            player, opponent, players_hero, opponents_hero
         )

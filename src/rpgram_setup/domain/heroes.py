@@ -1,8 +1,8 @@
 import dataclasses
 from enum import IntEnum
 
+from rpgram_setup.domain.economics import Money
 from rpgram_setup.domain.exceptions import LevelTooLow, BattleContinues
-from rpgram_setup.domain.items import Equipment
 
 
 @dataclasses.dataclass
@@ -18,6 +18,25 @@ class HeroClass(IntEnum):
 
 
 @dataclasses.dataclass
+class Good:
+    price: Money
+    quantity: int
+    name: str
+
+
+@dataclasses.dataclass
+class Equipment(Good):
+    """Grants characteristics by wearing, can be taken from somewhere."""
+
+    # name: str
+    class_: HeroClass
+    stats_diff: HeroStats
+    # price: Money
+    required_level: int
+    quantity = 1
+
+
+@dataclasses.dataclass
 class Hero:
     default_stats: HeroStats
     per_level_stats: HeroStats
@@ -30,15 +49,21 @@ class Hero:
         hero_stats.damage += self.per_level_stats.damage
 
 
+@dataclasses.dataclass
 class PlayersHero:
     """Holds characteristics related to hero class. Can level up."""
 
-    def __init__(self, hero: Hero):
-        self.hero = hero
-        self.hero_stats = hero.default_stats
-        self.item: Equipment | None = hero.equipment
-        self.locked = False
-        self.level = 1
+    hero: Hero
+    hero_stats: HeroStats
+    item: Equipment | None
+    locked = False
+    level = 1
+    # def __init__(self, hero: Hero):
+    #     self.hero = hero
+    #     self.hero_stats = hero.default_stats
+    #     self.item: Equipment | None = hero.equipment
+    #     self.locked = False
+    #     self.level = 1
 
     def _wear(self, item: Equipment) -> None:
         """Only items with same class are displayed."""

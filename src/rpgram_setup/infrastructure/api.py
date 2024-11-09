@@ -4,7 +4,7 @@ import aiohttp
 
 from rpgram_setup.application.configuration import AppConfig
 from rpgram_setup.domain.gateways import RequestData
-from rpgram_setup.domain.heroes import HeroClass
+from rpgram_setup.domain.heroes import HeroClass, PlayersHero
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.core import ClientProto, ConnectorProto
 from rpgram_setup.domain.user_types import B, T, BattleId
@@ -51,7 +51,11 @@ class BattleAPIClient(ClientProto):
         self._url = config.battle_url
 
     async def start_battle(
-        self, player: Player, opponent: Player, hero_class: HeroClass
+        self,
+        player: Player,
+        opponent: Player,
+        players_hero: PlayersHero,
+        opponents_hero: PlayersHero,
     ) -> BattleId:
         rd = RequestData(
             "POST",
@@ -59,10 +63,10 @@ class BattleAPIClient(ClientProto):
             None,
             {
                 "player": dataclasses.asdict(
-                    player_to_dto_converter(player, hero_class)
+                    player_to_dto_converter(player, players_hero)
                 ),
                 "opponent": dataclasses.asdict(
-                    player_to_dto_converter(opponent, hero_class)
+                    player_to_dto_converter(opponent, opponents_hero)
                 ),
             },
             BattleId,

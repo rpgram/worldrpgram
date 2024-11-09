@@ -1,5 +1,7 @@
 import dataclasses
 
+from rpgram_setup.domain.user_types import PlayerId
+
 
 @dataclasses.dataclass
 class StartBattleHeroDTO:
@@ -10,5 +12,5 @@ class StartBattleHeroDTO:
 @dataclasses.dataclass
 class StartBattlePlayerDTO:
     name: str
-    player_id: int
+    player_id: PlayerId
     hero: StartBattleHeroDTO

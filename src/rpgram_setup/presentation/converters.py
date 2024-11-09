@@ -3,8 +3,7 @@ from adaptix.conversion import get_converter
 
 from rpgram_setup.presentation.models import PlayerDTO, GoodDTO
 from rpgram_setup.domain.economics import Balance
-from rpgram_setup.domain.heroes import PlayersHero, HeroClass
-from rpgram_setup.domain.items import Good
+from rpgram_setup.domain.heroes import PlayersHero, HeroClass, Good
 from rpgram_setup.domain.player import Player
 
 

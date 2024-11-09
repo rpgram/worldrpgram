@@ -1,8 +1,7 @@
 import dataclasses
 
 from rpgram_setup.domain.economics import Balance
-from rpgram_setup.domain.heroes import PlayersHero
-from rpgram_setup.domain.items import Good
+from rpgram_setup.domain.heroes import PlayersHero, Good
 from rpgram_setup.domain.user_types import PlayerId
 
 

@@ -20,7 +20,7 @@ class ClientProto(Protocol):
 
     @abc.abstractmethod
     async def start_battle(
-        self, player: Player, opponent: Player, hero_class: HeroClass
+        self, player: Player, opponent: Player, players_hero: ..., opponents_hero: ...
     ) -> BattleId: ...
 
 

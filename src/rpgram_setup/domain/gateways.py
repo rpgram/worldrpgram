@@ -14,7 +14,8 @@ class RequestData(Generic[T]):
     return_type: type[T]
 
 
-class APIGateway(Protocol):
-
-    @abc.abstractmethod
-    def _gateway_call(self, request: RequestData[T]) -> T: ...
+#
+# class APIGateway(Protocol):
+#
+#     @abc.abstractmethod
+#     def _gateway_call(self, request: RequestData[T]) -> T: ...
