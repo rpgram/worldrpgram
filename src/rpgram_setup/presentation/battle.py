@@ -3,7 +3,7 @@ from dishka.integrations.fastapi import inject
 from fastapi import APIRouter, HTTPException
 from starlette import status
 
-from rpgram_setup.application.start_battle import StartBattleInteractor, StartBattleDTO
+from rpgram_setup.application.battle.start_battle import StartBattleDTO
 from rpgram_setup.domain.exceptions import SomethingIsMissing
 from rpgram_setup.domain.heroes import HeroClass
 from rpgram_setup.domain.protocols.core import AsyncInteractor

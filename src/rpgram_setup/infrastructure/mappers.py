@@ -1,25 +1,25 @@
 from contextlib import suppress
 
+from rpgram_setup.domain.battle import BattleResult
 from rpgram_setup.domain.economics import Balance, Token
 from rpgram_setup.domain.exceptions import NotUnique
-from rpgram_setup.domain.factory import HeroFactory
-from rpgram_setup.domain.heroes import HeroClass, PlayersHero
 from rpgram_setup.domain.player import Player
+from rpgram_setup.domain.protocols.data.battle import BattleResultMapper
 from rpgram_setup.domain.protocols.data.players import (
     PlayersMapper,
     GetPlayerQuery,
     CreatePlayer,
     GetPlayersQuery,
 )
-from rpgram_setup.domain.user_types import PlayerId, DB
+from rpgram_setup.domain.user_types import PlayerId, DBS, BattleId
 
 
 class PlayerMemoryMapper(PlayersMapper):
 
     db: list[Player]
 
-    def __init__(self, db: DB):
-        self.db = db
+    def __init__(self, dbs: DBS):
+        self.db = dbs[Player]
 
     def _apply_get_player(self, query: GetPlayerQuery, player: Player) -> bool:
         by_id = query.player_id and query.player_id == player.player_id
@@ -54,3 +54,24 @@ class PlayerMemoryMapper(PlayersMapper):
         )
         self.db.append(player)
         return player_id
+
+
+class BattleResultMemoryMapper(BattleResultMapper):
+
+    def __init__(self, dbs: DBS):
+        self.db: list[BattleResult] = dbs[BattleResult]
+
+    def save_result(self, result: BattleResult):
+        self.db.append(result)
+
+    def get_results(self, player_id: PlayerId | None = None) -> list[BattleResult]:
+        if player_id:
+            return [
+                br
+                for br in self.db
+                if player_id in (br.opponent_result.player_id, br.hero_result.player_id)
+            ]
+        return self.db
+
+    def get_battle_result(self, battle_id: BattleId) -> list[BattleResult]:
+        return [br for br in self.db if br.battle_id == battle_id]

@@ -1,3 +1,5 @@
+import collections
+
 from dishka import (
     Provider,
     Scope,
@@ -7,6 +9,9 @@ from dishka import (
     from_context,
 )
 
+from rpgram_setup.application.battle.results import BattleResultsInteractor
+from rpgram_setup.application.queries import BattleResultsQuery
+from rpgram_setup.application.battle.take_event import TakeEventInteractor
 from rpgram_setup.application.configuration import AppConfig
 from rpgram_setup.application.hero.init import InitHeroInteractor, CreateHeroDTO
 from rpgram_setup.application.players.read import (
@@ -14,7 +19,11 @@ from rpgram_setup.application.players.read import (
     ReadPlayerInteractor,
 )
 from rpgram_setup.application.players.register import NewPlayerInteractor
-from rpgram_setup.application.start_battle import StartBattleInteractor, StartBattleDTO
+from rpgram_setup.application.battle.start_battle import (
+    StartBattleInteractor,
+    StartBattleDTO,
+)
+from rpgram_setup.domain.battle import BattleResult
 from rpgram_setup.domain.factory import HeroFactory
 from rpgram_setup.domain.gateways import RequestData
 from rpgram_setup.domain.player import Player
@@ -24,16 +33,20 @@ from rpgram_setup.domain.protocols.core import (
     AsyncInteractor,
     Interactor,
 )
+from rpgram_setup.domain.protocols.data.battle import BattleResultMapper
 from rpgram_setup.domain.protocols.data.players import (
     PlayersMapper,
     CreatePlayer,
     GetPlayersQuery,
     GetPlayerQuery,
 )
-from rpgram_setup.domain.user_types import BattleId, DB
+from rpgram_setup.domain.user_types import BattleId, DBS
 from rpgram_setup.infrastructure.api import SessionManager, BattleAPIClient
 from rpgram_setup.infrastructure.config import read_config
-from rpgram_setup.infrastructure.mappers import PlayerMemoryMapper
+from rpgram_setup.infrastructure.mappers import (
+    PlayerMemoryMapper,
+    BattleResultMemoryMapper,
+)
 
 
 class IoC(Provider):
@@ -48,9 +61,18 @@ class IoC(Provider):
         InitHeroInteractor, provides=AsyncInteractor[CreateHeroDTO, None]
     )
 
+    save_result = provide(TakeEventInteractor, provides=Interactor[BattleResult, None])
+
+    results_mapper = provide(BattleResultMemoryMapper, provides=BattleResultMapper)
+
+    get_results = provide(
+        BattleResultsInteractor,
+        provides=Interactor[BattleResultsQuery, list[BattleResult]],
+    )
+
     @provide(scope=Scope.APP)
-    def db(self) -> DB:
-        return []
+    def db(self) -> DBS:
+        return collections.defaultdict(list)
 
     hero_factory = provide(HeroFactory)
 

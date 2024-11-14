@@ -20,7 +20,7 @@ from rpgram_setup.domain.protocols.data.players import (
     GetPlayerQuery,
 )
 
-router = APIRouter(prefix="/player")
+player_router = APIRouter(prefix="/player")
 
 
 # @router.post('/battle')
@@ -28,7 +28,7 @@ router = APIRouter(prefix="/player")
 # async def start_battle(player_id: PlayerId, interactor: FromDishka[]) ->
 
 
-@router.post("", status_code=status.HTTP_201_CREATED)
+@player_router.post("", status_code=status.HTTP_201_CREATED)
 @inject
 async def create_user(
     username: str, interactor: FromDishka[Interactor[CreatePlayer, Player]]
@@ -44,7 +44,7 @@ async def create_user(
         )
 
 
-@router.get("")
+@player_router.get("")
 @inject
 async def get_players(
     interactor: FromDishka[Interactor[GetPlayersQuery, list[Player]]],
@@ -57,7 +57,7 @@ async def get_players(
     ]
 
 
-@router.get("/by")
+@player_router.get("/by")
 @inject
 async def get_player(
     interactor: FromDishka[Interactor[GetPlayerQuery, Player]],

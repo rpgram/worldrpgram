@@ -12,7 +12,7 @@ from rpgram_setup.domain.user_types import PlayerId
 hero_router = APIRouter(prefix="/hero")
 
 
-@hero_router.post("/", status_code=status.HTTP_201_CREATED)
+@hero_router.post("", status_code=status.HTTP_201_CREATED)
 @inject
 async def get_players_hero(
     player_id: PlayerId,
