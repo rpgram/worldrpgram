@@ -1,8 +1,12 @@
 import dataclasses
 
-from rpgram_setup.domain.economics import Ledger
 from rpgram_setup.domain.heroes import HeroClass
 from rpgram_setup.domain.user_types import PlayerId
+
+
+@dataclasses.dataclass(frozen=True, slots=True)
+class UserDTO:
+    login: str
 
 
 @dataclasses.dataclass

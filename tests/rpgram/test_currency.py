@@ -32,4 +32,3 @@ def test_raises(start_balance):
         start_balance -= Token(300)
     with pytest.raises(AssertionError):
         start_balance -= 100
-

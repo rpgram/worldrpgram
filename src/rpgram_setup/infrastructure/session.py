@@ -2,6 +2,7 @@ import datetime
 import hashlib
 import hmac
 
+from rpgram_setup.application.configuration import AppConfig
 from rpgram_setup.application.exceptions import NotAuthenticated
 from rpgram_setup.application.identity import (
     SessionData,
@@ -10,24 +11,17 @@ from rpgram_setup.application.identity import (
     IDProvider,
     NewSessionData,
 )
+from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user_types import PlayerId
 
 
 class RSessionIDManagerImpl(RSessionIDManager):
 
-    def __init__(self, secret_key: str, expires_interval_sec: int, db: SessionDB):
+    def __init__(self, app_config: AppConfig, hasher: Hasher, db: SessionDB):
         self.new_session: NewSessionData | None = None
         self.db = db
-        self.expires_interval_sec = expires_interval_sec
-        self.secret_key = secret_key
-
-    def _encode(self, player_id: PlayerId, expires_at: datetime.datetime) -> str:
-        hmac_obj = hmac.new(
-            self.secret_key.encode(),
-            f"{player_id}:{expires_at.isoformat()}".encode(),
-            hashlib.sha256,
-        )
-        return hmac_obj.hexdigest()
+        self.expires_interval_sec = app_config.session_expires_in_sec
+        self.hasher = hasher
 
     def refresh_session(self, old_session: str | None):
         if old_session is None:
@@ -44,6 +38,10 @@ class RSessionIDManagerImpl(RSessionIDManager):
             self.db[new_session] = SessionData(expire_at, session_data.player_id)
             self.db.pop(old_session)
             self.new_session = NewSessionData(new_session, expire_at)
+
+    def _encode(self, player_id: PlayerId, expire_at: datetime.datetime) -> str:
+        data = f"{player_id}%{expire_at.isoformat()}"
+        return self.hasher.hash(data)
 
     def login(self, player_id: PlayerId):
         expire_at = (

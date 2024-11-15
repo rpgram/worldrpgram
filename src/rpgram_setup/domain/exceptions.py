@@ -41,3 +41,15 @@ class SomethingIsMissing(WorldException):
 
     def __str__(self):
         return f"Seems {self.subject} is missing..."
+
+
+class ValidationError(WorldException):
+    def __init__(self, subject: Display, hint: Display | None = None):
+        self.subject = subject
+        self.hint = hint
+
+    def __str__(self):
+        error_text = f"Validation failed for {self.subject}."
+        if self.hint:
+            error_text += f"Try this: {self.hint}."
+        return error_text

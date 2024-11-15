@@ -10,6 +10,7 @@ from rpgram_setup.application.identity import SessionDB
 from rpgram_setup.domain.exceptions import WorldException
 from rpgram_setup.infrastructure.dependencies import auth_db
 from rpgram_setup.infrastructure.ioc import make_container
+from rpgram_setup.presentation.api.auth import user_router
 from rpgram_setup.presentation.api.errors import exceptions_handler
 from rpgram_setup.presentation.api.results import results_router
 from rpgram_setup.presentation.battle import battle_router
@@ -44,6 +45,7 @@ def create_app():
     app.include_router(battle_router)
     app.include_router(hero_router)
     app.include_router(results_router)
+    app.include_router(user_router)
     setup_dishka(container=container, app=app)
     app.middleware("http")(session_middleware)
     return app

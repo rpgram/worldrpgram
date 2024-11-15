@@ -1,4 +1,5 @@
 import collections
+from typing import Callable
 
 from dishka import (
     Provider,
@@ -10,6 +11,12 @@ from dishka import (
     AnyOf,
 )
 
+from rpgram_setup.application.auth import (
+    UserLoginDTO,
+    UserLoginInteractor,
+    UserRegisterDTO,
+    UserRegisterInteractor,
+)
 from rpgram_setup.application.battle.results import BattleResultsInteractor
 from rpgram_setup.application.identity import (
     RSessionIDManager,
@@ -38,19 +45,23 @@ from rpgram_setup.domain.protocols.core import (
     AsyncInteractor,
     Interactor,
 )
-from rpgram_setup.domain.protocols.data.battle import BattleResultMapper
+from rpgram_setup.domain.protocols.data.battle import BattleResultMapper, UserMapper
 from rpgram_setup.domain.protocols.data.players import (
     PlayersMapper,
     CreatePlayer,
     GetPlayersQuery,
     GetPlayerQuery,
 )
+from rpgram_setup.domain.protocols.general import Hasher
+from rpgram_setup.domain.user import User
 from rpgram_setup.domain.user_types import BattleId, DBS
 from rpgram_setup.infrastructure.api import SessionManager, BattleAPIClient
 from rpgram_setup.infrastructure.config import read_config
+from rpgram_setup.infrastructure.general import HasherImpl
 from rpgram_setup.infrastructure.mappers import (
     PlayerMemoryMapper,
     BattleResultMemoryMapper,
+    UserMemoryMapper,
 )
 from rpgram_setup.infrastructure.session import RSessionIDManagerImpl
 
@@ -73,11 +84,15 @@ class IoC(Provider):
 
     auth_db = from_context(SessionDB, scope=Scope.APP)
 
-    @provide
-    def id_manager(self, config: AppConfig, auth_db: SessionDB) -> RSessionIDManager:
-        return RSessionIDManagerImpl(
-            config.secret_key, config.session_expires_in_sec, auth_db
-        )
+    id_manager = provide(RSessionIDManagerImpl, provides=RSessionIDManager)
+
+    hasher = provide(HasherImpl, provides=Hasher)
+
+    user_login = provide(UserLoginInteractor, provides=Interactor[UserLoginDTO, User])
+
+    user_registration = provide(
+        UserRegisterInteractor, provides=Interactor[UserRegisterDTO, User]
+    )
 
     get_results = provide(
         BattleResultsInteractor,
@@ -87,6 +102,8 @@ class IoC(Provider):
     @provide(scope=Scope.APP)
     def db(self) -> DBS:
         return collections.defaultdict(list)
+
+    user_mapper = provide(UserMemoryMapper, provides=UserMapper)
 
     hero_factory = provide(HeroFactory)
 
