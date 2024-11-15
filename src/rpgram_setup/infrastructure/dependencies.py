@@ -1,6 +1,8 @@
-from fastapi import Cookie, Depends
+from fastapi import Cookie, Depends, HTTPException
+from starlette import status
 
-from rpgram_setup.application.identity import SessionData, SessionDB
+from rpgram_setup.application.exceptions import NotAuthenticated
+from rpgram_setup.application.identity import SessionData, SessionDB, IDProvider
 from rpgram_setup.infrastructure.session import IDProviderImpl
 
 

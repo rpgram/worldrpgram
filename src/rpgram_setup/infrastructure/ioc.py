@@ -12,10 +12,8 @@ from dishka import (
 
 from rpgram_setup.application.battle.results import BattleResultsInteractor
 from rpgram_setup.application.identity import (
-    SessionIDManager,
     RSessionIDManager,
     SessionDB,
-    SessionData,
 )
 from rpgram_setup.application.queries import BattleResultsQuery
 from rpgram_setup.application.battle.take_event import TakeEventInteractor
