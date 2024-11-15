@@ -7,9 +7,16 @@ from dishka import (
     make_async_container,
     AsyncContainer,
     from_context,
+    AnyOf,
 )
 
 from rpgram_setup.application.battle.results import BattleResultsInteractor
+from rpgram_setup.application.identity import (
+    SessionIDManager,
+    RSessionIDManager,
+    SessionDB,
+    SessionData,
+)
 from rpgram_setup.application.queries import BattleResultsQuery
 from rpgram_setup.application.battle.take_event import TakeEventInteractor
 from rpgram_setup.application.configuration import AppConfig
@@ -47,6 +54,7 @@ from rpgram_setup.infrastructure.mappers import (
     PlayerMemoryMapper,
     BattleResultMemoryMapper,
 )
+from rpgram_setup.infrastructure.session import RSessionIDManagerImpl
 
 
 class IoC(Provider):
@@ -64,6 +72,14 @@ class IoC(Provider):
     save_result = provide(TakeEventInteractor, provides=Interactor[BattleResult, None])
 
     results_mapper = provide(BattleResultMemoryMapper, provides=BattleResultMapper)
+
+    auth_db = from_context(SessionDB, scope=Scope.APP)
+
+    @provide
+    def id_manager(self, config: AppConfig, auth_db: SessionDB) -> RSessionIDManager:
+        return RSessionIDManagerImpl(
+            config.secret_key, config.session_expires_in_sec, auth_db
+        )
 
     get_results = provide(
         BattleResultsInteractor,
@@ -91,7 +107,8 @@ class IoC(Provider):
         StartBattleInteractor, provides=AsyncInteractor[StartBattleDTO, BattleId]
     )
     register_interactor = provide(
-        NewPlayerInteractor, provides=Interactor[CreatePlayer, Player]
+        NewPlayerInteractor,
+        provides=AnyOf[Interactor[CreatePlayer, Player], NewPlayerInteractor],
     )
     get_all_interactor = provide(
         ReadPlayersInteractor, provides=Interactor[GetPlayersQuery, list[Player]]
@@ -101,6 +118,8 @@ class IoC(Provider):
     )
 
 
-def make_container() -> AsyncContainer:
+def make_container(session_db: SessionDB) -> AsyncContainer:
     config = read_config()
-    return make_async_container(IoC(), context={AppConfig: config})
+    return make_async_container(
+        IoC(), context={AppConfig: config, SessionDB: session_db}
+    )
