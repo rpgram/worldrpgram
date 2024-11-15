@@ -23,7 +23,7 @@ from rpgram_setup.application.players.read import (
     ReadPlayersInteractor,
     ReadPlayerInteractor,
 )
-from rpgram_setup.application.players.register import NewPlayerInteractor
+from rpgram_setup.application.players.create_profile import NewPlayerInteractor
 from rpgram_setup.application.battle.start_battle import (
     StartBattleInteractor,
     StartBattleDTO,

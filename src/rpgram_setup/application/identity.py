@@ -13,12 +13,6 @@ class SessionData:
     player_id: PlayerId
 
 
-# @dataclasses.dataclass
-# class SessionValues:
-#     player_id: PlayerId
-#     rsession_id: str
-
-
 @dataclasses.dataclass
 class NewSessionData:
     rsession_id: str
@@ -31,7 +25,7 @@ class IDProvider(Protocol):
     def authenticated_only(self): ...
 
     @abc.abstractmethod
-    def get_payer_identity(self) -> PlayerId: ...
+    def get_payer_identity(self) -> PlayerId | None: ...
 
 
 SessionDB = dict[str, SessionData]

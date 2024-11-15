@@ -14,7 +14,7 @@ from rpgram_setup.infrastructure.dependencies import id_provider
 from rpgram_setup.infrastructure.session import IDProviderImpl
 from rpgram_setup.presentation.converters import convert_player_to_dto
 from rpgram_setup.presentation.models import PlayerDTO
-from rpgram_setup.application.players.register import NewPlayerInteractor
+from rpgram_setup.application.players.create_profile import NewPlayerInteractor
 from rpgram_setup.domain.exceptions import NotUnique, ActionFailed
 from rpgram_setup.domain.protocols.data.players import (
     CreatePlayer,

@@ -1,7 +1,6 @@
 import datetime
 import hashlib
 import hmac
-import time
 
 from rpgram_setup.application.exceptions import NotAuthenticated
 from rpgram_setup.application.identity import (

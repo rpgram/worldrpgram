@@ -4,13 +4,14 @@ from rpgram_setup.domain.battle import BattleResult
 from rpgram_setup.domain.economics import Balance, Token
 from rpgram_setup.domain.exceptions import NotUnique
 from rpgram_setup.domain.player import Player
-from rpgram_setup.domain.protocols.data.battle import BattleResultMapper
+from rpgram_setup.domain.protocols.data.battle import BattleResultMapper, UserMapper
 from rpgram_setup.domain.protocols.data.players import (
     PlayersMapper,
     GetPlayerQuery,
     CreatePlayer,
     GetPlayersQuery,
 )
+from rpgram_setup.domain.user import User
 from rpgram_setup.domain.user_types import PlayerId, DBS, BattleId
 
 
@@ -75,3 +76,17 @@ class BattleResultMemoryMapper(BattleResultMapper):
 
     def get_battle_result(self, battle_id: BattleId) -> list[BattleResult]:
         return [br for br in self.db if br.battle_id == battle_id]
+
+
+class UserMemoryMapper(UserMapper):
+
+    def insert_user(self, user: User):
+        self.db.append(user)
+
+    def __init__(self, dbs: DBS):
+        self.db: list[User] = dbs[User]
+
+    def get_user(self, login: str) -> User | None:
+        with suppress(StopIteration):
+            return next(u for u in self.db if u.login == login)
+        return None
