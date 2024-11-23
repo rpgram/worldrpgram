@@ -10,6 +10,8 @@ from dishka import (
     from_context,
     AnyOf,
 )
+from dishka.integrations.fastapi import FastapiProvider
+from starlette.requests import Request
 
 from rpgram_setup.application.auth import (
     UserLoginDTO,
@@ -21,6 +23,7 @@ from rpgram_setup.application.battle.results import BattleResultsInteractor
 from rpgram_setup.application.identity import (
     RSessionIDManager,
     SessionDB,
+    IDProvider,
 )
 from rpgram_setup.application.queries import BattleResultsQuery
 from rpgram_setup.application.battle.take_event import TakeEventInteractor
@@ -35,8 +38,14 @@ from rpgram_setup.application.battle.start_battle import (
     StartBattleInteractor,
     StartBattleDTO,
 )
+from rpgram_setup.application.shop import SearchOffer, ShopSearch
 from rpgram_setup.domain.battle import BattleResult
-from rpgram_setup.domain.factory import HeroFactory
+from rpgram_setup.domain.entities import Shop, CentralShop
+from rpgram_setup.domain.factory import (
+    HeroFactory,
+    NullSuiteFactory,
+    CentralShopFactory,
+)
 from rpgram_setup.domain.gateways import RequestData
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.core import (
@@ -55,6 +64,7 @@ from rpgram_setup.domain.protocols.data.players import (
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user import User
 from rpgram_setup.domain.user_types import BattleId, DBS
+from rpgram_setup.domain.vos.in_game import Good
 from rpgram_setup.infrastructure.api import SessionManager, BattleAPIClient
 from rpgram_setup.infrastructure.config import read_config
 from rpgram_setup.infrastructure.general import HasherImpl
@@ -63,10 +73,10 @@ from rpgram_setup.infrastructure.mappers import (
     BattleResultMemoryMapper,
     UserMemoryMapper,
 )
-from rpgram_setup.infrastructure.session import RSessionIDManagerImpl
+from rpgram_setup.infrastructure.session import RSessionIDManagerImpl, IDProviderImpl
 
 
-class IoC(Provider):
+class IoC(FastapiProvider):
 
     session = provide(
         source=SessionManager,
@@ -131,6 +141,22 @@ class IoC(Provider):
     get_interactor = provide(
         ReadPlayerInteractor, provides=Interactor[GetPlayerQuery, Player]
     )
+
+    shop_offer_interactor = provide(
+        SearchOffer, provides=Interactor[ShopSearch, list[Good]]
+    )
+
+    items_factory = provide(NullSuiteFactory, scope=Scope.APP)
+    central_factory = provide(CentralShopFactory, scope=Scope.APP)
+
+    @provide(scope=Scope.APP)
+    def shop(self, shop_fac: CentralShopFactory) -> Shop:
+        return shop_fac.create_shop()
+
+    @provide
+    def auth_provider(self, db: SessionDB, request: Request) -> IDProvider:
+        rsession_id = request.cookies.get("RSESSION_ID")
+        return IDProviderImpl(rsession_id, db)
 
 
 def make_container(session_db: SessionDB) -> AsyncContainer:

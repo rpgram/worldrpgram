@@ -13,13 +13,12 @@ from rpgram_setup.domain.protocols.data.players import (
 
 
 class NewPlayerInteractor(Interactor[CreatePlayer, Player]):
-    def __init__(self, player_mapper: PlayersMapper, idm: RSessionIDManager):
+    def __init__(
+        self, player_mapper: PlayersMapper, idm: RSessionIDManager, idp: IDProvider
+    ):
         self._idm = idm
         self._player_mapper = player_mapper
-        self._idp: IDProvider | None = None
-
-    def set_id_provider(self, id_provider: IDProvider):
-        self._idp = id_provider
+        self._idp: IDProvider = idp
 
     def execute(self, in_dto: I) -> Player:
         if self._idp and self._idp.get_payer_identity() is not None:

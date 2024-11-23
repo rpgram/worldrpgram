@@ -1,12 +1,8 @@
 import dataclasses
 
 from rpgram_setup.domain.exceptions import SomethingIsMissing
-from rpgram_setup.domain.heroes import HeroClass
-from rpgram_setup.domain.player import Player
+from rpgram_setup.domain.vos.in_game import HeroClass
 from rpgram_setup.domain.protocols.core import (
-    Interactor,
-    I,
-    O,
     ClientProto,
     AsyncInteractor,
 )

@@ -3,15 +3,9 @@ from dishka.integrations.fastapi import inject
 from fastapi import APIRouter, HTTPException, Depends
 from starlette import status
 
-from rpgram_setup.application.players.read import (
-    ReadPlayersInteractor,
-    ReadPlayerInteractor,
-)
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.core import Interactor
 from rpgram_setup.domain.user_types import PlayerId
-from rpgram_setup.infrastructure.dependencies import id_provider
-from rpgram_setup.infrastructure.session import IDProviderImpl
 from rpgram_setup.presentation.converters import convert_player_to_dto
 from rpgram_setup.presentation.models import PlayerDTO
 from rpgram_setup.application.players.create_profile import NewPlayerInteractor
@@ -35,10 +29,8 @@ player_router = APIRouter(prefix="/player")
 async def create_user(
     username: str,
     interactor: FromDishka[NewPlayerInteractor],
-    idp: IDProviderImpl = Depends(id_provider),
 ) -> PlayerDTO:
     create_player = CreatePlayer(username)
-    interactor.set_id_provider(idp)
     try:
         return convert_player_to_dto(interactor.execute(create_player))
     except NotUnique as e:

@@ -19,6 +19,9 @@ class Currency(Protocol):
     def __iadd__(self, other: object) -> Self: ...
 
     @abc.abstractmethod
+    def __le__(self, other: object) -> bool: ...
+
+    @abc.abstractmethod
     def mul(self, coefficient: float, *, rize: bool) -> Self: ...
 
     @abc.abstractmethod
@@ -32,6 +35,11 @@ Ledger = dict[type[Currency], Currency]
 
 
 class Token(Currency):
+    def __le__(self, other: object) -> bool:
+        if not isinstance(other, Token):
+            raise NotImplementedError
+        return self.units <= other.units
+
     def __init__(self, units: int):
         self.units = units
 

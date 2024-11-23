@@ -2,7 +2,8 @@ from adaptix.conversion import link, impl_converter, coercer, get_converter, fro
 from adaptix import P
 
 from rpgram_setup.domain.exceptions import SomethingIsMissing
-from rpgram_setup.domain.heroes import PlayersHero, HeroClass, HeroStats, Hero
+from rpgram_setup.domain.heroes import PlayersHero
+from rpgram_setup.domain.vos.in_game import Hero, HeroStats, HeroClass
 from rpgram_setup.domain.player import Player
 from rpgram_setup.infrastructure.models import StartBattlePlayerDTO, StartBattleHeroDTO
 

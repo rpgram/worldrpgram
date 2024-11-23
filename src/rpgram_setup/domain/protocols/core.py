@@ -1,7 +1,9 @@
 import abc
 from typing import Protocol, TypeVar, Any
 
-from rpgram_setup.domain.heroes import HeroClass, PlayersHero
+from rpgram_setup.domain.entities import Shop
+from rpgram_setup.domain.heroes import PlayersHero
+from rpgram_setup.domain.vos.in_game import HeroClass
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.user_types import BattleId
 from rpgram_setup.infrastructure.models import StartBattlePlayerDTO
@@ -38,3 +40,9 @@ class AsyncInteractor(Protocol[I, O]):
 
     @abc.abstractmethod
     async def execute(self, in_dto: I) -> O: ...
+
+
+class ShopFactory(Protocol):
+
+    @abc.abstractmethod
+    def create_shop(self) -> Shop: ...

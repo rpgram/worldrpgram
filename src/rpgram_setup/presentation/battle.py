@@ -5,7 +5,7 @@ from starlette import status
 
 from rpgram_setup.application.battle.start_battle import StartBattleDTO
 from rpgram_setup.domain.exceptions import SomethingIsMissing
-from rpgram_setup.domain.heroes import HeroClass
+from rpgram_setup.domain.vos.in_game import HeroClass
 from rpgram_setup.domain.protocols.core import AsyncInteractor
 from rpgram_setup.domain.user_types import PlayerId, BattleId
 from rpgram_setup.infrastructure.exceptions import BadRequest

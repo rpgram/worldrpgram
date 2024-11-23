@@ -8,9 +8,9 @@ from faststream.rabbit import RabbitBroker
 
 from rpgram_setup.application.identity import SessionDB
 from rpgram_setup.domain.exceptions import WorldException
-from rpgram_setup.infrastructure.dependencies import auth_db
 from rpgram_setup.infrastructure.ioc import make_container
 from rpgram_setup.presentation.api.auth import user_router
+from rpgram_setup.presentation.api.equip import equip_router
 from rpgram_setup.presentation.api.errors import exceptions_handler
 from rpgram_setup.presentation.api.results import results_router
 from rpgram_setup.presentation.battle import battle_router
@@ -24,11 +24,9 @@ from rpgram_setup.presentation.player import player_router
 
 @contextlib.asynccontextmanager
 async def lifespan(app: FastAPI):
-    session_db = app.state.session_db
     container = app.state.dishka_container
     fs = create_faststream(container)
     assert fs.broker
-    app.dependency_overrides[auth_db] = lambda: session_db
     await fs.broker.start()
     yield
     await fs.broker.close()
@@ -46,6 +44,7 @@ def create_app():
     app.include_router(hero_router)
     app.include_router(results_router)
     app.include_router(user_router)
+    app.include_router(equip_router)
     setup_dishka(container=container, app=app)
     app.middleware("http")(session_middleware)
     return app

@@ -1,6 +1,6 @@
 import dataclasses
 
-from rpgram_setup.domain.heroes import HeroClass
+from rpgram_setup.domain.vos.in_game import HeroClass
 from rpgram_setup.domain.user_types import PlayerId
 
 
@@ -12,8 +12,14 @@ class UserDTO:
 @dataclasses.dataclass
 class GoodDTO:
     price: list[str]
-    quantity: int
     name: str
+
+
+@dataclasses.dataclass
+class SlotDTO:
+    item: GoodDTO
+    quantity: int
+    slot_id: int
 
 
 @dataclasses.dataclass
@@ -26,7 +32,7 @@ class HeroDTO:
 @dataclasses.dataclass
 class PlayerDTO:
     balance: str
-    inventory: list[GoodDTO]
+    inventory: list[SlotDTO]
     heroes: list[HeroClass]
     username: str
     player_id: PlayerId

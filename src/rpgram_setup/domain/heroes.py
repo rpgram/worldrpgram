@@ -1,50 +1,7 @@
 import dataclasses
-from enum import IntEnum
 
-from rpgram_setup.domain.economics import Money
 from rpgram_setup.domain.exceptions import LevelTooLow, BattleContinues
-
-
-@dataclasses.dataclass
-class HeroStats:
-    health: int
-    armor: int
-    damage: int
-
-
-class HeroClass(IntEnum):
-    WARRIOR = 1
-    SORCERER = 2
-
-
-@dataclasses.dataclass
-class Good:
-    price: Money
-    quantity: int
-    name: str
-
-
-@dataclasses.dataclass
-class Equipment(Good):
-    """Grants characteristics by wearing, can be taken from somewhere."""
-
-    class_: HeroClass
-    stats_diff: HeroStats
-    required_level: int
-    quantity = 1
-
-
-@dataclasses.dataclass
-class Hero:
-    default_stats: HeroStats
-    per_level_stats: HeroStats
-    class_: HeroClass
-    equipment: Equipment | None = None
-
-    def level_up(self, hero_stats: HeroStats):
-        hero_stats.armor += self.per_level_stats.armor
-        hero_stats.health += self.per_level_stats.health
-        hero_stats.damage += self.per_level_stats.damage
+from rpgram_setup.domain.vos.in_game import Hero, HeroStats, Equipment
 
 
 @dataclasses.dataclass
