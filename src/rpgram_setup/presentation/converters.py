@@ -14,7 +14,7 @@ def players_to_hero_dto(ph: PlayersHero) -> HeroDTO:
         level=ph.level,
         health=ph.hero_stats.health,
         hero_class=ph.hero.class_,
-        equipment=ph.item and ph.item.name,
+        equipment=None if ph.item is None else ph.item.name,
     )
 
 

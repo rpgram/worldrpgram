@@ -33,7 +33,7 @@ async def lifespan(app: FastAPI):
     await app.state.dishka_container.close()
 
 
-def create_app():
+def create_app() -> FastAPI:
     app = FastAPI(lifespan=lifespan)
     app.exception_handler(WorldException)(exceptions_handler)
     session_db: SessionDB = {}

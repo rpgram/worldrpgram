@@ -15,8 +15,8 @@ class HeroFactory:
         return Hero(hero_stats, per_level, HeroClass.WARRIOR, None)
 
 
-Ingredients = TypeVar("Ingredients")
-TargetItem = TypeVar("TargetItem", bound=Good)
+Ingredients = TypeVar("Ingredients", contravariant=True)
+TargetItem = TypeVar("TargetItem", covariant=True, bound=Good)
 
 
 class ItemFactory(Protocol[TargetItem, Ingredients]):
