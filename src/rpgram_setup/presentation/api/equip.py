@@ -2,13 +2,20 @@ from dishka import FromDishka
 from dishka.integrations.fastapi import inject
 from fastapi import APIRouter
 
+from rpgram_setup.application.equipment import BuyCommand
 from rpgram_setup.application.shop import ShopSearch
 from rpgram_setup.domain.consts import HERO_MAX_LVL, MAX_ITEM_PRICE
 from rpgram_setup.domain.economics import Money
+from rpgram_setup.domain.heroes import PlayersHero
+from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.core import Interactor
 from rpgram_setup.domain.vos.in_game import Good, HeroClass
-from rpgram_setup.presentation.converters import good_to_good_dto
-from rpgram_setup.presentation.models import GoodDTO
+from rpgram_setup.presentation.converters import (
+    good_to_good_dto,
+    players_to_hero_dto,
+    convert_player_to_dto,
+)
+from rpgram_setup.presentation.models import GoodDTO, PlayerDTO, HeroDTO
 
 equip_router = APIRouter(prefix="/equipment")
 
@@ -35,3 +42,19 @@ async def get_shop_goods(
             )
         )
     ]
+
+
+@equip_router.post("/buy")
+@inject
+async def buy_item(
+    buy: BuyCommand, interactor: FromDishka[Interactor[BuyCommand, Player]]
+) -> PlayerDTO:
+    return convert_player_to_dto(interactor.execute(buy))
+
+
+@equip_router.post("/wear")
+@inject
+async def wear_item(
+    slot_id: int, interactor: FromDishka[Interactor[int, PlayersHero]]
+) -> HeroDTO:
+    return players_to_hero_dto(interactor.execute(slot_id))

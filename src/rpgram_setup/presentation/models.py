@@ -27,6 +27,7 @@ class HeroDTO:
     level: int
     health: int
     hero_class: HeroClass
+    equipment: str | None
 
 
 @dataclasses.dataclass

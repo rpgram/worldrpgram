@@ -45,8 +45,8 @@ def create_app():
     app.include_router(results_router)
     app.include_router(user_router)
     app.include_router(equip_router)
-    setup_dishka(container=container, app=app)
     app.middleware("http")(session_middleware)
+    setup_dishka(container=container, app=app)
     return app
 
 

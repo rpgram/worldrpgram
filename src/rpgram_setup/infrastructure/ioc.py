@@ -20,6 +20,11 @@ from rpgram_setup.application.auth import (
     UserRegisterInteractor,
 )
 from rpgram_setup.application.battle.results import BattleResultsInteractor
+from rpgram_setup.application.equipment import (
+    EquipInteractor,
+    BuyCommand,
+    BuyInteractor,
+)
 from rpgram_setup.application.identity import (
     RSessionIDManager,
     SessionDB,
@@ -47,6 +52,7 @@ from rpgram_setup.domain.factory import (
     CentralShopFactory,
 )
 from rpgram_setup.domain.gateways import RequestData
+from rpgram_setup.domain.heroes import PlayersHero
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.core import (
     ClientProto,
@@ -142,9 +148,12 @@ class IoC(FastapiProvider):
         ReadPlayerInteractor, provides=Interactor[GetPlayerQuery, Player]
     )
 
+    equip_interactor = provide(EquipInteractor, provides=Interactor[int, PlayersHero])
+
     shop_offer_interactor = provide(
         SearchOffer, provides=Interactor[ShopSearch, list[Good]]
     )
+    buy_interactor = provide(BuyInteractor, provides=Interactor[BuyCommand, Player])
 
     items_factory = provide(NullSuiteFactory, scope=Scope.APP)
     central_factory = provide(CentralShopFactory, scope=Scope.APP)

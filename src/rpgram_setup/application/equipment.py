@@ -1,0 +1,66 @@
+import dataclasses
+
+from rpgram_setup.application.identity import IDProvider
+from rpgram_setup.domain.consts import HERO_MAX_LVL, MAX_ITEM_PRICE
+from rpgram_setup.domain.economics import Token
+from rpgram_setup.domain.entities import Shop
+from rpgram_setup.domain.exceptions import ActionFailed, SomethingIsMissing, NotUnique
+from rpgram_setup.domain.heroes import PlayersHero
+from rpgram_setup.domain.player import Player
+from rpgram_setup.domain.protocols.core import Interactor, I, O
+from rpgram_setup.domain.protocols.data.players import PlayersMapper, GetPlayerQuery
+from rpgram_setup.domain.vos.in_game import Equipment
+
+
+class EquipInteractor(Interactor[int, PlayersHero]):
+    def __init__(self, idp: IDProvider, players: PlayersMapper):
+        self.idp = idp
+        self.players = players
+
+    def execute(self, in_dto: int) -> PlayersHero:
+        self.idp.authenticated_only()
+        player = self.players.get_player(
+            GetPlayerQuery(self.idp.get_payer_identity(), None)
+        )
+        if player is None:
+            raise ActionFailed
+        for slot in player.inventory:
+            if slot.slot_id == in_dto:
+                if not isinstance(slot.item, Equipment):
+                    raise ActionFailed
+                break
+        else:
+            raise SomethingIsMissing("slot")
+        for hero in player.heroes:
+            if hero.hero.class_ == slot.item.class_:
+                hero.equip(slot.item)
+                return hero
+        raise SomethingIsMissing("hero")
+
+
+@dataclasses.dataclass
+class BuyCommand:
+    name: str
+    quantity: int
+
+
+class BuyInteractor(Interactor[BuyCommand, Player]):
+    def __init__(self, shop: Shop, players: PlayersMapper, idp: IDProvider):
+        self.idp = idp
+        self.shop = shop
+        self.players = players
+
+    def execute(self, in_dto: BuyCommand) -> Player:
+        self.idp.authenticated_only()
+        items = self.shop.search(
+            (0, HERO_MAX_LVL), (Token(0), Token(MAX_ITEM_PRICE)), in_dto.name, None
+        )
+        if len(items) != 1:
+            raise NotUnique("item", in_dto)
+        player = self.players.get_player(
+            GetPlayerQuery(self.idp.get_payer_identity(), None)
+        )
+        if player is None:
+            raise ActionFailed
+        player.buy(items[0], in_dto.quantity)
+        return player

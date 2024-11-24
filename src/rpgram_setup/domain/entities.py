@@ -25,7 +25,7 @@ class Shop(abc.ABC):
         self,
         level: MinMax,
         price: MinMaxMoney,
-        name_part: str | None = None,
+        name: str | None = None,
         hero: HeroClass | None = None,
     ) -> list[Good]:
         """Returns matching items"""
@@ -36,7 +36,7 @@ class Shop(abc.ABC):
                 (level[0] is None or level[0] <= s.required_level)
                 and (level[1] is None or s.required_level <= level[1])
             )
-            name_ok = not name_part or name_part in s.name
+            name_ok = not name or name == s.name
             hero_ok = not hero or not isinstance(s, Equipment) or s.class_ == hero
             if price_ok and level_ok and name_ok and hero_ok:
                 result.append(s)

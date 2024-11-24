@@ -35,16 +35,17 @@ Ledger = dict[type[Currency], Currency]
 
 
 class Token(Currency):
-    def __le__(self, other: object) -> bool:
-        if not isinstance(other, Token):
-            raise NotImplementedError
-        return self.units <= other.units
 
     def __init__(self, units: int):
         self.units = units
 
     def __str__(self) -> str:
         return f"{self.units} Tokens"
+
+    def __le__(self, other: object) -> bool:
+        if not isinstance(other, Token):
+            raise NotImplementedError
+        return self.units <= other.units
 
     def __sub__(self, other: object) -> Self:
         if not isinstance(other, Token):
