@@ -14,6 +14,6 @@ players_hero = get_converter(
     recipe=[
         link(P[Hero].default_stats, P[PlayersHero].hero_stats),
         link(P[Hero].equipment, P[PlayersHero].item),
-        link_function(lambda h: h, P[PlayersHero].hero),
+        link_function(lambda h: h, P[PlayersHero].born),
     ],
 )

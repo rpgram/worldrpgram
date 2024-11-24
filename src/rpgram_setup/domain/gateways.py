@@ -5,7 +5,7 @@ from typing import Protocol, Literal, Any, Generic
 from rpgram_setup.domain.user_types import T, B
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class RequestData(Generic[T]):
     method: Literal["POST", "GET"]
     api_url: str

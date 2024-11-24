@@ -7,8 +7,9 @@ from rpgram_setup.domain.entities import Shop
 from rpgram_setup.domain.exceptions import ActionFailed, SomethingIsMissing, NotUnique
 from rpgram_setup.domain.heroes import PlayersHero
 from rpgram_setup.domain.player import Player
-from rpgram_setup.domain.protocols.core import Interactor, I, O
+from rpgram_setup.domain.protocols.core import Interactor, I, O, AsyncInteractor
 from rpgram_setup.domain.protocols.data.players import PlayersMapper, GetPlayerQuery
+from rpgram_setup.domain.protocols.data.statisctics import StatisticsWriter, TradeEvent
 from rpgram_setup.domain.vos.in_game import Equipment
 
 
@@ -32,7 +33,7 @@ class EquipInteractor(Interactor[int, PlayersHero]):
         else:
             raise SomethingIsMissing("slot")
         for hero in player.heroes:
-            if hero.hero.class_ == slot.item.class_:
+            if hero.born.class_ == slot.item.class_:
                 hero.equip(slot.item)
                 return hero
         raise SomethingIsMissing("hero")
@@ -44,13 +45,14 @@ class BuyCommand:
     quantity: int
 
 
-class BuyInteractor(Interactor[BuyCommand, Player]):
-    def __init__(self, shop: Shop, players: PlayersMapper, idp: IDProvider):
+class BuyInteractor(AsyncInteractor[BuyCommand, Player]):
+    def __init__(self, shop: Shop, players: PlayersMapper, idp: IDProvider, stats_writer: StatisticsWriter):
+        self.stats_writer = stats_writer
         self.idp = idp
         self.shop = shop
         self.players = players
 
-    def execute(self, in_dto: BuyCommand) -> Player:
+    async def execute(self, in_dto: BuyCommand) -> Player:
         self.idp.authenticated_only()
         items = self.shop.search(
             (0, HERO_MAX_LVL), (Token(0), Token(MAX_ITEM_PRICE)), in_dto.name, None
@@ -63,4 +65,6 @@ class BuyInteractor(Interactor[BuyCommand, Player]):
         if player is None:
             raise ActionFailed
         player.buy(items[0], in_dto.quantity)
+        trade_event = TradeEvent(True, items[0], in_dto.quantity, self.shop.get(items[0], in_dto.quantity))
+        await self.stats_writer.trade(trade_event)
         return player

@@ -8,7 +8,7 @@ from rpgram_setup.domain.vos.in_game import Hero, HeroStats, Equipment
 class PlayersHero:
     """Holds characteristics related to hero class. Can level up."""
 
-    hero: Hero
+    born: Hero
     hero_stats: HeroStats
     item: Equipment | None
     locked = False
@@ -44,4 +44,4 @@ class PlayersHero:
         self._wear(item)
 
     def level_up(self):
-        self.hero.level_up(self.hero_stats)
+        self.born.level_up(self.hero_stats)

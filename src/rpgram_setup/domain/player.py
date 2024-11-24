@@ -31,6 +31,7 @@ class Player:
             self.balance -= item.price_per_unit
             self.inventory.append(Slot(max_slot_id + 1, item, quantity))
 
+
     def sell(self, slot_id: int, quantity: int = 1) -> None:
         for s in self.inventory:
             if s.slot_id != slot_id:

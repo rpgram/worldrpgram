@@ -14,6 +14,11 @@ class HeroFactory:
         per_level = HeroStats(10, 1, 2)
         return Hero(hero_stats, per_level, HeroClass.WARRIOR, None)
 
+    def create_sorcerer(self) -> Hero:
+        hero_stats = HeroStats(130, 5, 20)
+        per_level = HeroStats(10, 1, 3)
+        return Hero(hero_stats, per_level, HeroClass.SORCERER, None)
+
 
 Ingredients = TypeVar("Ingredients", contravariant=True)
 TargetItem = TypeVar("TargetItem", covariant=True, bound=Good)

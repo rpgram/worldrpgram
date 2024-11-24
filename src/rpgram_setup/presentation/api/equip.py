@@ -8,7 +8,7 @@ from rpgram_setup.domain.consts import HERO_MAX_LVL, MAX_ITEM_PRICE
 from rpgram_setup.domain.economics import Money
 from rpgram_setup.domain.heroes import PlayersHero
 from rpgram_setup.domain.player import Player
-from rpgram_setup.domain.protocols.core import Interactor
+from rpgram_setup.domain.protocols.core import Interactor, AsyncInteractor
 from rpgram_setup.domain.vos.in_game import Good, HeroClass
 from rpgram_setup.presentation.converters import (
     good_to_good_dto,
@@ -47,9 +47,9 @@ async def get_shop_goods(
 @equip_router.post("/buy")
 @inject
 async def buy_item(
-    buy: BuyCommand, interactor: FromDishka[Interactor[BuyCommand, Player]]
+    buy: BuyCommand, interactor: FromDishka[AsyncInteractor[BuyCommand, Player]]
 ) -> PlayerDTO:
-    return convert_player_to_dto(interactor.execute(buy))
+    return convert_player_to_dto(await interactor.execute(buy))
 
 
 @equip_router.post("/wear")

@@ -1,8 +1,8 @@
 import collections
-from typing import Callable
+from typing import Iterable, Iterator, AsyncIterable
 
+from asynch import connect
 from dishka import (
-    Provider,
     Scope,
     provide,
     make_async_container,
@@ -45,7 +45,7 @@ from rpgram_setup.application.battle.start_battle import (
 )
 from rpgram_setup.application.shop import SearchOffer, ShopSearch
 from rpgram_setup.domain.battle import BattleResult
-from rpgram_setup.domain.entities import Shop, CentralShop
+from rpgram_setup.domain.entities import Shop
 from rpgram_setup.domain.factory import (
     HeroFactory,
     NullSuiteFactory,
@@ -67,14 +67,16 @@ from rpgram_setup.domain.protocols.data.players import (
     GetPlayersQuery,
     GetPlayerQuery,
 )
+from rpgram_setup.domain.protocols.data.statisctics import StatisticsWriter
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user import User
 from rpgram_setup.domain.user_types import BattleId, DBS
 from rpgram_setup.domain.vos.in_game import Good
 from rpgram_setup.infrastructure.api import SessionManager, BattleAPIClient
 from rpgram_setup.infrastructure.config import read_config
+from rpgram_setup.infrastructure.data.clickhouse_stats import ClickHouseWriter
 from rpgram_setup.infrastructure.general import HasherImpl
-from rpgram_setup.infrastructure.mappers import (
+from rpgram_setup.infrastructure.data.mappers import (
     PlayerMemoryMapper,
     BattleResultMemoryMapper,
     UserMemoryMapper,
@@ -153,10 +155,17 @@ class IoC(FastapiProvider):
     shop_offer_interactor = provide(
         SearchOffer, provides=Interactor[ShopSearch, list[Good]]
     )
-    buy_interactor = provide(BuyInteractor, provides=Interactor[BuyCommand, Player])
+    buy_interactor = provide(BuyInteractor, provides=AsyncInteractor[BuyCommand, Player])
 
     items_factory = provide(NullSuiteFactory, scope=Scope.APP)
     central_factory = provide(CentralShopFactory, scope=Scope.APP)
+
+    @provide
+    async def stats_writer(self, config: AppConfig) -> AsyncIterable[StatisticsWriter]:
+        con = await connect(config.ch_dsn)
+        async with con.cursor() as cursor:
+            yield ClickHouseWriter(cursor)
+        await con.close()
 
     @provide(scope=Scope.APP)
     def shop(self, shop_fac: CentralShopFactory) -> Shop:

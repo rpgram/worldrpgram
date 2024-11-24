@@ -8,4 +8,5 @@ def read_config():
         battle_url=os.environ["BATTLE_URL"],
         session_expires_in_sec=360 * 60,
         secret_key="secret_key_for_app",
+        ch_dsn="clickhouse://localhost:9000/rpgram"
     )

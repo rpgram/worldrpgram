@@ -31,7 +31,7 @@ class Equipment(Good):
     required_level: int
 
 
-@dataclasses.dataclass(frozen=True)
+@dataclasses.dataclass
 class Hero:
     default_stats: HeroStats
     per_level_stats: HeroStats

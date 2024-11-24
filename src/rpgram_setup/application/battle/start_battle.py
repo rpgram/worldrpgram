@@ -38,10 +38,10 @@ class StartBattleInteractor(AsyncInteractor[StartBattleDTO, BattleId]):
             raise SomethingIsMissing("participant")
         try:
             players_hero = next(
-                h for h in player.heroes if h.hero.class_ == in_dto.hero_class
+                h for h in player.heroes if h.born.class_ == in_dto.hero_class
             )
             opponents_hero = next(
-                h for h in opponent.heroes if h.hero.class_ == in_dto.hero_class
+                h for h in opponent.heroes if h.born.class_ == in_dto.hero_class
             )
         except StopIteration:
             raise SomethingIsMissing("hero")

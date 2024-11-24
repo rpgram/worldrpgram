@@ -13,7 +13,7 @@ def players_to_hero_dto(ph: PlayersHero) -> HeroDTO:
     return HeroDTO(
         level=ph.level,
         health=ph.hero_stats.health,
-        hero_class=ph.hero.class_,
+        hero_class=ph.born.class_,
         equipment=None if ph.item is None else ph.item.name,
     )
 
@@ -36,7 +36,7 @@ convert_player_to_dto = get_converter(
         coercer(
             list[PlayersHero],
             list[HeroClass],
-            lambda lph: [ph.hero.class_ for ph in lph],
+            lambda lph: [ph.born.class_ for ph in lph],
         ),
     ],
 )

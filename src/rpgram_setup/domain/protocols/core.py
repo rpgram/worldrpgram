@@ -3,10 +3,8 @@ from typing import Protocol, TypeVar, Any
 
 from rpgram_setup.domain.entities import Shop
 from rpgram_setup.domain.heroes import PlayersHero
-from rpgram_setup.domain.vos.in_game import HeroClass
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.user_types import BattleId
-from rpgram_setup.infrastructure.models import StartBattlePlayerDTO
 
 I = TypeVar("I", bound=Any, contravariant=True)
 O = TypeVar("O", bound=Any, covariant=True)
@@ -28,6 +26,9 @@ class ClientProto(Protocol):
         players_hero: PlayersHero,
         opponents_hero: PlayersHero,
     ) -> BattleId: ...
+
+
+
 
 
 class Interactor(Protocol[I, O]):

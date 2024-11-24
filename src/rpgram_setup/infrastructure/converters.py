@@ -18,7 +18,7 @@ convert_players_hero_to_dto = get_converter(
             coercer=lambda hs: hs.health,
         ),
         link(
-            P[PlayersHero].hero,
+            P[PlayersHero].born,
             P[StartBattleHeroDTO].combo_root_id,
             coercer=lambda hero: hero.class_,
         ),
