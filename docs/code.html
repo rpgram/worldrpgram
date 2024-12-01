@@ -16,7 +16,7 @@ class factory4["🏭 ConnectorProto_RequestData_BattleId___BattleId_"]{
     SessionManager[T]()
 }
 
-class factory5["🏭 list"]{
+class factory5["🏭 defaultdict"]{
     IoC.db()
 }
 
@@ -28,67 +28,211 @@ class factory6["🏭 Ⓘ ClientProto"]{
 
 class factory7["🏭 Ⓘ PlayersMapper"]{
     PlayerMemoryMapper()
-    list
+    defaultdict
 }
 
-class factory8["📥 AppConfig"]{
+class factory8["🏭 NullSuiteFactory"]{
+    NullSuiteFactory()
+}
+
+class factory9["🏭 CentralShopFactory"]{
+    CentralShopFactory()
+    NullSuiteFactory
+}
+
+class factory10["🏭 Shop"]{
+    IoC.shop()
+    CentralShopFactory
+}
+
+class factory11["📥 dict_str__SessionData_"]{
  
 }
 
-class factory9["🏭 None"]{
+class factory12["📥 AppConfig"]{
+ 
+}
+
+class factory13["🏭 None"]{
     IoC.db()
 }
 
 }
 
 factory4 <.. factory6
-factory8 <.. factory6
+factory12 <.. factory6
 factory5 <.. factory7
-namespace Scope.REQUEST {
-class factory12["📥 AsyncContainer"]{
+factory8 <.. factory9
+factory9 <.. factory10
+namespace Scope.SESSION {
+class factory16["📥 AsyncContainer"]{
  
 }
 
-class factory13["🏭 AsyncInteractor_CreateHeroDTO__NoneType_"]{
+class factory17["📥 WebSocket"]{
+ 
+}
+
+}
+
+namespace Scope.REQUEST {
+class factory20["📥 AsyncContainer"]{
+ 
+}
+
+class factory21["🏭 AsyncInteractor_CreateHeroDTO__NoneType_"]{
     InitHeroInteractor()
     PlayersMapper
     HeroFactory
+    IDProvider
 }
 
-class factory14["🏭 HeroFactory"]{
+class factory22["🏭 Interactor_BattleResult__NoneType_"]{
+    TakeEventInteractor()
+    BattleResultMapper
+}
+
+class factory23["🏭 Ⓘ BattleResultMapper"]{
+    BattleResultMemoryMapper()
+    defaultdict
+}
+
+class factory24["🏭 Ⓘ RSessionIDManager"]{
+    RSessionIDManagerImpl()
+    AppConfig
+    Hasher
+    dict[str, SessionData]
+}
+
+class factory25["🏭 Ⓘ Hasher"]{
+    HasherImpl()
+    AppConfig
+}
+
+class factory26["🏭 Interactor_UserLoginDTO__User_"]{
+    UserLoginInteractor()
+    UserMapper
+    RSessionIDManager
+    Hasher
+}
+
+class factory27["🏭 Interactor_UserRegisterDTO__User_"]{
+    UserRegisterInteractor()
+    UserMapper
+    PlayersMapper
+    RSessionIDManager
+    Hasher
+}
+
+class factory28["🏭 Interactor_BattleResultsQuery__list_BattleResult__"]{
+    BattleResultsInteractor()
+    BattleResultMapper
+}
+
+class factory29["🏭 Ⓘ UserMapper"]{
+    UserMemoryMapper()
+    defaultdict
+}
+
+class factory30["🏭 HeroFactory"]{
     HeroFactory()
 }
 
-class factory15["🏭 AsyncInteractor_StartBattleDTO__BattleId_"]{
+class factory31["🏭 AsyncInteractor_StartBattleDTO__BattleId_"]{
     StartBattleInteractor()
     ClientProto
     PlayersMapper
 }
 
-class factory16["🏭 Interactor_CreatePlayer__Player_"]{
+class factory32["🏭 Interactor_CreatePlayer__Player_"]{
     NewPlayerInteractor()
     PlayersMapper
+    RSessionIDManager
+    IDProvider
 }
 
-class factory17["🏭 Interactor_GetPlayersQuery__list_Player__"]{
+class factory33["🏭 Interactor_GetPlayersQuery__list_Player__"]{
     ReadPlayersInteractor()
     PlayersMapper
 }
 
-class factory18["🏭 Interactor_GetPlayerQuery__Player_"]{
+class factory34["🏭 Interactor_GetPlayerQuery__Player_"]{
     ReadPlayerInteractor()
     PlayersMapper
 }
 
+class factory35["🏭 Interactor_int__PlayersHero_"]{
+    EquipInteractor()
+    IDProvider
+    PlayersMapper
 }
 
-factory7 <.. factory13
-factory14 <.. factory13
-factory6 <.. factory15
-factory7 <.. factory15
-factory7 <.. factory16
-factory7 <.. factory17
-factory7 <.. factory18
+class factory36["🏭 Interactor_ShopSearch__list_Good__"]{
+    SearchOffer()
+    Shop
+}
+
+class factory37["🏭 AsyncInteractor_BuyCommand__Player_"]{
+    BuyInteractor()
+    Shop
+    PlayersMapper
+    IDProvider
+    StatisticsWriter
+}
+
+class factory38["🏭 Ⓘ StatisticsWriter"]{
+    IoC.stats_writer()
+    AppConfig
+}
+
+class factory39["🏭 Ⓘ IDProvider"]{
+    IoC.auth_provider()
+    dict[str, SessionData]
+    Request
+}
+
+
+class factory41["📥 Request"]{
+ 
+}
+
+}
+
+factory7 <.. factory21
+factory30 <.. factory21
+factory39 <.. factory21
+factory23 <.. factory22
+factory5 <.. factory23
+factory12 <.. factory24
+factory25 <.. factory24
+factory11 <.. factory24
+factory12 <.. factory25
+factory29 <.. factory26
+factory24 <.. factory26
+factory25 <.. factory26
+factory29 <.. factory27
+factory7 <.. factory27
+factory24 <.. factory27
+factory25 <.. factory27
+factory23 <.. factory28
+factory5 <.. factory29
+factory6 <.. factory31
+factory7 <.. factory31
+factory7 <.. factory32
+factory24 <.. factory32
+factory39 <.. factory32
+factory7 <.. factory33
+factory7 <.. factory34
+factory39 <.. factory35
+factory7 <.. factory35
+factory10 <.. factory36
+factory10 <.. factory37
+factory7 <.. factory37
+factory39 <.. factory37
+factory38 <.. factory37
+factory12 <.. factory38
+factory11 <.. factory39
+factory41 <.. factory39
 
 </pre>
 

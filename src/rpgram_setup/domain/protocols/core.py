@@ -28,9 +28,6 @@ class ClientProto(Protocol):
     ) -> BattleId: ...
 
 
-
-
-
 class Interactor(Protocol[I, O]):
 
     @abc.abstractmethod

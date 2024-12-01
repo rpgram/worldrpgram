@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from faststream import FastStream
 from faststream.rabbit import RabbitBroker
 
+from rpgram_setup.application.configuration import AppConfig
 from rpgram_setup.application.identity import SessionDB
 from rpgram_setup.domain.exceptions import WorldException
 from rpgram_setup.infrastructure.ioc import make_container
@@ -25,7 +26,7 @@ from rpgram_setup.presentation.player import player_router
 @contextlib.asynccontextmanager
 async def lifespan(app: FastAPI):
     container = app.state.dishka_container
-    fs = create_faststream(container)
+    fs = await create_faststream(container)
     assert fs.broker
     await fs.broker.start()
     yield
@@ -50,8 +51,12 @@ def create_app() -> FastAPI:
     return app
 
 
-def create_faststream(container: AsyncContainer) -> FastStream:
-    broker = RabbitBroker()
+async def create_faststream(container: AsyncContainer) -> FastStream:
+    config = await container.get(AppConfig)
+    if config.amqp_dsn:
+        broker = RabbitBroker(config.amqp_dsn)
+    else:
+        broker = RabbitBroker()
     faststream_app = FastStream(broker)
     router = make_rabbit_router(None)
     set_dish_stream(container, faststream_app)

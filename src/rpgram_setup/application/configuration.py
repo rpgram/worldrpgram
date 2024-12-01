@@ -7,3 +7,4 @@ class AppConfig:
     session_expires_in_sec: int
     secret_key: str
     ch_dsn: str
+    amqp_dsn: str | None

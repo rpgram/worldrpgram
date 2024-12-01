@@ -9,7 +9,7 @@ factory4: "🏭 ConnectorProto_RequestData_BattleId___BattleId_"{
     "SessionManager_T_()": ""
 }
 
-factory5: "🏭 list"{
+factory5: "🏭 defaultdict"{
     shape: class
     "IoC.db()": ""
 }
@@ -24,14 +24,35 @@ factory6: "🏭 Ⓘ ClientProto"{
 factory7: "🏭 Ⓘ PlayersMapper"{
     shape: class
     "PlayerMemoryMapper()": ""
-    list
+    defaultdict
 }
 
-factory8: "📥 AppConfig"{
+factory8: "🏭 NullSuiteFactory"{
+    shape: class
+    "NullSuiteFactory()": ""
+}
+
+factory9: "🏭 CentralShopFactory"{
+    shape: class
+    "CentralShopFactory()": ""
+    NullSuiteFactory
+}
+
+factory10: "🏭 Shop"{
+    shape: class
+    "IoC.shop()": ""
+    CentralShopFactory
+}
+
+factory11: "📥 dict_str__SessionData_"{
     shape: class
 }
 
-factory9: "🏭 None"{
+factory12: "📥 AppConfig"{
+    shape: class
+}
+
+factory13: "🏭 None"{
     shape: class
     "IoC.db()": ""
 }
@@ -40,58 +61,199 @@ factory9: "🏭 None"{
 
 }
 scope1.component2.factory4 --> scope1.component2.factory6
-scope1.component2.factory8 --> scope1.component2.factory6
+scope1.component2.factory12 --> scope1.component2.factory6
 scope1.component2.factory5 --> scope1.component2.factory7
-scope10: "Scope.REQUEST"{
-component11: "Scope.REQUEST"{
-factory12: "📥 AsyncContainer"{
+scope1.component2.factory8 --> scope1.component2.factory9
+scope1.component2.factory9 --> scope1.component2.factory10
+scope14: "Scope.SESSION"{
+component15: "Scope.SESSION"{
+factory16: "📥 AsyncContainer"{
     shape: class
 }
 
-factory13: "🏭 AsyncInteractor_CreateHeroDTO__NoneType_"{
+factory17: "📥 WebSocket"{
+    shape: class
+}
+
+}
+
+}
+scope18: "Scope.REQUEST"{
+component19: "Scope.REQUEST"{
+factory20: "📥 AsyncContainer"{
+    shape: class
+}
+
+factory21: "🏭 AsyncInteractor_CreateHeroDTO__NoneType_"{
     shape: class
     "InitHeroInteractor()": ""
     PlayersMapper
     HeroFactory
+    IDProvider
 }
 
-factory14: "🏭 HeroFactory"{
+factory22: "🏭 Interactor_BattleResult__NoneType_"{
+    shape: class
+    "TakeEventInteractor()": ""
+    BattleResultMapper
+}
+
+factory23: "🏭 Ⓘ BattleResultMapper"{
+    shape: class
+    "BattleResultMemoryMapper()": ""
+    defaultdict
+}
+
+factory24: "🏭 Ⓘ RSessionIDManager"{
+    shape: class
+    "RSessionIDManagerImpl()": ""
+    AppConfig
+    Hasher
+    dict_str__SessionData_
+}
+
+factory25: "🏭 Ⓘ Hasher"{
+    shape: class
+    "HasherImpl()": ""
+    AppConfig
+}
+
+factory26: "🏭 Interactor_UserLoginDTO__User_"{
+    shape: class
+    "UserLoginInteractor()": ""
+    UserMapper
+    RSessionIDManager
+    Hasher
+}
+
+factory27: "🏭 Interactor_UserRegisterDTO__User_"{
+    shape: class
+    "UserRegisterInteractor()": ""
+    UserMapper
+    PlayersMapper
+    RSessionIDManager
+    Hasher
+}
+
+factory28: "🏭 Interactor_BattleResultsQuery__list_BattleResult__"{
+    shape: class
+    "BattleResultsInteractor()": ""
+    BattleResultMapper
+}
+
+factory29: "🏭 Ⓘ UserMapper"{
+    shape: class
+    "UserMemoryMapper()": ""
+    defaultdict
+}
+
+factory30: "🏭 HeroFactory"{
     shape: class
     "HeroFactory()": ""
 }
 
-factory15: "🏭 AsyncInteractor_StartBattleDTO__BattleId_"{
+factory31: "🏭 AsyncInteractor_StartBattleDTO__BattleId_"{
     shape: class
     "StartBattleInteractor()": ""
     ClientProto
     PlayersMapper
 }
 
-factory16: "🏭 Interactor_CreatePlayer__Player_"{
+factory32: "🏭 Interactor_CreatePlayer__Player_"{
     shape: class
     "NewPlayerInteractor()": ""
     PlayersMapper
+    RSessionIDManager
+    IDProvider
 }
 
-factory17: "🏭 Interactor_GetPlayersQuery__list_Player__"{
+factory33: "🏭 Interactor_GetPlayersQuery__list_Player__"{
     shape: class
     "ReadPlayersInteractor()": ""
     PlayersMapper
 }
 
-factory18: "🏭 Interactor_GetPlayerQuery__Player_"{
+factory34: "🏭 Interactor_GetPlayerQuery__Player_"{
     shape: class
     "ReadPlayerInteractor()": ""
     PlayersMapper
 }
 
+factory35: "🏭 Interactor_int__PlayersHero_"{
+    shape: class
+    "EquipInteractor()": ""
+    IDProvider
+    PlayersMapper
+}
+
+factory36: "🏭 Interactor_ShopSearch__list_Good__"{
+    shape: class
+    "SearchOffer()": ""
+    Shop
+}
+
+factory37: "🏭 AsyncInteractor_BuyCommand__Player_"{
+    shape: class
+    "BuyInteractor()": ""
+    Shop
+    PlayersMapper
+    IDProvider
+    StatisticsWriter
+}
+
+factory38: "🏭 Ⓘ StatisticsWriter"{
+    shape: class
+    "IoC.stats_writer()": ""
+    AppConfig
+}
+
+factory39: "🏭 Ⓘ IDProvider"{
+    shape: class
+    "IoC.auth_provider()": ""
+    dict_str__SessionData_
+    Request
+}
+
+
+factory41: "📥 Request"{
+    shape: class
 }
 
 }
-scope1.component2.factory7 --> scope10.component11.factory13
-scope10.component11.factory14 --> scope10.component11.factory13
-scope1.component2.factory6 --> scope10.component11.factory15
-scope1.component2.factory7 --> scope10.component11.factory15
-scope1.component2.factory7 --> scope10.component11.factory16
-scope1.component2.factory7 --> scope10.component11.factory17
-scope1.component2.factory7 --> scope10.component11.factory18
+
+}
+scope1.component2.factory7 --> scope18.component19.factory21
+scope18.component19.factory30 --> scope18.component19.factory21
+scope18.component19.factory39 --> scope18.component19.factory21
+scope18.component19.factory23 --> scope18.component19.factory22
+scope1.component2.factory5 --> scope18.component19.factory23
+scope1.component2.factory12 --> scope18.component19.factory24
+scope18.component19.factory25 --> scope18.component19.factory24
+scope1.component2.factory11 --> scope18.component19.factory24
+scope1.component2.factory12 --> scope18.component19.factory25
+scope18.component19.factory29 --> scope18.component19.factory26
+scope18.component19.factory24 --> scope18.component19.factory26
+scope18.component19.factory25 --> scope18.component19.factory26
+scope18.component19.factory29 --> scope18.component19.factory27
+scope1.component2.factory7 --> scope18.component19.factory27
+scope18.component19.factory24 --> scope18.component19.factory27
+scope18.component19.factory25 --> scope18.component19.factory27
+scope18.component19.factory23 --> scope18.component19.factory28
+scope1.component2.factory5 --> scope18.component19.factory29
+scope1.component2.factory6 --> scope18.component19.factory31
+scope1.component2.factory7 --> scope18.component19.factory31
+scope1.component2.factory7 --> scope18.component19.factory32
+scope18.component19.factory24 --> scope18.component19.factory32
+scope18.component19.factory39 --> scope18.component19.factory32
+scope1.component2.factory7 --> scope18.component19.factory33
+scope1.component2.factory7 --> scope18.component19.factory34
+scope18.component19.factory39 --> scope18.component19.factory35
+scope1.component2.factory7 --> scope18.component19.factory35
+scope1.component2.factory10 --> scope18.component19.factory36
+scope1.component2.factory10 --> scope18.component19.factory37
+scope1.component2.factory7 --> scope18.component19.factory37
+scope18.component19.factory39 --> scope18.component19.factory37
+scope18.component19.factory38 --> scope18.component19.factory37
+scope1.component2.factory12 --> scope18.component19.factory38
+scope1.component2.factory11 --> scope18.component19.factory39
+scope18.component19.factory41 --> scope18.component19.factory39

@@ -1,0 +1,34 @@
+sources:
+  rpgram_setup_source:
+    type: docker_logs
+    docker_host: /var/run/docker.sock
+    include_containers:
+      - setup_app
+
+transforms:
+  json:
+    type: remap
+    inputs:
+      - rpgram_setup_source
+    drop_on_error: true
+    source: ".message = object!(parse_json(.message) ?? {})"
+
+
+sinks:
+  rpgram_setup_sink:
+    type: loki
+    inputs:
+      - rpgram_setup_source
+    endpoint: http://loki:3100
+    path: /loki/api/v1/push
+    labels:
+      source: vector
+    encoding:
+      codec: text
+
+  console:
+    type: console
+    inputs:
+      - rpgram_setup_source
+    encoding:
+        codec: text

@@ -20,9 +20,15 @@ class ClickHouseWriter(StatisticsWriter):
                 `good_name`,
                 `quantity`,
                 `buy`
-            ) VALUES""", [
-                {"timestamp": current_ts, "token_units":event.item.price_per_unit.units, "id":uuid.uuid4(),
-                 "good_name": event.item.name, "quantity": event.quantity, "buy": event.purchase}
-            ]
+            ) VALUES""",
+            [
+                {
+                    "timestamp": current_ts,
+                    "token_units": event.item.price_per_unit.units,
+                    "id": uuid.uuid4(),
+                    "good_name": event.item.name,
+                    "quantity": event.quantity,
+                    "buy": event.purchase,
+                }
+            ],
         )
-

@@ -104,7 +104,7 @@ class IoC(FastapiProvider):
 
     id_manager = provide(RSessionIDManagerImpl, provides=RSessionIDManager)
 
-    hasher = provide(HasherImpl, provides=Hasher)
+    hasher = provide(HasherImpl, provides=Hasher, scope=Scope.APP)
 
     user_login = provide(UserLoginInteractor, provides=Interactor[UserLoginDTO, User])
 
@@ -155,7 +155,9 @@ class IoC(FastapiProvider):
     shop_offer_interactor = provide(
         SearchOffer, provides=Interactor[ShopSearch, list[Good]]
     )
-    buy_interactor = provide(BuyInteractor, provides=AsyncInteractor[BuyCommand, Player])
+    buy_interactor = provide(
+        BuyInteractor, provides=AsyncInteractor[BuyCommand, Player]
+    )
 
     items_factory = provide(NullSuiteFactory, scope=Scope.APP)
     central_factory = provide(CentralShopFactory, scope=Scope.APP)

@@ -1,0 +1,8 @@
+adaptix
+dishka
+asynch
+uvicorn
+fastapi
+faststream
+aio-pika
+aiohttp

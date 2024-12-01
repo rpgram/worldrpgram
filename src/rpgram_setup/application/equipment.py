@@ -46,7 +46,13 @@ class BuyCommand:
 
 
 class BuyInteractor(AsyncInteractor[BuyCommand, Player]):
-    def __init__(self, shop: Shop, players: PlayersMapper, idp: IDProvider, stats_writer: StatisticsWriter):
+    def __init__(
+        self,
+        shop: Shop,
+        players: PlayersMapper,
+        idp: IDProvider,
+        stats_writer: StatisticsWriter,
+    ):
         self.stats_writer = stats_writer
         self.idp = idp
         self.shop = shop
@@ -65,6 +71,8 @@ class BuyInteractor(AsyncInteractor[BuyCommand, Player]):
         if player is None:
             raise ActionFailed
         player.buy(items[0], in_dto.quantity)
-        trade_event = TradeEvent(True, items[0], in_dto.quantity, self.shop.get(items[0], in_dto.quantity))
+        trade_event = TradeEvent(
+            True, items[0], in_dto.quantity, self.shop.get(items[0], in_dto.quantity)
+        )
         await self.stats_writer.trade(trade_event)
         return player
