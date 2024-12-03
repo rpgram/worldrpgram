@@ -3,6 +3,13 @@ import json
 
 from asynch import connect
 
+from clickhouse import trade, results
+
+# Migrations
+
+TRADE = 'trade'
+RESULTS = 'results'
+
 
 async def main():
     with open('state.json') as sf:
@@ -13,18 +20,12 @@ async def main():
     try:
         async with connection.cursor() as cursor:
             await cursor.execute('CREATE DATABASE IF NOT EXISTS rpgram')
-            if 'trade' not in current_state_data:
-                await cursor.execute("""CREATE TABLE IF NOT EXISTS rpgram.trade
-            (
-                `id`              UUID,
-                `timestamp`       Float32,
-                `token_units`     UInt32,
-                `good_name`       String,
-                `quantity`        UInt16,
-                `buy`             Bool
-            )    PRIMARY KEY id
-            """)
-            current_state_data.append('trade')
+            if TRADE not in current_state_data:
+                await cursor.execute(trade.UPGRADE)
+                current_state_data.append(TRADE)
+            if RESULTS not in current_state_data:
+                await cursor.execute(results.UPGRADE)
+                current_state_data.append(RESULTS)
     finally:
         with open('state.json', 'w') as sf:
             json.dump(current_state_data, sf)
