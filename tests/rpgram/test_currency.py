@@ -1,17 +1,8 @@
 import pytest
 
-from rpgram_setup.domain.economics import Balance, Token
+from rpgram_setup.domain.economics import Token
 from rpgram_setup.domain.exceptions import WorldException
-
-
-@pytest.fixture
-def empty_balance():
-    return Balance({})
-
-
-@pytest.fixture
-def start_balance():
-    return Balance({Token: Token(299)})
+from .fixtures.currency import empty_balance, start_balance
 
 
 def test_empty(empty_balance):
