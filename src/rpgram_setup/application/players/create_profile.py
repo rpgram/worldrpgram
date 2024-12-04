@@ -27,5 +27,5 @@ class NewPlayerInteractor(Interactor[CreatePlayer, Player]):
         player = self._player_mapper.get_player(GetPlayerQuery(player_id, None))
         if player is None:
             raise ActionFailed
-        self._idm.login(player_id)
+        self._idm.assign_session(player_id)
         return player

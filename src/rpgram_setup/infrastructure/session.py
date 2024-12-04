@@ -1,6 +1,4 @@
 import datetime
-import hashlib
-import hmac
 
 from rpgram_setup.application.configuration import AppConfig
 from rpgram_setup.application.exceptions import NotAuthenticated
@@ -43,7 +41,7 @@ class RSessionIDManagerImpl(RSessionIDManager):
         data = f"{player_id}%{expire_at.isoformat()}"
         return self.hasher.hash(data)
 
-    def login(self, player_id: PlayerId):
+    def assign_session(self, player_id: PlayerId):
         expire_at = (
             datetime.datetime.utcnow()
             + datetime.timedelta(seconds=self.expires_interval_sec)
@@ -55,13 +53,13 @@ class RSessionIDManagerImpl(RSessionIDManager):
 
 class IDProviderImpl(IDProvider):
 
-    def authenticated_only(self):
-        if self.get_payer_identity() is None:
-            raise NotAuthenticated
-
     def __init__(self, cookie: str | None, db: SessionDB):
         self.db = db
         self.cookie = cookie
+
+    def authenticated_only(self):
+        if self.get_payer_identity() is None:
+            raise NotAuthenticated
 
     def get_payer_identity(self) -> PlayerId | None:
         if not self.cookie:

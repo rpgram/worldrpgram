@@ -52,7 +52,7 @@ class UserLoginInteractor(Interactor[UserLoginDTO, User]):
             raise NotAuthenticated
         if not user.check_password(in_dto.password, self.hasher.hash):
             raise NotAuthenticated
-        self.idm.login(user.player_id)
+        self.idm.assign_session(user.player_id)
         return user
 
 
@@ -72,11 +72,11 @@ class UserRegisterInteractor(Interactor[UserRegisterDTO, User]):
     def execute(self, in_dto: UserRegisterDTO) -> User:
         conflict = self.user_mapper.get_user(in_dto.login)
         if conflict is not None:
-            raise NotUnique("login", in_dto.login)
+            raise NotUnique("assign_session", in_dto.login)
         player_id = self.players_mapper.add_player(CreatePlayer(in_dto.username))
         password_hash = self.hasher.hash(in_dto.password)
         user = User(player_id, in_dto.login, password_hash)
         self.user_mapper.insert_user(user)
         logging.info("User %s for pid %s created", in_dto.login, player_id)
-        self.idm.login(player_id)
+        self.idm.assign_session(player_id)
         return user
