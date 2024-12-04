@@ -1,7 +1,6 @@
 from dishka import AsyncContainer
 
-from rpgram_setup.domain.player import Player
-from rpgram_setup.domain.protocols.core import Interactor, I, O
+from rpgram_setup.domain.protocols.core import Interactor
 from rpgram_setup.domain.protocols.data.players import PlayersMapper, GetPlayersQuery
 
 

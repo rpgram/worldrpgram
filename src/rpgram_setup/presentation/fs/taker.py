@@ -3,7 +3,7 @@ from dishka.integrations.faststream import inject
 from faststream.rabbit import RabbitRouter
 
 from rpgram_setup.domain.battle import BattleResult
-from rpgram_setup.domain.protocols.core import Interactor
+from rpgram_setup.domain.protocols.core import Interactor, AsyncInteractor
 
 
 def make_rabbit_router(q_dsn: str | None):
@@ -20,6 +20,6 @@ def make_rabbit_router(q_dsn: str | None):
 
 @inject
 async def battle_event(
-    event: BattleResult, interactor: FromDishka[Interactor[BattleResult, None]]
+    event: BattleResult, interactor: FromDishka[AsyncInteractor[BattleResult, None]]
 ):
-    interactor.execute(event)
+    await interactor.execute(event)

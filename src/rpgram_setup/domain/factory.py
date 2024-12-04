@@ -10,12 +10,12 @@ from rpgram_setup.domain.vos.in_game import Hero, HeroStats, HeroClass, Good, Eq
 class HeroFactory:
 
     def create_warrior(self) -> Hero:
-        hero_stats = HeroStats(100, 13, 25)
+        hero_stats = HeroStats(10, 13, 25)
         per_level = HeroStats(10, 1, 2)
         return Hero(hero_stats, per_level, HeroClass.WARRIOR, None)
 
     def create_sorcerer(self) -> Hero:
-        hero_stats = HeroStats(130, 5, 20)
+        hero_stats = HeroStats(25, 5, 20)
         per_level = HeroStats(10, 1, 3)
         return Hero(hero_stats, per_level, HeroClass.SORCERER, None)
 

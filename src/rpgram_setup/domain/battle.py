@@ -15,7 +15,8 @@ class Outcome(int, Enum):
 class RelatedBattleResult:
     player_id: PlayerId
     is_hero: bool
-    outcome: Outcome
+    win: bool
+    # outcome: Outcome
 
 
 @dataclass

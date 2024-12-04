@@ -2,6 +2,7 @@ import abc
 import dataclasses
 from typing import Protocol, TypeVar, Generic
 
+from rpgram_setup.domain.battle import BattleResult
 from rpgram_setup.domain.economics import Money
 from rpgram_setup.domain.vos.in_game import Good
 
@@ -18,3 +19,6 @@ class StatisticsWriter(Protocol):
 
     @abc.abstractmethod
     async def trade(self, event: TradeEvent) -> None: ...
+
+    @abc.abstractmethod
+    async def save_battle_result(self, battle_result: BattleResult) -> None: ...

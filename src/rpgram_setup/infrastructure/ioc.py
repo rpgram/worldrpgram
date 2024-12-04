@@ -96,7 +96,9 @@ class IoC(FastapiProvider):
         InitHeroInteractor, provides=AsyncInteractor[CreateHeroDTO, None]
     )
 
-    save_result = provide(TakeEventInteractor, provides=Interactor[BattleResult, None])
+    save_result = provide(
+        TakeEventInteractor, provides=AsyncInteractor[BattleResult, None]
+    )
 
     results_mapper = provide(BattleResultMemoryMapper, provides=BattleResultMapper)
 

@@ -8,6 +8,6 @@ def read_config():
         battle_url=os.environ["BATTLE_URL"],
         session_expires_in_sec=360 * 60,
         secret_key="secret_key_for_app",
-        ch_dsn=os.environ['CH_DSN'],
-        amqp_dsn=os.environ.get('AMQP_DSN')
+        ch_dsn=os.environ["CH_DSN"],
+        amqp_dsn=os.environ.get("AMQP_DSN"),
     )

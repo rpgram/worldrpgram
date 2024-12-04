@@ -3,6 +3,7 @@ import uuid
 
 from asynch import Cursor
 
+from rpgram_setup.domain.battle import BattleResult, Outcome
 from rpgram_setup.domain.protocols.data.statisctics import StatisticsWriter, TradeEvent
 
 
@@ -20,8 +21,7 @@ class ClickHouseWriter(StatisticsWriter):
                 `good_name`,
                 `quantity`,
                 `buy`
-            ) VALUES""",
-            [
+            ) VALUES (generateUUIDv4(), %(timestamp)s, %(token_units)s, %(good_name)s, %(quantity)s, %(buy)s)""",
                 {
                     "timestamp": current_ts,
                     "token_units": event.item.price_per_unit.units,
@@ -29,6 +29,38 @@ class ClickHouseWriter(StatisticsWriter):
                     "good_name": event.item.name,
                     "quantity": event.quantity,
                     "buy": event.purchase,
+                }
+            ,
+        )
+
+    async def save_battle_result(self, battle_result: BattleResult) -> None:
+        current_ts = time.time()
+        player_wins = battle_result.hero_result.win
+        await self._cursor.execute(
+            """INSERT INTO battle_results (
+                battle_id,
+                start_timestamp,
+                end_timestamp,
+                opponent_id,
+                player_id,
+                timeout,
+                winner_id
+            ) VALUES
+            """,
+            [
+                {
+                    "battle_id": battle_result.battle_id,
+                    "start_timestamp": 0,
+                    "end_timestamp": current_ts,
+                    "opponent_id": battle_result.opponent_result.player_id,
+                    "player_id": battle_result.hero_result.player_id,
+                    "timeout": player_wins
+                    and battle_result.opponent_result.win,
+                    "winner_id": (
+                        battle_result.hero_result.player_id
+                        if player_wins
+                        else battle_result.opponent_result.player_id
+                    ),
                 }
             ],
         )
