@@ -1,4 +1,5 @@
 import datetime
+import logging
 
 from rpgram_setup.application.configuration import AppConfig
 from rpgram_setup.application.exceptions import NotAuthenticated
@@ -11,6 +12,9 @@ from rpgram_setup.application.identity import (
 )
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user_types import PlayerId
+from rpgram_setup.infrastructure.logging import get_logger
+
+logger = get_logger(__name__)
 
 
 class RSessionIDManagerImpl(RSessionIDManager):
@@ -49,6 +53,7 @@ class RSessionIDManagerImpl(RSessionIDManager):
         new_session = self._encode(player_id, expire_at)
         self.db[new_session] = SessionData(expire_at, player_id)
         self.new_session = NewSessionData(new_session, expire_at)
+        logger.debug("Session assigned to  %s", player_id, extra={"scope": "iam"})
 
 
 class IDProviderImpl(IDProvider):

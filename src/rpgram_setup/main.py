@@ -10,6 +10,7 @@ from rpgram_setup.application.configuration import AppConfig
 from rpgram_setup.application.identity import SessionDB
 from rpgram_setup.domain.exceptions import WorldException
 from rpgram_setup.infrastructure.ioc import make_container
+from rpgram_setup.infrastructure.logging import configure_logs
 from rpgram_setup.presentation.api.auth import user_router
 from rpgram_setup.presentation.api.equip import equip_router
 from rpgram_setup.presentation.api.errors import exceptions_handler
@@ -25,6 +26,7 @@ from rpgram_setup.presentation.player import player_router
 
 @contextlib.asynccontextmanager
 async def lifespan(app: FastAPI):
+    configure_logs()
     container = app.state.dishka_container
     fs = await create_faststream(container)
     assert fs.broker

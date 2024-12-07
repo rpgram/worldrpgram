@@ -1,5 +1,4 @@
 import dataclasses
-import logging
 
 from rpgram_setup.application.exceptions import NotAuthenticated
 from rpgram_setup.application.identity import RSessionIDManager
@@ -12,7 +11,9 @@ from rpgram_setup.domain.protocols.data.players import (
 )
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user import User
+from rpgram_setup.infrastructure.logging import get_logger
 
+logger = get_logger(__name__)
 
 @dataclasses.dataclass
 class UserLoginDTO:
@@ -77,6 +78,6 @@ class UserRegisterInteractor(Interactor[UserRegisterDTO, User]):
         password_hash = self.hasher.hash(in_dto.password)
         user = User(player_id, in_dto.login, password_hash)
         self.user_mapper.insert_user(user)
-        logging.info("User %s for pid %s created", in_dto.login, player_id)
+        logger.info("User %s for pid %s created", in_dto.login, player_id, extra={"scope": "iam"})
         self.idm.assign_session(player_id)
         return user

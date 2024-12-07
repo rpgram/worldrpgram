@@ -1,5 +1,6 @@
 from dishka import FromDishka
 from dishka.integrations.faststream import inject
+from faststream import BaseMiddleware
 from faststream.rabbit import RabbitRouter
 
 from rpgram_setup.domain.battle import BattleResult

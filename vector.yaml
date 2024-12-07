@@ -11,24 +11,25 @@ transforms:
     inputs:
       - rpgram_setup_source
     drop_on_error: true
-    source: ".message = object!(parse_json(.message) ?? {})"
+    source: ".ts = now();.message = object!(parse_json(.message) ?? {})"
 
 
 sinks:
   rpgram_setup_sink:
     type: loki
     inputs:
-      - rpgram_setup_source
+      - json
     endpoint: http://loki:3100
     path: /loki/api/v1/push
     labels:
       source: vector
+      scope: "{{ message.scope }}"
     encoding:
-      codec: text
+      codec: json
 
   console:
     type: console
     inputs:
-      - rpgram_setup_source
+      - json
     encoding:
-        codec: text
+        codec: json
