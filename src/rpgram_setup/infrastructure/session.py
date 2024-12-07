@@ -12,9 +12,8 @@ from rpgram_setup.application.identity import (
 )
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user_types import PlayerId
-from rpgram_setup.infrastructure.logging import get_logger
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class RSessionIDManagerImpl(RSessionIDManager):

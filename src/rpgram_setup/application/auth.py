@@ -1,4 +1,5 @@
 import dataclasses
+import logging
 
 from rpgram_setup.application.exceptions import NotAuthenticated
 from rpgram_setup.application.identity import RSessionIDManager
@@ -11,9 +12,8 @@ from rpgram_setup.domain.protocols.data.players import (
 )
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user import User
-from rpgram_setup.infrastructure.logging import get_logger
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 @dataclasses.dataclass
 class UserLoginDTO:
