@@ -133,7 +133,7 @@ class IoC(FastapiProvider):
         source=BattleAPIClient, provides=ClientProto, scope=Scope.APP
     )
 
-    keys_gateway = provide(BattleKeysGateway)
+    keys_gateway = provide(BattleKeysGateway, scope=Scope.APP)
 
     get_key_interactor = provide(GetKeyInteractor)
 

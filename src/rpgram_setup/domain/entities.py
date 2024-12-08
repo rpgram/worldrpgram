@@ -2,7 +2,7 @@ import abc
 import dataclasses
 
 from rpgram_setup.domain.economics import Money
-from rpgram_setup.domain.exceptions import ActionFailed
+from rpgram_setup.domain.exceptions import ActionFailedError
 from rpgram_setup.domain.vos.in_game import HeroClass, Good, Equipment
 from rpgram_setup.domain.user_types import MinMax, MinMaxMoney
 
@@ -59,7 +59,7 @@ class CentralShop(Shop):
             if g.name == item.name:
                 break
         else:
-            raise ActionFailed
+            raise ActionFailedError
 
     def put(self, item: Good, quantity: int) -> Money:
         self._check_availability(item)

@@ -5,7 +5,7 @@ from rpgram_setup.domain.consts import HERO_MAX_LVL, MAX_ITEM_PRICE
 from rpgram_setup.domain.economics import Token
 from rpgram_setup.domain.entities import Shop
 from rpgram_setup.domain.exceptions import (
-    ActionFailed,
+    ActionFailedError,
     SomethingIsMissingError,
     NotUniqueError,
 )
@@ -28,11 +28,11 @@ class EquipInteractor(Interactor[int, PlayersHero]):
             GetPlayerQuery(self.idp.get_payer_identity(), None)
         )
         if player is None:
-            raise ActionFailed
+            raise ActionFailedError
         for slot in player.inventory:
             if slot.slot_id == in_dto:
                 if not isinstance(slot.item, Equipment):
-                    raise ActionFailed
+                    raise ActionFailedError
                 break
         else:
             raise SomethingIsMissingError("slot")
@@ -73,7 +73,7 @@ class BuyInteractor(AsyncInteractor[BuyCommand, Player]):
             GetPlayerQuery(self.idp.get_payer_identity(), None)
         )
         if player is None:
-            raise ActionFailed
+            raise ActionFailedError
         player.buy(items[0], in_dto.quantity)
         trade_event = TradeEvent(
             True, items[0], in_dto.quantity, self.shop.get(items[0], in_dto.quantity)

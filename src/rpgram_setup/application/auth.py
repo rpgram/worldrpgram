@@ -6,7 +6,7 @@ from rpgram_setup.application.identity import RSessionIDManager, IDProvider
 from rpgram_setup.domain.exceptions import (
     NotUniqueError,
     ValidationError,
-    SomethingIsMissing,
+    SomethingIsMissingError,
 )
 from rpgram_setup.domain.protocols.core import Interactor, I, O
 from rpgram_setup.domain.protocols.data.battle import UserMapper
@@ -56,10 +56,13 @@ class UserLoginInteractor(Interactor[UserLoginDTO, User]):
     def execute(self, in_dto: UserLoginDTO) -> User:
         user = self.user_getter.get_user(in_dto.login)
         if user is None:
+            logger.debug("Wrong login.")
             raise NotAuthenticatedError
         if not user.check_password(in_dto.password, self.hasher.hash):
+            logger.debug("Wrong password.")
             raise NotAuthenticatedError
         self.idm.assign_session(user.player_id)
+        logger.info("Logged as %s", user.login, {"scope":"iam"})
         return user
 
 
@@ -103,5 +106,5 @@ class GetKeyInteractor(Interactor[None, str]):
         self.idp.authenticated_only()
         key = self.keys.get_key(self.idp.get_payer_identity())
         if key is None:
-            raise SomethingIsMissing("key")
+            raise SomethingIsMissingError("key")
         return key

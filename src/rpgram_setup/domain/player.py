@@ -2,7 +2,7 @@ import dataclasses
 
 from rpgram_setup.domain.economics import Balance
 from rpgram_setup.domain.entities import Slot
-from rpgram_setup.domain.exceptions import ActionFailed
+from rpgram_setup.domain.exceptions import ActionFailedError
 from rpgram_setup.domain.heroes import PlayersHero
 from rpgram_setup.domain.vos.in_game import Good
 from rpgram_setup.domain.user_types import PlayerId
@@ -36,7 +36,7 @@ class Player:
             if s.slot_id != slot_id:
                 continue
             if quantity > s.quantity:
-                raise ActionFailed
+                raise ActionFailedError
             if quantity == s.quantity:
                 self.inventory.remove(s)
             else:

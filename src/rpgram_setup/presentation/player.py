@@ -9,7 +9,7 @@ from rpgram_setup.domain.user_types import PlayerId
 from rpgram_setup.presentation.converters import convert_player_to_dto
 from rpgram_setup.presentation.models import PlayerDTO
 from rpgram_setup.application.players.create_profile import NewPlayerInteractor
-from rpgram_setup.domain.exceptions import NotUniqueError, ActionFailed
+from rpgram_setup.domain.exceptions import NotUniqueError, ActionFailedError
 from rpgram_setup.domain.protocols.data.players import (
     CreatePlayer,
     GetPlayersQuery,
@@ -35,7 +35,7 @@ async def create_user(
         return convert_player_to_dto(interactor.execute(create_player))
     except NotUniqueError as e:
         raise HTTPException(status.HTTP_409_CONFLICT, str(e))
-    except ActionFailed:
+    except ActionFailedError:
         raise HTTPException(
             status.HTTP_500_INTERNAL_SERVER_ERROR, "Some inner problems I guess."
         )
@@ -69,5 +69,5 @@ async def get_player(
         return convert_player_to_dto(
             interactor.execute(GetPlayerQuery(player_id, username))
         )
-    except ActionFailed:
+    except ActionFailedError:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "No such player.")

@@ -1,4 +1,5 @@
 import dataclasses
+import logging
 
 from rpgram_setup.domain.exceptions import SomethingIsMissingError
 from rpgram_setup.domain.vos.in_game import HeroClass
@@ -9,7 +10,8 @@ from rpgram_setup.domain.protocols.core import (
 from rpgram_setup.domain.protocols.data.players import PlayersMapper, GetPlayerQuery
 from rpgram_setup.domain.user_types import BattleId, PlayerId
 from rpgram_setup.infrastructure.data.gateways import BattleKeysGateway
-from rpgram_setup.infrastructure.models import BattleStarted
+
+logger = logging.getLogger(__name__)
 
 
 @dataclasses.dataclass
@@ -56,4 +58,5 @@ class StartBattleInteractor(AsyncInteractor[StartBattleDTO, BattleId]):
         )
         self.battle_keys.add_key(player.player_id, battle_started.player_key)
         self.battle_keys.add_key(opponent.player_id, battle_started.opponent_key)
+        logger.info("Keys for %s and %s saved", player.player_id, opponent.player_id, extra={"scope":"iam"})
         return battle_started.battle_id

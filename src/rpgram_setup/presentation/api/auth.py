@@ -3,10 +3,11 @@ from dishka.integrations.fastapi import inject
 from fastapi import APIRouter, HTTPException
 from starlette import status
 
-from rpgram_setup.application.auth import UserRegisterDTO, GetKeyInteractor
+from rpgram_setup.application.auth import UserRegisterDTO, GetKeyInteractor, UserLoginDTO
 from rpgram_setup.domain.exceptions import NotUniqueError
 from rpgram_setup.domain.protocols.core import Interactor
 from rpgram_setup.domain.user import User
+from rpgram_setup.domain.user_types import PlayerId
 from rpgram_setup.presentation.models import UserDTO
 
 user_router = APIRouter(prefix="/user")
@@ -28,3 +29,9 @@ async def register_user(
 @inject
 async def get_key(interactor: FromDishka[GetKeyInteractor]) -> str:
     return interactor.execute(None)
+
+
+@user_router.post("/login")
+@inject
+async def login_controller(login: str, password: str, interactor: FromDishka[Interactor[UserLoginDTO, User]]) -> PlayerId:
+    return interactor.execute(UserLoginDTO(login, password)).player_id

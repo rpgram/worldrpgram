@@ -29,7 +29,7 @@ class NotUniqueError(WorldError):
         return f"""{self.subject} is not unique({self.value} already exists)."""
 
 
-class ActionFailed(WorldError):
+class ActionFailedError(WorldError):
 
     def __str__(self):
         return """Unbelievable happens."""

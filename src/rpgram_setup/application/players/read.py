@@ -1,4 +1,4 @@
-from rpgram_setup.domain.exceptions import ActionFailed
+from rpgram_setup.domain.exceptions import ActionFailedError
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.core import Interactor, I, O
 from rpgram_setup.domain.protocols.data.players import (
@@ -23,5 +23,5 @@ class ReadPlayerInteractor(Interactor[GetPlayerQuery, Player]):
     def execute(self, in_dto: GetPlayerQuery) -> Player:
         player = self.mapper.get_player(in_dto)
         if player is None:
-            raise ActionFailed
+            raise ActionFailedError
         return player
