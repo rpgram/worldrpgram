@@ -1,8 +1,8 @@
 version: "3"
 
-#networks:
-#  clickhouse:
-#    external: true
+networks:
+  rpgram:
+    external: true
 
 
 services:
@@ -15,10 +15,11 @@ services:
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:8001/docs || exit 1
       interval: 5s
+    networks:
+      - rpgram
 
   vector:
     image: timberio/vector:0.42.0-debian
-#    user: root
     volumes:
       - ./vector.yaml:/etc/vector/vector.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock
@@ -27,6 +28,8 @@ services:
         condition: service_healthy
       loki:
         condition: service_healthy
+    networks:
+      - rpgram
 
   loki:
     image: grafana/loki:3.0.0
@@ -45,6 +48,8 @@ services:
       interval: 10s
       timeout: 1s
       retries: 12
+    networks:
+      - rpgram
 
 
 volumes:
