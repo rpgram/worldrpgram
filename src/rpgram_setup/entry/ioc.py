@@ -21,6 +21,10 @@ from rpgram_setup.application.auth import (
     GetKeyInteractor,
 )
 from rpgram_setup.application.battle.results import BattleResultsInteractor
+from rpgram_setup.application.battle.wait import (
+    WaitForOpponentInteractor,
+    WaitingBattleDTOReader,
+)
 from rpgram_setup.application.equipment import (
     EquipInteractor,
     BuyCommand,
@@ -61,7 +65,11 @@ from rpgram_setup.domain.protocols.core import (
     AsyncInteractor,
     Interactor,
 )
-from rpgram_setup.domain.protocols.data.battle import BattleResultMapper, UserMapper
+from rpgram_setup.domain.protocols.data.battle import (
+    BattleResultMapper,
+    UserMapper,
+    WaitingBattleGatewayProto,
+)
 from rpgram_setup.domain.protocols.data.players import (
     PlayersMapper,
     CreatePlayer,
@@ -72,11 +80,14 @@ from rpgram_setup.domain.protocols.data.statisctics import StatisticsWriter
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user import User
 from rpgram_setup.domain.user_types import BattleId, DBS
-from rpgram_setup.domain.vos.in_game import Good
+from rpgram_setup.domain.vos.in_game import Good, HeroClass
 from rpgram_setup.infrastructure.api import SessionManager, BattleAPIClient
 from rpgram_setup.infrastructure.config import read_config
 from rpgram_setup.infrastructure.data.clickhouse_stats import ClickHouseWriter
-from rpgram_setup.infrastructure.data.gateways import BattleKeysGateway
+from rpgram_setup.infrastructure.data.gateways import (
+    BattleKeysGateway,
+    WaitingBattleGateway,
+)
 from rpgram_setup.infrastructure.general import HasherImpl
 from rpgram_setup.infrastructure.data.mappers import (
     PlayerMemoryMapper,
@@ -169,6 +180,14 @@ class IoC(FastapiProvider):
 
     items_factory = provide(NullSuiteFactory, scope=Scope.APP)
     central_factory = provide(CentralShopFactory, scope=Scope.APP)
+    waiting_create = provide(
+        WaitForOpponentInteractor, provides=Interactor[HeroClass, None]
+    )
+
+    waiters = provide(
+        WaitingBattleGateway,
+        provides=AnyOf[WaitingBattleDTOReader, WaitingBattleGatewayProto],
+    )
 
     @provide
     async def stats_writer(self, config: AppConfig) -> AsyncIterable[StatisticsWriter]:

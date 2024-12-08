@@ -2,7 +2,7 @@ import abc
 import dataclasses
 from typing import Any, Protocol
 
-from rpgram_setup.domain.battle import BattleResult
+from rpgram_setup.domain.battle import BattleResult, WaitingBattle
 from rpgram_setup.domain.user import User
 from rpgram_setup.domain.user_types import PlayerId, BattleId
 
@@ -29,3 +29,18 @@ class UserMapper(Protocol):
 
     @abc.abstractmethod
     def insert_user(self, user: User): ...
+
+
+class WaitingBattleGatewayProto(Protocol):
+
+    @abc.abstractmethod
+    def insert_battle(self, waiting_battle: WaitingBattle): ...
+
+    @abc.abstractmethod
+    def get_battles(self) -> list[WaitingBattle]: ...
+
+    @abc.abstractmethod
+    def get_by_player(self, player_id: PlayerId) -> WaitingBattle | None: ...
+
+    @abc.abstractmethod
+    def remove_battle(self, player_id: PlayerId): ...

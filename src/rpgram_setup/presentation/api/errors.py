@@ -6,9 +6,15 @@ from starlette import status
 from starlette.requests import Request
 
 from rpgram_setup.application.exceptions import NotAuthenticatedError
-from rpgram_setup.domain.exceptions import WorldError, ValidationError, ActionFailedError, SomethingIsMissingError
+from rpgram_setup.domain.exceptions import (
+    WorldError,
+    ValidationError,
+    ActionFailedError,
+    SomethingIsMissingError,
+)
 
 logger = logging.getLogger(__name__)
+
 
 async def exceptions_handler(request: Request, exc: WorldError):
     et = type(exc)

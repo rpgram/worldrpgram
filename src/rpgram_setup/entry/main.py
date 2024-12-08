@@ -15,7 +15,7 @@ from rpgram_setup.presentation.api.auth import user_router
 from rpgram_setup.presentation.api.equip import equip_router
 from rpgram_setup.presentation.api.errors import exceptions_handler
 from rpgram_setup.presentation.api.results import results_router
-from rpgram_setup.presentation.battle import battle_router
+from rpgram_setup.presentation.api.battle import battle_router
 from rpgram_setup.presentation.fs.taker import make_rabbit_router
 from rpgram_setup.presentation.hero import hero_router
 from dishka.integrations.faststream import setup_dishka as set_dish_stream

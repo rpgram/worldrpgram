@@ -1,5 +1,5 @@
 from rpgram_setup.domain.battle import BattleResult
-from rpgram_setup.domain.protocols.core import Interactor, I, O, AsyncInteractor
+from rpgram_setup.domain.protocols.core import AsyncInteractor
 from rpgram_setup.domain.protocols.data.battle import BattleResultMapper
 from rpgram_setup.domain.protocols.data.statisctics import StatisticsWriter
 

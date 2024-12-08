@@ -62,7 +62,7 @@ class UserLoginInteractor(Interactor[UserLoginDTO, User]):
             logger.debug("Wrong password.")
             raise NotAuthenticatedError
         self.idm.assign_session(user.player_id)
-        logger.info("Logged as %s", user.login, {"scope":"iam"})
+        logger.warning("Logged as %s", user.login, {"scope": "iam"})
         return user
 
 
@@ -88,7 +88,7 @@ class UserRegisterInteractor(Interactor[UserRegisterDTO, User]):
         user = User(player_id, in_dto.login, password_hash)
         self.user_mapper.insert_user(user)
         logger.info(
-            "User %s for pid %s created",
+            "User %s for player_id %s created",
             in_dto.login,
             player_id,
             extra={"scope": "iam"},
