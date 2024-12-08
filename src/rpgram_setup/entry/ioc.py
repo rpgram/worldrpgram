@@ -31,9 +31,8 @@ from rpgram_setup.application.equipment import (
     BuyInteractor,
 )
 from rpgram_setup.application.identity import (
-    RSessionIDManager,
     SessionDB,
-    IDProvider,
+    IDProvider, SessionManager,
 )
 from rpgram_setup.application.queries import BattleResultsQuery
 from rpgram_setup.application.battle.take_event import TakeEventInteractor
@@ -81,8 +80,9 @@ from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user import User
 from rpgram_setup.domain.user_types import BattleId, DBS
 from rpgram_setup.domain.vos.in_game import Good, HeroClass
-from rpgram_setup.infrastructure.api import SessionManager, BattleAPIClient
+from rpgram_setup.infrastructure.api import BattleAPIClient, HTTPSessionManager
 from rpgram_setup.infrastructure.config import read_config
+from rpgram_setup.infrastructure.consts import SESSION_NAME
 from rpgram_setup.infrastructure.data.clickhouse_stats import ClickHouseWriter
 from rpgram_setup.infrastructure.data.gateways import (
     BattleKeysGateway,
@@ -95,13 +95,13 @@ from rpgram_setup.infrastructure.data.mappers import (
     UserMemoryMapper,
 )
 from rpgram_setup.infrastructure.models import BattleStarted
-from rpgram_setup.infrastructure.session import RSessionIDManagerImpl, IDProviderImpl
+from rpgram_setup.infrastructure.session import SessionManagerImpl, IDProviderImpl
 
 
 class IoC(FastapiProvider):
 
     session = provide(
-        source=SessionManager,
+        source=HTTPSessionManager,
         provides=ConnectorProto[RequestData[BattleStarted], BattleStarted],
         scope=Scope.APP,
     )
@@ -118,7 +118,7 @@ class IoC(FastapiProvider):
 
     auth_db = from_context(SessionDB, scope=Scope.APP)
 
-    id_manager = provide(RSessionIDManagerImpl, provides=RSessionIDManager)
+    id_manager = provide(SessionManagerImpl, provides=SessionManager)
 
     hasher = provide(HasherImpl, provides=Hasher, scope=Scope.APP)
 
@@ -203,7 +203,7 @@ class IoC(FastapiProvider):
 
     @provide
     def auth_provider(self, db: SessionDB, request: Request) -> IDProvider:
-        rsession_id = request.cookies.get("RSESSION_ID")
+        rsession_id = request.cookies.get(SESSION_NAME)
         return IDProviderImpl(rsession_id, db)
 
 

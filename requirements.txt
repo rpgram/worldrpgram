@@ -7,4 +7,4 @@ fastapi
 faststream
 aio-pika
 aiohttp
-# e.g. 3.0.0 wheel
+prometheus-fastapi-instrumentator~=7.0.0

@@ -1,12 +1,12 @@
 from starlette.requests import Request
 from starlette.responses import Response
 
-from rpgram_setup.application.identity import RSessionIDManager
+from rpgram_setup.application.identity import SessionManager
 
 
 async def session_middleware(request: Request, call_next):
     response: Response = await call_next(request)
-    idm = await request.state.dishka_container.get(RSessionIDManager)
+    idm = await request.state.dishka_container.get(SessionManager)
     old_session = request.cookies.get(idm.__cookie_key__)
     idm.refresh_session(old_session)
     if idm.new_session and old_session != idm.new_session.rsession_id:

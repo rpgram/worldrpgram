@@ -13,7 +13,7 @@ from rpgram_setup.infrastructure.exceptions import BadRequest
 from rpgram_setup.infrastructure.models import BattleStarted
 
 
-class SessionManager(ConnectorProto[RequestData[T], T]):
+class HTTPSessionManager(ConnectorProto[RequestData[T], T]):
 
     def __init__(self):
         self.session = aiohttp.ClientSession()

@@ -5,6 +5,7 @@ from dishka.integrations.fastapi import setup_dishka
 from fastapi import FastAPI
 from faststream import FastStream
 from faststream.rabbit import RabbitBroker
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from rpgram_setup.application.configuration import AppConfig
 from rpgram_setup.application.identity import SessionDB
@@ -38,6 +39,7 @@ async def lifespan(app: FastAPI):
 
 def create_app() -> FastAPI:
     app = FastAPI(lifespan=lifespan)
+    Instrumentator().instrument(app).expose(app)
     app.exception_handler(WorldError)(exceptions_handler)
     session_db: SessionDB = {}
     app.state.session_db = session_db

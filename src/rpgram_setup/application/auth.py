@@ -3,7 +3,7 @@ import logging
 from typing import cast
 
 from rpgram_setup.application.exceptions import NotAuthenticatedError
-from rpgram_setup.application.identity import RSessionIDManager, IDProvider
+from rpgram_setup.application.identity import SessionManager, IDProvider
 from rpgram_setup.domain.exceptions import (
     NotUniqueError,
     ValidationError,
@@ -48,7 +48,7 @@ class UserLoginInteractor(Interactor[UserLoginDTO, User]):
     def __init__(
         self,
         user_getter: UserMapper,
-        idm: RSessionIDManager,
+        idm: SessionManager,
         hasher: Hasher,
     ):
         self.hasher = hasher
@@ -64,7 +64,7 @@ class UserLoginInteractor(Interactor[UserLoginDTO, User]):
             logger.debug("Wrong password.")
             raise NotAuthenticatedError
         self.idm.assign_session(user.player_id)
-        logger.warning("Logged as %s", user.login, {"scope": "iam"})
+        logger.warning("Logged as %s", user.login, extra={"scope": "iam"})
         return user
 
 
@@ -73,7 +73,7 @@ class UserRegisterInteractor(Interactor[UserRegisterDTO, User]):
         self,
         user_getter: UserMapper,
         players_mapper: PlayersMapper,
-        idm: RSessionIDManager,
+        idm: SessionManager,
         hasher: Hasher,
     ):
         self.hasher = hasher

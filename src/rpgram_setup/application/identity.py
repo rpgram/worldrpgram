@@ -31,8 +31,8 @@ class IDProvider(Protocol):
 SessionDB = dict[str, SessionData]
 
 
-class RSessionIDManager(Protocol):
-    __cookie_key__: str = "RSESSION_ID"
+class SessionManager(Protocol):
+    __cookie_key__: str
     db: SessionDB
     new_session: NewSessionData | None
 

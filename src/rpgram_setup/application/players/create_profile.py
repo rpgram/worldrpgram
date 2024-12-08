@@ -1,5 +1,5 @@
 from rpgram_setup.application.identity import (
-    RSessionIDManager,
+    SessionManager,
     IDProvider,
 )
 from rpgram_setup.domain.player import Player
@@ -14,7 +14,7 @@ from rpgram_setup.domain.protocols.data.players import (
 
 class NewPlayerInteractor(Interactor[CreatePlayer, Player]):
     def __init__(
-        self, player_mapper: PlayersMapper, idm: RSessionIDManager, idp: IDProvider
+        self, player_mapper: PlayersMapper, idm: SessionManager, idp: IDProvider
     ):
         self._idm = idm
         self._player_mapper = player_mapper

@@ -51,6 +51,18 @@ services:
     networks:
       - rpgram
 
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus_rpgram
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      - rpgram
+
 
 volumes:
   loki_data:

@@ -5,18 +5,20 @@ from rpgram_setup.application.configuration import AppConfig
 from rpgram_setup.application.exceptions import NotAuthenticatedError
 from rpgram_setup.application.identity import (
     SessionData,
-    RSessionIDManager,
+    SessionManager,
     SessionDB,
     IDProvider,
     NewSessionData,
 )
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user_types import PlayerId
+from rpgram_setup.infrastructure.consts import SESSION_NAME
 
 logger = logging.getLogger(__name__)
 
 
-class RSessionIDManagerImpl(RSessionIDManager):
+class SessionManagerImpl(SessionManager):
+    __cookie_key__: str = SESSION_NAME
 
     def __init__(self, app_config: AppConfig, hasher: Hasher, db: SessionDB):
         self.new_session: NewSessionData | None = None

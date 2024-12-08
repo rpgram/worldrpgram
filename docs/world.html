@@ -13,7 +13,7 @@ class factory3["📥 AsyncContainer"]{
 }
 
 class factory4["🏭 ConnectorProto_RequestData_BattleStarted___BattleStarted_"]{
-    SessionManager[T]()
+    HTTPSessionManager[T]()
 }
 
 class factory5["🏭 Ⓘ Hasher"]{
@@ -108,8 +108,8 @@ class factory25["🏭 Ⓘ BattleResultMapper"]{
     defaultdict
 }
 
-class factory26["🏭 Ⓘ RSessionIDManager"]{
-    RSessionIDManagerImpl()
+class factory26["🏭 Ⓘ SessionManager"]{
+    SessionManagerImpl()
     AppConfig
     Hasher
     dict[str, SessionData]
@@ -118,7 +118,7 @@ class factory26["🏭 Ⓘ RSessionIDManager"]{
 class factory27["🏭 Interactor_UserLoginDTO__User_"]{
     UserLoginInteractor()
     UserMapper
-    RSessionIDManager
+    SessionManager
     Hasher
 }
 
@@ -126,7 +126,7 @@ class factory28["🏭 Interactor_UserRegisterDTO__User_"]{
     UserRegisterInteractor()
     UserMapper
     PlayersMapper
-    RSessionIDManager
+    SessionManager
     Hasher
 }
 
@@ -162,7 +162,7 @@ class factory33["🏭 AsyncInteractor_StartBattleDTO__BattleId_"]{
 class factory34["🏭 Interactor_CreatePlayer__Player_"]{
     NewPlayerInteractor()
     PlayersMapper
-    RSessionIDManager
+    SessionManager
     IDProvider
 }
 
