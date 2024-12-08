@@ -4,6 +4,7 @@ sources:
     docker_host: /var/run/docker.sock
     include_containers:
       - setup_app
+      - rpgram_battle
 
 transforms:
   json:
@@ -12,7 +13,8 @@ transforms:
       - rpgram_setup_source
     drop_on_error: true
     source: ".message = object!(parse_json(.message) ?? {})\n
-    .message.scope = string(.message.scope) ?? \"undef\""
+    .message.scope = string(.message.scope) ?? \"undef\"\n
+    .message.levelname = downcase!(.message.levelname)"
 
 
 sinks:
@@ -25,6 +27,7 @@ sinks:
     labels:
       source: vector
       scope: "{{ message.scope }}"
+      level: "{{ message.levelname }}"
     encoding:
       codec: json
 
