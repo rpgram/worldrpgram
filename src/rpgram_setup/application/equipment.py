@@ -4,7 +4,11 @@ from rpgram_setup.application.identity import IDProvider
 from rpgram_setup.domain.consts import HERO_MAX_LVL, MAX_ITEM_PRICE
 from rpgram_setup.domain.economics import Token
 from rpgram_setup.domain.entities import Shop
-from rpgram_setup.domain.exceptions import ActionFailed, SomethingIsMissing, NotUnique
+from rpgram_setup.domain.exceptions import (
+    ActionFailed,
+    SomethingIsMissingError,
+    NotUniqueError,
+)
 from rpgram_setup.domain.heroes import PlayersHero
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.core import Interactor, I, O, AsyncInteractor
@@ -31,12 +35,12 @@ class EquipInteractor(Interactor[int, PlayersHero]):
                     raise ActionFailed
                 break
         else:
-            raise SomethingIsMissing("slot")
+            raise SomethingIsMissingError("slot")
         for hero in player.heroes:
             if hero.born.class_ == slot.item.class_:
                 hero.equip(slot.item)
                 return hero
-        raise SomethingIsMissing("hero")
+        raise SomethingIsMissingError("hero")
 
 
 @dataclasses.dataclass
@@ -64,7 +68,7 @@ class BuyInteractor(AsyncInteractor[BuyCommand, Player]):
             (0, HERO_MAX_LVL), (Token(0), Token(MAX_ITEM_PRICE)), in_dto.name, None
         )
         if len(items) != 1:
-            raise NotUnique("item", in_dto)
+            raise NotUniqueError("item", in_dto)
         player = self.players.get_player(
             GetPlayerQuery(self.idp.get_payer_identity(), None)
         )

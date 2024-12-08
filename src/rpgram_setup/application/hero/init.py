@@ -2,7 +2,7 @@ import dataclasses
 
 from rpgram_setup.application.identity import IDProvider
 from rpgram_setup.application.services import init_hero
-from rpgram_setup.domain.exceptions import SomethingIsMissing, NotUnique
+from rpgram_setup.domain.exceptions import SomethingIsMissingError, NotUniqueError
 from rpgram_setup.domain.factory import HeroFactory
 from rpgram_setup.domain.vos.in_game import HeroClass
 from rpgram_setup.domain.protocols.core import AsyncInteractor, I, O
@@ -29,8 +29,8 @@ class InitHeroInteractor(AsyncInteractor[CreateHeroDTO, None]):
             GetPlayerQuery(self.idp.get_payer_identity(), None)
         )
         if player is None:
-            raise SomethingIsMissing("player")
+            raise SomethingIsMissingError("player")
         for hero in player.heroes:
             if hero.born.class_ == in_dto.hero_class:
-                raise NotUnique("hero", in_dto.hero_class)
+                raise NotUniqueError("hero", in_dto.hero_class)
         init_hero(self.hero_factory, player, in_dto.hero_class)

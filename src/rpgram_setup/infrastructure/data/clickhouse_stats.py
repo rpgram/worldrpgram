@@ -3,7 +3,7 @@ import uuid
 
 from asynch import Cursor
 
-from rpgram_setup.domain.battle import BattleResult, Outcome
+from rpgram_setup.domain.battle import BattleResult
 from rpgram_setup.domain.protocols.data.statisctics import StatisticsWriter, TradeEvent
 
 
@@ -49,7 +49,7 @@ class ClickHouseWriter(StatisticsWriter):
             [
                 {
                     "battle_id": battle_result.battle_id,
-                    "start_timestamp": 0,
+                    "start_timestamp": None,
                     "end_timestamp": current_ts,
                     "opponent_id": battle_result.opponent_result.player_id,
                     "player_id": battle_result.hero_result.player_id,

@@ -9,7 +9,7 @@ from rpgram_setup.domain.user_types import PlayerId
 from rpgram_setup.presentation.converters import convert_player_to_dto
 from rpgram_setup.presentation.models import PlayerDTO
 from rpgram_setup.application.players.create_profile import NewPlayerInteractor
-from rpgram_setup.domain.exceptions import NotUnique, ActionFailed
+from rpgram_setup.domain.exceptions import NotUniqueError, ActionFailed
 from rpgram_setup.domain.protocols.data.players import (
     CreatePlayer,
     GetPlayersQuery,
@@ -33,7 +33,7 @@ async def create_user(
     create_player = CreatePlayer(username)
     try:
         return convert_player_to_dto(interactor.execute(create_player))
-    except NotUnique as e:
+    except NotUniqueError as e:
         raise HTTPException(status.HTTP_409_CONFLICT, str(e))
     except ActionFailed:
         raise HTTPException(

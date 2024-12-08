@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException
 from starlette import status
 
 from rpgram_setup.application.hero.init import CreateHeroDTO
-from rpgram_setup.domain.exceptions import SomethingIsMissing
+from rpgram_setup.domain.exceptions import SomethingIsMissingError
 from rpgram_setup.domain.vos.in_game import HeroClass
 from rpgram_setup.domain.protocols.core import AsyncInteractor
 
@@ -19,5 +19,5 @@ async def get_players_hero(
 ):
     try:
         await interactor.execute(CreateHeroDTO(hero_class))
-    except SomethingIsMissing:
+    except SomethingIsMissingError:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "Oops")

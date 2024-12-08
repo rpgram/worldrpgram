@@ -2,7 +2,7 @@ import datetime
 import logging
 
 from rpgram_setup.application.configuration import AppConfig
-from rpgram_setup.application.exceptions import NotAuthenticated
+from rpgram_setup.application.exceptions import NotAuthenticatedError
 from rpgram_setup.application.identity import (
     SessionData,
     RSessionIDManager,
@@ -63,7 +63,7 @@ class IDProviderImpl(IDProvider):
 
     def authenticated_only(self):
         if self.get_payer_identity() is None:
-            raise NotAuthenticated
+            raise NotAuthenticatedError
 
     def get_payer_identity(self) -> PlayerId | None:
         if not self.cookie:

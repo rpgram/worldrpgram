@@ -18,6 +18,7 @@ from rpgram_setup.application.auth import (
     UserLoginInteractor,
     UserRegisterDTO,
     UserRegisterInteractor,
+    GetKeyInteractor,
 )
 from rpgram_setup.application.battle.results import BattleResultsInteractor
 from rpgram_setup.application.equipment import (
@@ -133,6 +134,8 @@ class IoC(FastapiProvider):
     )
 
     keys_gateway = provide(BattleKeysGateway)
+
+    get_key_interactor = provide(GetKeyInteractor)
 
     scope = Scope.REQUEST
 

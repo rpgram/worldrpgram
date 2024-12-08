@@ -4,13 +4,13 @@ from fastapi import HTTPException
 from starlette import status
 from starlette.requests import Request
 
-from rpgram_setup.application.exceptions import NotAuthenticated
-from rpgram_setup.domain.exceptions import WorldException, ValidationError, ActionFailed
+from rpgram_setup.application.exceptions import NotAuthenticatedError
+from rpgram_setup.domain.exceptions import WorldError, ValidationError, ActionFailed
 
 
-async def exceptions_handler(request: Request, exc: WorldException):
+async def exceptions_handler(request: Request, exc: WorldError):
     et = type(exc)
-    if et is NotAuthenticated:
+    if et is NotAuthenticatedError:
         raise HTTPException(status.HTTP_403_FORBIDDEN, str(exc))
     if et is ValidationError:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, str(exc))

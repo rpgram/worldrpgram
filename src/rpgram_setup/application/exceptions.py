@@ -1,6 +1,6 @@
-from rpgram_setup.domain.exceptions import WorldException
+from rpgram_setup.domain.exceptions import WorldError
 
 
-class NotAuthenticated(WorldException):
+class NotAuthenticatedError(WorldError):
     def __str__(self):
         return """You are not authenticated"""

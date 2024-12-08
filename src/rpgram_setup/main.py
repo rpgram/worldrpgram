@@ -8,7 +8,7 @@ from faststream.rabbit import RabbitBroker
 
 from rpgram_setup.application.configuration import AppConfig
 from rpgram_setup.application.identity import SessionDB
-from rpgram_setup.domain.exceptions import WorldException
+from rpgram_setup.domain.exceptions import WorldError
 from rpgram_setup.infrastructure.ioc import make_container
 from rpgram_setup.infrastructure.logging import configure_logs
 from rpgram_setup.presentation.api.auth import user_router
@@ -38,7 +38,7 @@ async def lifespan(app: FastAPI):
 
 def create_app() -> FastAPI:
     app = FastAPI(lifespan=lifespan)
-    app.exception_handler(WorldException)(exceptions_handler)
+    app.exception_handler(WorldError)(exceptions_handler)
     session_db: SessionDB = {}
     app.state.session_db = session_db
     container = make_container(session_db)

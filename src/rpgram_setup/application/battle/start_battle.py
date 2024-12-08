@@ -1,6 +1,6 @@
 import dataclasses
 
-from rpgram_setup.domain.exceptions import SomethingIsMissing
+from rpgram_setup.domain.exceptions import SomethingIsMissingError
 from rpgram_setup.domain.vos.in_game import HeroClass
 from rpgram_setup.domain.protocols.core import (
     ClientProto,
@@ -36,12 +36,12 @@ class StartBattleInteractor(AsyncInteractor[StartBattleDTO, BattleId]):
             GetPlayerQuery(in_dto.player_id, None)
         )
         if player is None:
-            raise SomethingIsMissing("participant")
+            raise SomethingIsMissingError("participant")
         opponent = self.player_data_mapper.get_player(
             GetPlayerQuery(in_dto.opponent_id, None)
         )
         if opponent is None:
-            raise SomethingIsMissing("participant")
+            raise SomethingIsMissingError("participant")
         try:
             players_hero = next(
                 h for h in player.heroes if h.born.class_ == in_dto.hero_class
@@ -50,7 +50,7 @@ class StartBattleInteractor(AsyncInteractor[StartBattleDTO, BattleId]):
                 h for h in opponent.heroes if h.born.class_ == in_dto.hero_class
             )
         except StopIteration:
-            raise SomethingIsMissing("hero")
+            raise SomethingIsMissingError("hero")
         battle_started = await self.battlefield_gateway.start_battle(
             player, opponent, players_hero, opponents_hero
         )

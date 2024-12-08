@@ -1,7 +1,7 @@
 from adaptix.conversion import link, impl_converter, coercer, get_converter, from_param
 from adaptix import P
 
-from rpgram_setup.domain.exceptions import SomethingIsMissing
+from rpgram_setup.domain.exceptions import SomethingIsMissingError
 from rpgram_setup.domain.heroes import PlayersHero
 from rpgram_setup.domain.vos.in_game import Hero, HeroStats, HeroClass
 from rpgram_setup.domain.player import Player

@@ -2,7 +2,7 @@ from contextlib import suppress
 
 from rpgram_setup.domain.battle import BattleResult
 from rpgram_setup.domain.economics import Balance, Token
-from rpgram_setup.domain.exceptions import NotUnique
+from rpgram_setup.domain.exceptions import NotUniqueError
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.data.battle import BattleResultMapper, UserMapper
 from rpgram_setup.domain.protocols.data.players import (
@@ -44,7 +44,7 @@ class PlayerMemoryMapper(PlayersMapper):
     def add_player(self, create_player: CreatePlayer) -> PlayerId:
         exists = self.get_player(GetPlayerQuery(None, create_player.username))
         if exists is not None:
-            raise NotUnique("username", create_player.username)
+            raise NotUniqueError("username", create_player.username)
         player_id = self._generate_id()
         player = Player(
             balance=Balance({Token: Token(150)}),

@@ -1,7 +1,7 @@
-from rpgram_setup.domain.exceptions import WorldException
+from rpgram_setup.domain.exceptions import WorldError
 
 
-class BadRequest(WorldException):
+class BadRequest(WorldError):
 
     def __init__(self, service: str, details: str):
         self.service = service

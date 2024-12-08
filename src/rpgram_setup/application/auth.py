@@ -1,10 +1,14 @@
 import dataclasses
 import logging
 
-from rpgram_setup.application.exceptions import NotAuthenticated
-from rpgram_setup.application.identity import RSessionIDManager
-from rpgram_setup.domain.exceptions import NotUnique, ValidationError
-from rpgram_setup.domain.protocols.core import Interactor
+from rpgram_setup.application.exceptions import NotAuthenticatedError
+from rpgram_setup.application.identity import RSessionIDManager, IDProvider
+from rpgram_setup.domain.exceptions import (
+    NotUniqueError,
+    ValidationError,
+    SomethingIsMissing,
+)
+from rpgram_setup.domain.protocols.core import Interactor, I, O
 from rpgram_setup.domain.protocols.data.battle import UserMapper
 from rpgram_setup.domain.protocols.data.players import (
     PlayersMapper,
@@ -12,6 +16,7 @@ from rpgram_setup.domain.protocols.data.players import (
 )
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user import User
+from rpgram_setup.infrastructure.data.gateways import BattleKeysGateway
 
 logger = logging.getLogger(__name__)
 
@@ -51,9 +56,9 @@ class UserLoginInteractor(Interactor[UserLoginDTO, User]):
     def execute(self, in_dto: UserLoginDTO) -> User:
         user = self.user_getter.get_user(in_dto.login)
         if user is None:
-            raise NotAuthenticated
+            raise NotAuthenticatedError
         if not user.check_password(in_dto.password, self.hasher.hash):
-            raise NotAuthenticated
+            raise NotAuthenticatedError
         self.idm.assign_session(user.player_id)
         return user
 
@@ -74,7 +79,7 @@ class UserRegisterInteractor(Interactor[UserRegisterDTO, User]):
     def execute(self, in_dto: UserRegisterDTO) -> User:
         conflict = self.user_mapper.get_user(in_dto.login)
         if conflict is not None:
-            raise NotUnique("assign_session", in_dto.login)
+            raise NotUniqueError("assign_session", in_dto.login)
         player_id = self.players_mapper.add_player(CreatePlayer(in_dto.username))
         password_hash = self.hasher.hash(in_dto.password)
         user = User(player_id, in_dto.login, password_hash)
@@ -87,3 +92,16 @@ class UserRegisterInteractor(Interactor[UserRegisterDTO, User]):
         )
         self.idm.assign_session(player_id)
         return user
+
+
+class GetKeyInteractor(Interactor[None, str]):
+    def __init__(self, keys: BattleKeysGateway, idp: IDProvider):
+        self.idp = idp
+        self.keys = keys
+
+    def execute(self, in_dto: None) -> str:
+        self.idp.authenticated_only()
+        key = self.keys.get_key(self.idp.get_payer_identity())
+        if key is None:
+            raise SomethingIsMissing("key")
+        return key

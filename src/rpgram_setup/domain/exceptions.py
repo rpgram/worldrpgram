@@ -1,26 +1,26 @@
 from rpgram_setup.domain.protocols.general import Display
 
 
-class WorldException(Exception):
+class WorldError(Exception):
     """Base RPGram exception"""
 
 
-class LevelTooLow(WorldException):
+class LevelTooLow(WorldError):
     def __str__(self) -> str:
         return """This hero is too young"""
 
 
-class BalanceTooLow(WorldException):
+class BalanceTooLow(WorldError):
     def __str__(self) -> str:
         return """Need more gold."""
 
 
-class BattleContinues(WorldException):
+class BattleContinues(WorldError):
     def __str__(self) -> str:
         return """You are in battle now."""
 
 
-class NotUnique(WorldException):
+class NotUniqueError(WorldError):
     def __init__(self, subject: Display, value: Display):
         self.subject = subject
         self.value = value
@@ -29,13 +29,13 @@ class NotUnique(WorldException):
         return f"""{self.subject} is not unique({self.value} already exists)."""
 
 
-class ActionFailed(WorldException):
+class ActionFailed(WorldError):
 
     def __str__(self):
         return """Unbelievable happens."""
 
 
-class SomethingIsMissing(WorldException):
+class SomethingIsMissingError(WorldError):
     def __init__(self, subject: Display):
         self.subject = subject
 
@@ -43,7 +43,7 @@ class SomethingIsMissing(WorldException):
         return f"Seems {self.subject} is missing..."
 
 
-class ValidationError(WorldException):
+class ValidationError(WorldError):
     def __init__(self, subject: Display, hint: Display | None = None):
         self.subject = subject
         self.hint = hint
