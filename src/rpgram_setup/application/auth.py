@@ -1,5 +1,6 @@
 import dataclasses
 import logging
+from typing import cast
 
 from rpgram_setup.application.exceptions import NotAuthenticatedError
 from rpgram_setup.application.identity import RSessionIDManager, IDProvider
@@ -16,6 +17,7 @@ from rpgram_setup.domain.protocols.data.players import (
 )
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user import User
+from rpgram_setup.domain.user_types import PlayerId
 from rpgram_setup.infrastructure.data.gateways import BattleKeysGateway
 
 logger = logging.getLogger(__name__)
@@ -104,7 +106,7 @@ class GetKeyInteractor(Interactor[None, str]):
 
     def execute(self, in_dto: None) -> str:
         self.idp.authenticated_only()
-        key = self.keys.get_key(self.idp.get_payer_identity())
+        key = self.keys.get_key(cast(PlayerId,self.idp.get_payer_identity()))
         if key is None:
             raise SomethingIsMissingError("key")
         return key

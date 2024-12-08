@@ -1,7 +1,7 @@
 import collections
-from typing import Iterable, Iterator, AsyncIterable
+from typing import AsyncIterable
 
-from asynch import connect
+from asynch import connect  # type:ignore[import-untyped]
 from dishka import (
     Scope,
     provide,

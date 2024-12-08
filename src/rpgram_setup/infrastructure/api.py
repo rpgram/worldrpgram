@@ -46,7 +46,7 @@ class SessionManager(ConnectorProto[RequestData[T], T]):
 class BattleAPIClient(ClientProto):
     def __init__(
         self,
-        manager: ConnectorProto[RequestData[BattleId], BattleId],
+        manager: ConnectorProto[RequestData[BattleStarted], BattleStarted],
         config: AppConfig,
     ):
         self._connector = manager

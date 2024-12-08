@@ -1,7 +1,7 @@
 import time
 import uuid
 
-from asynch import Cursor
+from asynch import Cursor  # type: ignore[import-untyped]
 
 from rpgram_setup.domain.battle import BattleResult
 from rpgram_setup.domain.protocols.data.statisctics import StatisticsWriter, TradeEvent

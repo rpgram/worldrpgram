@@ -10,7 +10,6 @@ from rpgram_setup.domain.exceptions import SomethingIsMissingError
 from rpgram_setup.domain.vos.in_game import HeroClass
 from rpgram_setup.domain.protocols.core import AsyncInteractor, Interactor
 from rpgram_setup.domain.user_types import PlayerId, BattleId
-from rpgram_setup.infrastructure.data.gateways import WaitingBattleGateway
 from rpgram_setup.infrastructure.exceptions import BadRequest
 
 battle_router = APIRouter(prefix="/battle")
@@ -19,12 +18,11 @@ battle_router = APIRouter(prefix="/battle")
 @battle_router.post("", status_code=status.HTTP_201_CREATED)
 @inject
 async def start_battle(
-    player_id: PlayerId,
     opponent_id: PlayerId,
-    hero_class: HeroClass,
+    hero_class: HeroClass | None,
     interactor: FromDishka[AsyncInteractor[StartBattleDTO, BattleId]],
 ) -> BattleId:
-    start_battle_dto = StartBattleDTO(player_id, opponent_id, hero_class)
+    start_battle_dto = StartBattleDTO(opponent_id, hero_class)
     try:
         return await interactor.execute(start_battle_dto)
     except SomethingIsMissingError as e:
