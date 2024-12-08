@@ -5,8 +5,7 @@ from fastapi import APIRouter
 from rpgram_setup.application.queries import BattleResultsQuery
 from rpgram_setup.domain.battle import BattleResult
 from rpgram_setup.domain.protocols.core import Interactor
-from rpgram_setup.domain.protocols.data.battle import BattleResultMapper
-from rpgram_setup.domain.user_types import PlayerId, BattleId
+from rpgram_setup.domain.user_types import BattleId, PlayerId
 
 results_router = APIRouter(prefix="/results")
 

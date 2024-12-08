@@ -3,65 +3,62 @@ from typing import AsyncIterable
 
 from asynch import connect  # type:ignore[import-untyped]
 from dishka import (
-    Scope,
-    provide,
-    make_async_container,
-    AsyncContainer,
-    from_context,
     AnyOf,
+    AsyncContainer,
+    Scope,
+    from_context,
+    make_async_container,
+    provide,
 )
 from dishka.integrations.fastapi import FastapiProvider
 from starlette.requests import Request
 
 from rpgram_setup.application.auth import (
+    GetKeyInteractor,
     UserLoginDTO,
     UserLoginInteractor,
     UserRegisterDTO,
     UserRegisterInteractor,
-    GetKeyInteractor,
 )
 from rpgram_setup.application.battle.results import BattleResultsInteractor
+from rpgram_setup.application.battle.start_battle import (
+    StartBattleDTO,
+    StartBattleInteractor,
+)
+from rpgram_setup.application.battle.take_event import TakeEventInteractor
 from rpgram_setup.application.battle.wait import (
     WaitForOpponentInteractor,
     WaitingBattleDTOReader,
 )
+from rpgram_setup.application.configuration import AppConfig
 from rpgram_setup.application.equipment import (
-    EquipInteractor,
     BuyCommand,
     BuyInteractor,
+    EquipInteractor,
 )
-from rpgram_setup.application.identity import (
-    SessionDB,
-    IDProvider, SessionManager,
+from rpgram_setup.application.hero.init import CreateHeroDTO, InitHeroInteractor
+from rpgram_setup.application.identity import IDProvider, SessionDB, SessionManager
+from rpgram_setup.application.players.create_profile import NewPlayerInteractor
+from rpgram_setup.application.players.read import (
+    ReadPlayerInteractor,
+    ReadPlayersInteractor,
 )
 from rpgram_setup.application.queries import BattleResultsQuery
-from rpgram_setup.application.battle.take_event import TakeEventInteractor
-from rpgram_setup.application.configuration import AppConfig
-from rpgram_setup.application.hero.init import InitHeroInteractor, CreateHeroDTO
-from rpgram_setup.application.players.read import (
-    ReadPlayersInteractor,
-    ReadPlayerInteractor,
-)
-from rpgram_setup.application.players.create_profile import NewPlayerInteractor
-from rpgram_setup.application.battle.start_battle import (
-    StartBattleInteractor,
-    StartBattleDTO,
-)
 from rpgram_setup.application.shop import SearchOffer, ShopSearch
 from rpgram_setup.domain.battle import BattleResult
 from rpgram_setup.domain.entities import Shop
 from rpgram_setup.domain.factory import (
+    CentralShopFactory,
     HeroFactory,
     NullSuiteFactory,
-    CentralShopFactory,
 )
 from rpgram_setup.domain.gateways import RequestData
 from rpgram_setup.domain.heroes import PlayersHero
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.core import (
+    AsyncInteractor,
     ClientProto,
     ConnectorProto,
-    AsyncInteractor,
     Interactor,
 )
 from rpgram_setup.domain.protocols.data.battle import (
@@ -70,15 +67,15 @@ from rpgram_setup.domain.protocols.data.battle import (
     WaitingBattleGatewayProto,
 )
 from rpgram_setup.domain.protocols.data.players import (
-    PlayersMapper,
     CreatePlayer,
-    GetPlayersQuery,
     GetPlayerQuery,
+    GetPlayersQuery,
+    PlayersMapper,
 )
 from rpgram_setup.domain.protocols.data.statisctics import StatisticsWriter
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user import User
-from rpgram_setup.domain.user_types import BattleId, DBS
+from rpgram_setup.domain.user_types import DBS, BattleId
 from rpgram_setup.domain.vos.in_game import Good, HeroClass
 from rpgram_setup.infrastructure.api import BattleAPIClient, HTTPSessionManager
 from rpgram_setup.infrastructure.config import read_config
@@ -88,14 +85,14 @@ from rpgram_setup.infrastructure.data.gateways import (
     BattleKeysGateway,
     WaitingBattleGateway,
 )
-from rpgram_setup.infrastructure.general import HasherImpl
 from rpgram_setup.infrastructure.data.mappers import (
-    PlayerMemoryMapper,
     BattleResultMemoryMapper,
+    PlayerMemoryMapper,
     UserMemoryMapper,
 )
+from rpgram_setup.infrastructure.general import HasherImpl
 from rpgram_setup.infrastructure.models import BattleStarted
-from rpgram_setup.infrastructure.session import SessionManagerImpl, IDProviderImpl
+from rpgram_setup.infrastructure.session import IDProviderImpl, SessionManagerImpl
 
 
 class IoC(FastapiProvider):
@@ -175,9 +172,7 @@ class IoC(FastapiProvider):
     shop_offer_interactor = provide(
         SearchOffer, provides=Interactor[ShopSearch, list[Good]]
     )
-    buy_interactor = provide(
-        BuyInteractor, provides=AsyncInteractor[BuyCommand, Player]
-    )
+    buy_interactor = provide(BuyInteractor, provides=AsyncInteractor[BuyCommand, Player])
 
     items_factory = provide(NullSuiteFactory, scope=Scope.APP)
     central_factory = provide(CentralShopFactory, scope=Scope.APP)

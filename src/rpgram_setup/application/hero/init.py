@@ -2,11 +2,11 @@ import dataclasses
 
 from rpgram_setup.application.identity import IDProvider
 from rpgram_setup.application.services import init_hero
-from rpgram_setup.domain.exceptions import SomethingIsMissingError, NotUniqueError
+from rpgram_setup.domain.exceptions import NotUniqueError, SomethingIsMissingError
 from rpgram_setup.domain.factory import HeroFactory
+from rpgram_setup.domain.protocols.core import AsyncInteractor
+from rpgram_setup.domain.protocols.data.players import GetPlayerQuery, PlayersMapper
 from rpgram_setup.domain.vos.in_game import HeroClass
-from rpgram_setup.domain.protocols.core import AsyncInteractor, I, O
-from rpgram_setup.domain.protocols.data.players import PlayersMapper, GetPlayerQuery
 
 
 @dataclasses.dataclass

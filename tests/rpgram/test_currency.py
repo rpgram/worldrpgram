@@ -2,6 +2,7 @@ import pytest
 
 from rpgram_setup.domain.economics import Token
 from rpgram_setup.domain.exceptions import WorldError
+
 from .fixtures.currency import empty_balance, start_balance
 
 

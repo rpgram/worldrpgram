@@ -6,13 +6,13 @@ from rpgram_setup.domain.exceptions import NotUniqueError
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.data.battle import BattleResultMapper, UserMapper
 from rpgram_setup.domain.protocols.data.players import (
-    PlayersMapper,
-    GetPlayerQuery,
     CreatePlayer,
+    GetPlayerQuery,
     GetPlayersQuery,
+    PlayersMapper,
 )
 from rpgram_setup.domain.user import User
-from rpgram_setup.domain.user_types import PlayerId, DBS, BattleId
+from rpgram_setup.domain.user_types import DBS, BattleId, PlayerId
 
 
 class PlayerMemoryMapper(PlayersMapper):

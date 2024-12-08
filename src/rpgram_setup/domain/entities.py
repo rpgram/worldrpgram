@@ -3,8 +3,8 @@ import dataclasses
 
 from rpgram_setup.domain.economics import Money
 from rpgram_setup.domain.exceptions import ActionFailedError
-from rpgram_setup.domain.vos.in_game import HeroClass, Good, Equipment
 from rpgram_setup.domain.user_types import MinMax, MinMaxMoney
+from rpgram_setup.domain.vos.in_game import Equipment, Good, HeroClass
 
 
 @dataclasses.dataclass

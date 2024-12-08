@@ -1,17 +1,16 @@
-import abc
 import dataclasses
-from typing import Protocol, Literal, Any, Generic
+from typing import Any, Generic, Literal
 
-from rpgram_setup.domain.user_types import T, B
+from rpgram_setup.domain.user_types import R
 
 
 @dataclasses.dataclass(frozen=True)
-class RequestData(Generic[T]):
+class RequestData(Generic[R]):
     method: Literal["POST", "GET"]
     api_url: str
     query_params: dict[str, Any] | None
     body: Any | None
-    return_type: type[T]
+    return_type: type[R]
 
 
 #

@@ -4,9 +4,9 @@ from fastapi import APIRouter, HTTPException
 from starlette import status
 
 from rpgram_setup.application.auth import (
-    UserRegisterDTO,
     GetKeyInteractor,
     UserLoginDTO,
+    UserRegisterDTO,
 )
 from rpgram_setup.domain.exceptions import NotUniqueError
 from rpgram_setup.domain.protocols.core import Interactor

@@ -1,7 +1,7 @@
 import dataclasses
 
-from rpgram_setup.domain.exceptions import LevelTooLow, BattleContinues
-from rpgram_setup.domain.vos.in_game import Hero, HeroStats, Equipment
+from rpgram_setup.domain.exceptions import BattleContinues, LevelTooLow
+from rpgram_setup.domain.vos.in_game import Equipment, Hero, HeroStats
 
 
 @dataclasses.dataclass

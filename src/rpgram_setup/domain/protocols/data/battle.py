@@ -1,10 +1,9 @@
 import abc
-import dataclasses
 from typing import Any, Protocol
 
 from rpgram_setup.domain.battle import BattleResult, WaitingBattle
 from rpgram_setup.domain.user import User
-from rpgram_setup.domain.user_types import PlayerId, BattleId
+from rpgram_setup.domain.user_types import BattleId, PlayerId
 
 
 class BattleResultMapper(Protocol):

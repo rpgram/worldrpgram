@@ -3,18 +3,15 @@ import logging
 from typing import cast
 
 from rpgram_setup.application.exceptions import NotAuthenticatedError
-from rpgram_setup.application.identity import SessionManager, IDProvider
+from rpgram_setup.application.identity import IDProvider, SessionManager
 from rpgram_setup.domain.exceptions import (
     NotUniqueError,
-    ValidationError,
     SomethingIsMissingError,
+    ValidationError,
 )
-from rpgram_setup.domain.protocols.core import Interactor, I, O
+from rpgram_setup.domain.protocols.core import Interactor
 from rpgram_setup.domain.protocols.data.battle import UserMapper
-from rpgram_setup.domain.protocols.data.players import (
-    PlayersMapper,
-    CreatePlayer,
-)
+from rpgram_setup.domain.protocols.data.players import CreatePlayer, PlayersMapper
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user import User
 from rpgram_setup.domain.user_types import PlayerId

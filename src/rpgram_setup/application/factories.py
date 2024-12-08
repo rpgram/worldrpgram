@@ -1,9 +1,5 @@
-from adaptix.conversion import (
-    get_converter,
-    link,
-    link_function,
-)
 from adaptix import P
+from adaptix.conversion import get_converter, link, link_function
 
 from rpgram_setup.domain.heroes import PlayersHero
 from rpgram_setup.domain.vos.in_game import Hero

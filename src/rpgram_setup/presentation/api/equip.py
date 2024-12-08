@@ -8,14 +8,14 @@ from rpgram_setup.domain.consts import HERO_MAX_LVL, MAX_ITEM_PRICE
 from rpgram_setup.domain.economics import Money
 from rpgram_setup.domain.heroes import PlayersHero
 from rpgram_setup.domain.player import Player
-from rpgram_setup.domain.protocols.core import Interactor, AsyncInteractor
+from rpgram_setup.domain.protocols.core import AsyncInteractor, Interactor
 from rpgram_setup.domain.vos.in_game import Good, HeroClass
 from rpgram_setup.presentation.converters import (
+    convert_player_to_dto,
     good_to_good_dto,
     players_to_hero_dto,
-    convert_player_to_dto,
 )
-from rpgram_setup.presentation.models import GoodDTO, PlayerDTO, HeroDTO
+from rpgram_setup.presentation.models import GoodDTO, HeroDTO, PlayerDTO
 
 equip_router = APIRouter(prefix="/equipment")
 

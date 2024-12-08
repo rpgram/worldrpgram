@@ -1,6 +1,6 @@
 import abc
 import dataclasses
-from typing import Protocol, Any
+from typing import Any, Protocol
 
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.user_types import PlayerId

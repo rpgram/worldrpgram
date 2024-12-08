@@ -1,6 +1,6 @@
 import abc
 import dataclasses
-from typing import Protocol, TypeVar, Generic
+from typing import Protocol
 
 from rpgram_setup.domain.battle import BattleResult
 from rpgram_setup.domain.economics import Money

@@ -7,9 +7,9 @@ from rpgram_setup.application.battle.start_battle import StartBattleDTO
 from rpgram_setup.application.battle.wait import WaitingBattleDTOReader
 from rpgram_setup.domain.battle import WaitingBattle
 from rpgram_setup.domain.exceptions import SomethingIsMissingError
-from rpgram_setup.domain.vos.in_game import HeroClass
 from rpgram_setup.domain.protocols.core import AsyncInteractor, Interactor
-from rpgram_setup.domain.user_types import PlayerId, BattleId
+from rpgram_setup.domain.user_types import BattleId, PlayerId
+from rpgram_setup.domain.vos.in_game import HeroClass
 from rpgram_setup.infrastructure.exceptions import BadRequest
 
 battle_router = APIRouter(prefix="/battle")

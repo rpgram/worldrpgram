@@ -3,15 +3,12 @@ import logging
 from typing import cast
 
 from rpgram_setup.application.identity import IDProvider
-from rpgram_setup.domain.exceptions import SomethingIsMissingError, ActionFailedError
+from rpgram_setup.domain.exceptions import ActionFailedError, SomethingIsMissingError
+from rpgram_setup.domain.protocols.core import AsyncInteractor, ClientProto
 from rpgram_setup.domain.protocols.data.battle import WaitingBattleGatewayProto
-from rpgram_setup.domain.vos.in_game import HeroClass
-from rpgram_setup.domain.protocols.core import (
-    ClientProto,
-    AsyncInteractor,
-)
-from rpgram_setup.domain.protocols.data.players import PlayersMapper, GetPlayerQuery
+from rpgram_setup.domain.protocols.data.players import GetPlayerQuery, PlayersMapper
 from rpgram_setup.domain.user_types import BattleId, PlayerId
+from rpgram_setup.domain.vos.in_game import HeroClass
 from rpgram_setup.infrastructure.data.gateways import BattleKeysGateway
 
 logger = logging.getLogger(__name__)
@@ -42,14 +39,14 @@ class StartBattleInteractor(AsyncInteractor[StartBattleDTO, BattleId]):
         self.idp.authenticated_only()
         player_id = cast(PlayerId, self.idp.get_payer_identity())
         if player_id == in_dto.opponent_id:
-            logger.warning("Not to self!", extra={"scope":"battle"})
+            logger.warning("Not to self!", extra={"scope": "battle"})
             raise ActionFailedError
         existing_battle = self.waiters.get_by_player(in_dto.opponent_id)
         if not existing_battle:
-            logger.warning("No battle", extra={"scope":"battle"})
+            logger.warning("No battle", extra={"scope": "battle"})
             raise ActionFailedError
         if in_dto.hero_class and in_dto.hero_class != existing_battle.hero_class:
-            logger.warning("Hero choice conflict", extra={"scope":"battle"})
+            logger.warning("Hero choice conflict", extra={"scope": "battle"})
             raise ActionFailedError
         player = self.player_data_mapper.get_player(GetPlayerQuery(player_id, None))
         if player is None:
@@ -64,9 +61,7 @@ class StartBattleInteractor(AsyncInteractor[StartBattleDTO, BattleId]):
                 h for h in player.heroes if h.born.class_ == existing_battle.hero_class
             )
             opponents_hero = next(
-                h
-                for h in opponent.heroes
-                if h.born.class_ == existing_battle.hero_class
+                h for h in opponent.heroes if h.born.class_ == existing_battle.hero_class
             )
         except StopIteration:
             raise SomethingIsMissingError("hero")

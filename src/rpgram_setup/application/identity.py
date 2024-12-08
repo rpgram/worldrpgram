@@ -3,7 +3,6 @@ import dataclasses
 import datetime
 from typing import Protocol
 
-
 from rpgram_setup.domain.user_types import PlayerId
 
 

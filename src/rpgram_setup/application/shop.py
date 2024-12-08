@@ -1,7 +1,7 @@
 import dataclasses
 
 from rpgram_setup.domain.entities import Shop
-from rpgram_setup.domain.protocols.core import Interactor, I, O
+from rpgram_setup.domain.protocols.core import Interactor
 from rpgram_setup.domain.user_types import MinMax, MinMaxMoney
 from rpgram_setup.domain.vos.in_game import Good, HeroClass
 

@@ -11,3 +11,14 @@ where = ["src", "tools"]
 [tool.pytest]
 asyncio_default_fixture_loop_scope = "function"
 
+[tool.isort]
+profile = "black"
+include_trailing_comma = true
+
+[tool.mypy]
+exclude = "^.*tests|migrations|tools.*$"
+ignore_missing_imports = true
+
+[tool.black]
+line-length = 89
+

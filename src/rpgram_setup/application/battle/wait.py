@@ -4,16 +4,12 @@ from typing import Protocol, cast
 
 from rpgram_setup.application.identity import IDProvider
 from rpgram_setup.domain.battle import WaitingBattle
-from rpgram_setup.domain.exceptions import (
-    SomethingIsMissingError,
-    NotUniqueError,
-)
+from rpgram_setup.domain.exceptions import NotUniqueError, SomethingIsMissingError
 from rpgram_setup.domain.protocols.core import Interactor
 from rpgram_setup.domain.protocols.data.battle import WaitingBattleGatewayProto
-from rpgram_setup.domain.protocols.data.players import PlayersMapper, GetPlayerQuery
+from rpgram_setup.domain.protocols.data.players import GetPlayerQuery, PlayersMapper
 from rpgram_setup.domain.user_types import PlayerId
 from rpgram_setup.domain.vos.in_game import HeroClass
-
 
 logger = logging.getLogger(__name__)
 

@@ -1,6 +1,6 @@
 import dataclasses
 
-from rpgram_setup.domain.user_types import PlayerId, BattleId
+from rpgram_setup.domain.user_types import BattleId, PlayerId
 
 
 @dataclasses.dataclass

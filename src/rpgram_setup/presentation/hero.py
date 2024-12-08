@@ -5,8 +5,8 @@ from starlette import status
 
 from rpgram_setup.application.hero.init import CreateHeroDTO
 from rpgram_setup.domain.exceptions import SomethingIsMissingError
-from rpgram_setup.domain.vos.in_game import HeroClass
 from rpgram_setup.domain.protocols.core import AsyncInteractor
+from rpgram_setup.domain.vos.in_game import HeroClass
 
 hero_router = APIRouter(prefix="/hero")
 

@@ -1,20 +1,20 @@
 from dishka import FromDishka
 from dishka.integrations.fastapi import inject
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException
 from starlette import status
 
+from rpgram_setup.application.players.create_profile import NewPlayerInteractor
+from rpgram_setup.domain.exceptions import ActionFailedError, NotUniqueError
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.core import Interactor
+from rpgram_setup.domain.protocols.data.players import (
+    CreatePlayer,
+    GetPlayerQuery,
+    GetPlayersQuery,
+)
 from rpgram_setup.domain.user_types import PlayerId
 from rpgram_setup.presentation.converters import convert_player_to_dto
 from rpgram_setup.presentation.models import PlayerDTO
-from rpgram_setup.application.players.create_profile import NewPlayerInteractor
-from rpgram_setup.domain.exceptions import NotUniqueError, ActionFailedError
-from rpgram_setup.domain.protocols.data.players import (
-    CreatePlayer,
-    GetPlayersQuery,
-    GetPlayerQuery,
-)
 
 player_router = APIRouter(prefix="/player")
 

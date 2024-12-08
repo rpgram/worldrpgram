@@ -7,10 +7,10 @@ from starlette.requests import Request
 
 from rpgram_setup.application.exceptions import NotAuthenticatedError
 from rpgram_setup.domain.exceptions import (
-    WorldError,
-    ValidationError,
     ActionFailedError,
     SomethingIsMissingError,
+    ValidationError,
+    WorldError,
 )
 
 logger = logging.getLogger(__name__)

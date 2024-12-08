@@ -44,17 +44,17 @@ class Token(Currency):
 
     def __le__(self, other: object) -> bool:
         if not isinstance(other, Token):
-            raise NotImplementedError
+            return NotImplemented
         return self.units <= other.units
 
     def __sub__(self, other: object) -> Self:
         if not isinstance(other, Token):
-            raise NotImplemented
+            return NotImplemented
         return self.__class__(self.units - other.units)
 
     def __add__(self, other: object) -> Self:
         if not isinstance(other, Token):
-            raise NotImplemented
+            return NotImplemented
         return self.__class__(self.units + other.units)
 
     def __isub__(self, other: object) -> Self:
@@ -67,7 +67,7 @@ class Token(Currency):
 
     def __lt__(self, other: object) -> bool:
         if not isinstance(other, Token):
-            raise NotImplementedError
+            return NotImplemented
         return self.units < other.units
 
     def mul(self, coefficient: float, *, rize: bool) -> Self:
@@ -96,7 +96,7 @@ class Balance:
     def __isub__(self, other: object) -> Self:
         assert isinstance(other, Money)
         if self.ledger.get(type(other)) is None:
-            raise NotImplemented
+            return NotImplemented
         if self.ledger[type(other)] < other:
             raise BalanceTooLow
         self.ledger[type(other)] -= other

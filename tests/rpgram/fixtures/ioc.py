@@ -1,28 +1,29 @@
 import pytest
-from dishka import Provider, provide, make_async_container, AsyncContainer, Scope
+from dishka import AsyncContainer, Provider, Scope, make_async_container, provide
 
 from rpgram_setup.application.auth import (
-    UserRegisterInteractor,
-    UserRegisterDTO,
-    UserLoginInteractor,
     UserLoginDTO,
+    UserLoginInteractor,
+    UserRegisterDTO,
+    UserRegisterInteractor,
 )
 from rpgram_setup.application.identity import SessionManager
 from rpgram_setup.application.players.read import (
-    ReadPlayersInteractor,
     ReadPlayerInteractor,
+    ReadPlayersInteractor,
 )
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.core import Interactor
 from rpgram_setup.domain.protocols.data.battle import UserMapper
 from rpgram_setup.domain.protocols.data.players import (
+    GetPlayerQuery,
     GetPlayersQuery,
     PlayersMapper,
-    GetPlayerQuery,
 )
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user import User
-from ..stubs import PlayersMapperStub, UserMapperStub, HasherStub, MStub
+
+from ..stubs import HasherStub, MStub, PlayersMapperStub, UserMapperStub
 
 
 class FakeProvider(Provider):

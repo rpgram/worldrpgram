@@ -1,0 +1,6 @@
+pytest
+pytest-cov
+black
+mypy
+isort
+pre-commit

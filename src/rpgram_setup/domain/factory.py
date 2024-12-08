@@ -2,9 +2,9 @@ import abc
 from typing import Protocol, TypeVar
 
 from rpgram_setup.domain.economics import Token
-from rpgram_setup.domain.entities import Shop, CentralShop
+from rpgram_setup.domain.entities import CentralShop, Shop
 from rpgram_setup.domain.protocols.core import ShopFactory
-from rpgram_setup.domain.vos.in_game import Hero, HeroStats, HeroClass, Good, Equipment
+from rpgram_setup.domain.vos.in_game import Equipment, Good, Hero, HeroClass, HeroStats
 
 
 class HeroFactory:

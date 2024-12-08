@@ -1,12 +1,11 @@
-from adaptix.conversion import coercer
-from adaptix.conversion import get_converter
+from adaptix.conversion import coercer, get_converter
 
-from rpgram_setup.domain.entities import Slot
-from rpgram_setup.presentation.models import PlayerDTO, GoodDTO, SlotDTO, HeroDTO
 from rpgram_setup.domain.economics import Balance
+from rpgram_setup.domain.entities import Slot
 from rpgram_setup.domain.heroes import PlayersHero
-from rpgram_setup.domain.vos.in_game import HeroClass, Good
 from rpgram_setup.domain.player import Player
+from rpgram_setup.domain.vos.in_game import Good, HeroClass
+from rpgram_setup.presentation.models import GoodDTO, HeroDTO, PlayerDTO, SlotDTO
 
 
 def players_to_hero_dto(ph: PlayersHero) -> HeroDTO:

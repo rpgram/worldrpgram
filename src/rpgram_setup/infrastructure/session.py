@@ -4,11 +4,11 @@ import logging
 from rpgram_setup.application.configuration import AppConfig
 from rpgram_setup.application.exceptions import NotAuthenticatedError
 from rpgram_setup.application.identity import (
-    SessionData,
-    SessionManager,
-    SessionDB,
     IDProvider,
     NewSessionData,
+    SessionData,
+    SessionDB,
+    SessionManager,
 )
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user_types import PlayerId

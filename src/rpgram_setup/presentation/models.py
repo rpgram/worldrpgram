@@ -1,7 +1,7 @@
 import dataclasses
 
-from rpgram_setup.domain.vos.in_game import HeroClass
 from rpgram_setup.domain.user_types import PlayerId
+from rpgram_setup.domain.vos.in_game import HeroClass
 
 
 @dataclasses.dataclass(frozen=True, slots=True)

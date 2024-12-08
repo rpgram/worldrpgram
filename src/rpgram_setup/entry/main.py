@@ -2,6 +2,7 @@ import contextlib
 
 from dishka import AsyncContainer
 from dishka.integrations.fastapi import setup_dishka
+from dishka.integrations.faststream import setup_dishka as set_dish_stream
 from fastapi import FastAPI
 from faststream import FastStream
 from faststream.rabbit import RabbitBroker
@@ -13,14 +14,12 @@ from rpgram_setup.domain.exceptions import WorldError
 from rpgram_setup.entry.ioc import make_container
 from rpgram_setup.infrastructure.logging import configure_logs
 from rpgram_setup.presentation.api.auth import user_router
+from rpgram_setup.presentation.api.battle import battle_router
 from rpgram_setup.presentation.api.equip import equip_router
 from rpgram_setup.presentation.api.errors import exceptions_handler
 from rpgram_setup.presentation.api.results import results_router
-from rpgram_setup.presentation.api.battle import battle_router
 from rpgram_setup.presentation.fs.taker import make_rabbit_router
 from rpgram_setup.presentation.hero import hero_router
-from dishka.integrations.faststream import setup_dishka as set_dish_stream
-
 from rpgram_setup.presentation.middlewares import session_middleware
 from rpgram_setup.presentation.player import player_router
 

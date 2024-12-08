@@ -1,14 +1,11 @@
-from rpgram_setup.application.identity import (
-    SessionManager,
-    IDProvider,
-)
-from rpgram_setup.domain.player import Player
+from rpgram_setup.application.identity import IDProvider, SessionManager
 from rpgram_setup.domain.exceptions import ActionFailedError
-from rpgram_setup.domain.protocols.core import Interactor, I
+from rpgram_setup.domain.player import Player
+from rpgram_setup.domain.protocols.core import I, Interactor
 from rpgram_setup.domain.protocols.data.players import (
     CreatePlayer,
-    PlayersMapper,
     GetPlayerQuery,
+    PlayersMapper,
 )
 
 

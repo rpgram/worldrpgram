@@ -7,7 +7,7 @@ from rpgram_setup.domain.gateways import RequestData
 from rpgram_setup.domain.heroes import PlayersHero
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.core import ClientProto, ConnectorProto
-from rpgram_setup.domain.user_types import T, BattleId
+from rpgram_setup.domain.user_types import T
 from rpgram_setup.infrastructure.converters import player_to_dto_converter
 from rpgram_setup.infrastructure.exceptions import BadRequest
 from rpgram_setup.infrastructure.models import BattleStarted

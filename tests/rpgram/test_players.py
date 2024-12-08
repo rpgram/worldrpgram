@@ -3,7 +3,8 @@ from dishka import AsyncContainer
 
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.core import Interactor
-from rpgram_setup.domain.protocols.data.players import GetPlayersQuery, GetPlayerQuery
+from rpgram_setup.domain.protocols.data.players import GetPlayerQuery, GetPlayersQuery
+
 from .data import FAKE_PLAYER
 from .fixtures.ioc import async_cont
 

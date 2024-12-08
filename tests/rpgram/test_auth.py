@@ -3,12 +3,12 @@ import string
 
 import pytest
 
-from rpgram_setup.application.auth import UserRegisterDTO, UserLoginDTO
+from rpgram_setup.application.auth import UserLoginDTO, UserRegisterDTO
 from rpgram_setup.domain.protocols.core import Interactor
 from rpgram_setup.domain.user import User
-
 from rpgram_setup.infrastructure.general import HasherImpl
-from .data import APP_CONFIG, USER_DATA, USER_LOGIN, FAKE_USER
+
+from .data import APP_CONFIG, FAKE_USER, USER_DATA, USER_LOGIN
 from .fixtures.ioc import async_cont
 
 

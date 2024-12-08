@@ -4,7 +4,7 @@ from typing import Mapping
 from rpgram_setup.application.battle.wait import WaitingBattleDTOReader
 from rpgram_setup.domain.battle import WaitingBattle
 from rpgram_setup.domain.protocols.data.battle import WaitingBattleGatewayProto
-from rpgram_setup.domain.user_types import PlayerId, DBS
+from rpgram_setup.domain.user_types import DBS, PlayerId
 
 
 class BattleKeysGateway:

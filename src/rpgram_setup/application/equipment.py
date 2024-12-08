@@ -6,13 +6,13 @@ from rpgram_setup.domain.economics import Token
 from rpgram_setup.domain.entities import Shop
 from rpgram_setup.domain.exceptions import (
     ActionFailedError,
-    SomethingIsMissingError,
     NotUniqueError,
+    SomethingIsMissingError,
 )
 from rpgram_setup.domain.heroes import PlayersHero
 from rpgram_setup.domain.player import Player
-from rpgram_setup.domain.protocols.core import Interactor, I, O, AsyncInteractor
-from rpgram_setup.domain.protocols.data.players import PlayersMapper, GetPlayerQuery
+from rpgram_setup.domain.protocols.core import AsyncInteractor, Interactor
+from rpgram_setup.domain.protocols.data.players import GetPlayerQuery, PlayersMapper
 from rpgram_setup.domain.protocols.data.statisctics import StatisticsWriter, TradeEvent
 from rpgram_setup.domain.vos.in_game import Equipment
 

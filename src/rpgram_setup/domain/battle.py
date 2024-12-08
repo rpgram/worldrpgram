@@ -2,7 +2,7 @@ import dataclasses
 from dataclasses import dataclass
 from enum import Enum
 
-from rpgram_setup.domain.user_types import PlayerId, BattleId
+from rpgram_setup.domain.user_types import BattleId, PlayerId
 from rpgram_setup.domain.vos.in_game import HeroClass
 
 

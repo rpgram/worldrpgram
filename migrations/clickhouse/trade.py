@@ -6,5 +6,4 @@ UPGRADE = """CREATE TABLE IF NOT EXISTS rpgram.trade
                 `good_name`       String,
                 `quantity`        UInt16,
                 `buy`             Bool
-            )    PRIMARY KEY id
-            """
+            )    PRIMARY KEY id"""

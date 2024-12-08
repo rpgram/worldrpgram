@@ -2,15 +2,16 @@ from rpgram_setup.application.identity import SessionManager
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.data.battle import UserMapper
 from rpgram_setup.domain.protocols.data.players import (
-    PlayersMapper,
-    GetPlayersQuery,
     CreatePlayer,
     GetPlayerQuery,
+    GetPlayersQuery,
+    PlayersMapper,
 )
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user import User
 from rpgram_setup.domain.user_types import PlayerId
-from .data import FAKE_PLAYER, FAKE_USER, NEW_LOGIN, HASH
+
+from .data import FAKE_PLAYER, FAKE_USER, HASH, NEW_LOGIN
 
 
 class PlayersMapperStub(PlayersMapper):
