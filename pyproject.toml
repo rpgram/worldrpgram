@@ -1,6 +1,7 @@
 [project]
 name = 'rpgram_setup'
 version = '0.0.0a'
+readme = "README.md"
 
 [project.scripts]
 mermaid = "doc.code_graph:make_graph"
@@ -9,3 +10,4 @@ where = ["src", "tools"]
 
 [tool.pytest]
 asyncio_default_fixture_loop_scope = "function"
+

@@ -21,7 +21,7 @@ services:
   vector:
     image: timberio/vector:0.42.0-debian
     volumes:
-      - ./vector.yaml:/etc/vector/vector.yaml:ro
+      - ./observability/vector.yaml:/etc/vector/vector.yaml:ro
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       setup_app:
@@ -40,7 +40,7 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./loki-config.yaml:/etc/loki/loki-config.yaml
+      - ./observability/loki-config.yaml:/etc/loki/loki-config.yaml
       - loki_data:/loki
     healthcheck:
       test: wget --quiet --tries=1 --output-document=- http://localhost:3100/ready | grep -q -w ready || exit 1
@@ -57,7 +57,7 @@ services:
     ports:
       - 9090:9090
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
     networks:
