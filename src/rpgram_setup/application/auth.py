@@ -15,6 +15,7 @@ from rpgram_setup.domain.user import User
 
 logger = logging.getLogger(__name__)
 
+
 @dataclasses.dataclass
 class UserLoginDTO:
     login: str
@@ -78,6 +79,11 @@ class UserRegisterInteractor(Interactor[UserRegisterDTO, User]):
         password_hash = self.hasher.hash(in_dto.password)
         user = User(player_id, in_dto.login, password_hash)
         self.user_mapper.insert_user(user)
-        logger.info("User %s for pid %s created", in_dto.login, player_id, extra={"scope": "iam"})
+        logger.info(
+            "User %s for pid %s created",
+            in_dto.login,
+            player_id,
+            extra={"scope": "iam"},
+        )
         self.idm.assign_session(player_id)
         return user

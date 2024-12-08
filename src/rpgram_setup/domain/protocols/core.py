@@ -5,6 +5,7 @@ from rpgram_setup.domain.entities import Shop
 from rpgram_setup.domain.heroes import PlayersHero
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.user_types import BattleId
+from rpgram_setup.infrastructure.models import BattleStarted
 
 I = TypeVar("I", bound=Any, contravariant=True)
 O = TypeVar("O", bound=Any, covariant=True)
@@ -25,7 +26,7 @@ class ClientProto(Protocol):
         opponent: Player,
         players_hero: PlayersHero,
         opponents_hero: PlayersHero,
-    ) -> BattleId: ...
+    ) -> BattleStarted: ...
 
 
 class Interactor(Protocol[I, O]):

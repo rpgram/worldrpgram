@@ -22,15 +22,14 @@ class ClickHouseWriter(StatisticsWriter):
                 `quantity`,
                 `buy`
             ) VALUES (generateUUIDv4(), %(timestamp)s, %(token_units)s, %(good_name)s, %(quantity)s, %(buy)s)""",
-                {
-                    "timestamp": current_ts,
-                    "token_units": event.item.price_per_unit.units,
-                    "id": uuid.uuid4(),
-                    "good_name": event.item.name,
-                    "quantity": event.quantity,
-                    "buy": event.purchase,
-                }
-            ,
+            {
+                "timestamp": current_ts,
+                "token_units": event.item.price_per_unit.units,
+                "id": uuid.uuid4(),
+                "good_name": event.item.name,
+                "quantity": event.quantity,
+                "buy": event.purchase,
+            },
         )
 
     async def save_battle_result(self, battle_result: BattleResult) -> None:
@@ -54,8 +53,7 @@ class ClickHouseWriter(StatisticsWriter):
                     "end_timestamp": current_ts,
                     "opponent_id": battle_result.opponent_result.player_id,
                     "player_id": battle_result.hero_result.player_id,
-                    "timeout": player_wins
-                    and battle_result.opponent_result.win,
+                    "timeout": player_wins and battle_result.opponent_result.win,
                     "winner_id": (
                         battle_result.hero_result.player_id
                         if player_wins

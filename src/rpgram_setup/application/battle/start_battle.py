@@ -8,6 +8,8 @@ from rpgram_setup.domain.protocols.core import (
 )
 from rpgram_setup.domain.protocols.data.players import PlayersMapper, GetPlayerQuery
 from rpgram_setup.domain.user_types import BattleId, PlayerId
+from rpgram_setup.infrastructure.data.gateways import BattleKeysGateway
+from rpgram_setup.infrastructure.models import BattleStarted
 
 
 @dataclasses.dataclass
@@ -19,8 +21,12 @@ class StartBattleDTO:
 
 class StartBattleInteractor(AsyncInteractor[StartBattleDTO, BattleId]):
     def __init__(
-        self, battlefield_gateway: ClientProto, player_data_mapper: PlayersMapper
+        self,
+        battlefield_gateway: ClientProto,
+        player_data_mapper: PlayersMapper,
+        battle_keys: BattleKeysGateway,
     ):
+        self.battle_keys = battle_keys
         self.player_data_mapper = player_data_mapper
         self.battlefield_gateway = battlefield_gateway
 
@@ -45,6 +51,9 @@ class StartBattleInteractor(AsyncInteractor[StartBattleDTO, BattleId]):
             )
         except StopIteration:
             raise SomethingIsMissing("hero")
-        return await self.battlefield_gateway.start_battle(
+        battle_started = await self.battlefield_gateway.start_battle(
             player, opponent, players_hero, opponents_hero
         )
+        self.battle_keys.add_key(player.player_id, battle_started.player_key)
+        self.battle_keys.add_key(opponent.player_id, battle_started.opponent_key)
+        return battle_started.battle_id

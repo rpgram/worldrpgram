@@ -75,6 +75,7 @@ from rpgram_setup.domain.vos.in_game import Good
 from rpgram_setup.infrastructure.api import SessionManager, BattleAPIClient
 from rpgram_setup.infrastructure.config import read_config
 from rpgram_setup.infrastructure.data.clickhouse_stats import ClickHouseWriter
+from rpgram_setup.infrastructure.data.gateways import BattleKeysGateway
 from rpgram_setup.infrastructure.general import HasherImpl
 from rpgram_setup.infrastructure.data.mappers import (
     PlayerMemoryMapper,
@@ -130,6 +131,8 @@ class IoC(FastapiProvider):
     battle_connector = provide(
         source=BattleAPIClient, provides=ClientProto, scope=Scope.APP
     )
+
+    keys_gateway = provide(BattleKeysGateway)
 
     scope = Scope.REQUEST
 

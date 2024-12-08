@@ -5,13 +5,12 @@ import aiohttp
 from rpgram_setup.application.configuration import AppConfig
 from rpgram_setup.domain.gateways import RequestData
 from rpgram_setup.domain.heroes import PlayersHero
-from rpgram_setup.domain.vos.in_game import HeroClass
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.core import ClientProto, ConnectorProto
-from rpgram_setup.domain.user_types import B, T, BattleId
+from rpgram_setup.domain.user_types import T, BattleId
 from rpgram_setup.infrastructure.converters import player_to_dto_converter
 from rpgram_setup.infrastructure.exceptions import BadRequest
-from rpgram_setup.infrastructure.models import StartBattlePlayerDTO
+from rpgram_setup.infrastructure.models import BattleStarted
 
 
 class SessionManager(ConnectorProto[RequestData[T], T]):
@@ -59,7 +58,7 @@ class BattleAPIClient(ClientProto):
         opponent: Player,
         players_hero: PlayersHero,
         opponents_hero: PlayersHero,
-    ) -> BattleId:
+    ) -> BattleStarted:
         rd = RequestData(
             "POST",
             f"{self._url}/battle/instant",
@@ -72,6 +71,6 @@ class BattleAPIClient(ClientProto):
                     player_to_dto_converter(opponent, opponents_hero)
                 ),
             },
-            BattleId,
+            BattleStarted,
         )
         return await self._connector.make_call(rd)
