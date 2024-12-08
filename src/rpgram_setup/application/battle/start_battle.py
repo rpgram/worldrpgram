@@ -41,10 +41,15 @@ class StartBattleInteractor(AsyncInteractor[StartBattleDTO, BattleId]):
     async def execute(self, in_dto: StartBattleDTO) -> BattleId:
         self.idp.authenticated_only()
         player_id = cast(PlayerId, self.idp.get_payer_identity())
-        if player_id != in_dto.opponent_id:
+        if player_id == in_dto.opponent_id:
+            logger.warning("Not to self!", extra={"scope":"battle"})
             raise ActionFailedError
         existing_battle = self.waiters.get_by_player(in_dto.opponent_id)
         if not existing_battle:
+            logger.warning("No battle", extra={"scope":"battle"})
+            raise ActionFailedError
+        if in_dto.hero_class and in_dto.hero_class != existing_battle.hero_class:
+            logger.warning("Hero choice conflict", extra={"scope":"battle"})
             raise ActionFailedError
         player = self.player_data_mapper.get_player(GetPlayerQuery(player_id, None))
         if player is None:
@@ -65,6 +70,8 @@ class StartBattleInteractor(AsyncInteractor[StartBattleDTO, BattleId]):
             )
         except StopIteration:
             raise SomethingIsMissingError("hero")
+        if self.waiters.get_by_player(player_id):
+            self.waiters.remove_battle(player_id)
         battle_started = await self.battlefield_gateway.start_battle(
             player, opponent, players_hero, opponents_hero
         )

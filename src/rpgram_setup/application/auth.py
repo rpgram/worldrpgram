@@ -106,7 +106,7 @@ class GetKeyInteractor(Interactor[None, str]):
 
     def execute(self, in_dto: None) -> str:
         self.idp.authenticated_only()
-        key = self.keys.get_key(cast(PlayerId,self.idp.get_payer_identity()))
+        key = self.keys.get_key(cast(PlayerId, self.idp.get_payer_identity()))
         if key is None:
             raise SomethingIsMissingError("key")
         return key

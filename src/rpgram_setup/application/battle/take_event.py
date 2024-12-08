@@ -1,3 +1,5 @@
+import logging
+
 from rpgram_setup.domain.battle import BattleResult
 from rpgram_setup.domain.protocols.core import AsyncInteractor
 from rpgram_setup.domain.protocols.data.battle import BattleResultMapper
@@ -14,3 +16,4 @@ class TakeEventInteractor(AsyncInteractor[BattleResult, None]):
     async def execute(self, in_dto: BattleResult) -> None:
         self.battle_result_mapper.save_result(in_dto)
         await self.long_term_saver.save_battle_result(in_dto)
+        logging.warning("Battle has finished.", extra={"scope": "battle"})
