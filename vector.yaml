@@ -11,7 +11,8 @@ transforms:
     inputs:
       - rpgram_setup_source
     drop_on_error: true
-    source: ".message = object!(parse_json(.message) ?? {})"
+    source: ".message = object!(parse_json(.message) ?? {})\n
+    .message.scope = string(.message.scope) ?? \"undef\""
 
 
 sinks:
