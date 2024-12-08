@@ -12,111 +12,117 @@ class factory3["📥 AsyncContainer"]{
  
 }
 
-class factory4["🏭 ConnectorProto_RequestData_BattleId___BattleId_"]{
+class factory4["🏭 ConnectorProto_RequestData_BattleStarted___BattleStarted_"]{
     SessionManager[T]()
 }
 
-class factory5["🏭 defaultdict"]{
-    IoC.db()
-}
-
-class factory6["🏭 Ⓘ ClientProto"]{
-    BattleAPIClient()
-    ConnectorProto[RequestData[BattleId], BattleId]
+class factory5["🏭 Ⓘ Hasher"]{
+    HasherImpl()
     AppConfig
 }
 
-class factory7["🏭 Ⓘ PlayersMapper"]{
+class factory6["🏭 defaultdict"]{
+    IoC.db()
+}
+
+class factory7["🏭 Ⓘ ClientProto"]{
+    BattleAPIClient()
+    ConnectorProto[RequestData[BattleStarted], BattleStarted]
+    AppConfig
+}
+
+class factory8["🏭 BattleKeysGateway"]{
+    BattleKeysGateway()
+}
+
+class factory9["🏭 Ⓘ PlayersMapper"]{
     PlayerMemoryMapper()
     defaultdict
 }
 
-class factory8["🏭 NullSuiteFactory"]{
+class factory10["🏭 NullSuiteFactory"]{
     NullSuiteFactory()
 }
 
-class factory9["🏭 CentralShopFactory"]{
+class factory11["🏭 CentralShopFactory"]{
     CentralShopFactory()
     NullSuiteFactory
 }
 
-class factory10["🏭 Shop"]{
+class factory12["🏭 Shop"]{
     IoC.shop()
     CentralShopFactory
 }
 
-class factory11["📥 dict_str__SessionData_"]{
+class factory13["📥 dict_str__SessionData_"]{
  
 }
 
-class factory12["📥 AppConfig"]{
+class factory14["📥 AppConfig"]{
  
 }
 
-class factory13["🏭 None"]{
+class factory15["🏭 None"]{
     IoC.db()
 }
 
 }
 
-factory4 <.. factory6
-factory12 <.. factory6
-factory5 <.. factory7
-factory8 <.. factory9
-factory9 <.. factory10
+factory14 <.. factory5
+factory4 <.. factory7
+factory14 <.. factory7
+factory6 <.. factory9
+factory10 <.. factory11
+factory11 <.. factory12
 namespace Scope.SESSION {
-class factory16["📥 AsyncContainer"]{
+class factory18["📥 AsyncContainer"]{
  
 }
 
-class factory17["📥 WebSocket"]{
+class factory19["📥 WebSocket"]{
  
 }
 
 }
 
 namespace Scope.REQUEST {
-class factory20["📥 AsyncContainer"]{
+class factory22["📥 AsyncContainer"]{
  
 }
 
-class factory21["🏭 AsyncInteractor_CreateHeroDTO__NoneType_"]{
+class factory23["🏭 AsyncInteractor_CreateHeroDTO__NoneType_"]{
     InitHeroInteractor()
     PlayersMapper
     HeroFactory
     IDProvider
 }
 
-class factory22["🏭 Interactor_BattleResult__NoneType_"]{
+class factory24["🏭 AsyncInteractor_BattleResult__NoneType_"]{
     TakeEventInteractor()
     BattleResultMapper
+    StatisticsWriter
 }
 
-class factory23["🏭 Ⓘ BattleResultMapper"]{
+class factory25["🏭 Ⓘ BattleResultMapper"]{
     BattleResultMemoryMapper()
     defaultdict
 }
 
-class factory24["🏭 Ⓘ RSessionIDManager"]{
+class factory26["🏭 Ⓘ RSessionIDManager"]{
     RSessionIDManagerImpl()
     AppConfig
     Hasher
     dict[str, SessionData]
 }
 
-class factory25["🏭 Ⓘ Hasher"]{
-    HasherImpl()
-    AppConfig
-}
-
-class factory26["🏭 Interactor_UserLoginDTO__User_"]{
+class factory27["🏭 Interactor_UserLoginDTO__User_"]{
     UserLoginInteractor()
     UserMapper
     RSessionIDManager
     Hasher
 }
 
-class factory27["🏭 Interactor_UserRegisterDTO__User_"]{
+class factory28["🏭 Interactor_UserRegisterDTO__User_"]{
     UserRegisterInteractor()
     UserMapper
     PlayersMapper
@@ -124,55 +130,64 @@ class factory27["🏭 Interactor_UserRegisterDTO__User_"]{
     Hasher
 }
 
-class factory28["🏭 Interactor_BattleResultsQuery__list_BattleResult__"]{
+class factory29["🏭 Interactor_BattleResultsQuery__list_BattleResult__"]{
     BattleResultsInteractor()
     BattleResultMapper
 }
 
-class factory29["🏭 Ⓘ UserMapper"]{
+class factory30["🏭 Ⓘ UserMapper"]{
     UserMemoryMapper()
     defaultdict
 }
 
-class factory30["🏭 HeroFactory"]{
+class factory31["🏭 HeroFactory"]{
     HeroFactory()
 }
 
-class factory31["🏭 AsyncInteractor_StartBattleDTO__BattleId_"]{
+class factory32["🏭 GetKeyInteractor"]{
+    GetKeyInteractor()
+    BattleKeysGateway
+    IDProvider
+}
+
+class factory33["🏭 AsyncInteractor_StartBattleDTO__BattleId_"]{
     StartBattleInteractor()
     ClientProto
     PlayersMapper
+    BattleKeysGateway
+    WaitingBattleGatewayProto
+    IDProvider
 }
 
-class factory32["🏭 Interactor_CreatePlayer__Player_"]{
+class factory34["🏭 Interactor_CreatePlayer__Player_"]{
     NewPlayerInteractor()
     PlayersMapper
     RSessionIDManager
     IDProvider
 }
 
-class factory33["🏭 Interactor_GetPlayersQuery__list_Player__"]{
+class factory35["🏭 Interactor_GetPlayersQuery__list_Player__"]{
     ReadPlayersInteractor()
     PlayersMapper
 }
 
-class factory34["🏭 Interactor_GetPlayerQuery__Player_"]{
+class factory36["🏭 Interactor_GetPlayerQuery__Player_"]{
     ReadPlayerInteractor()
     PlayersMapper
 }
 
-class factory35["🏭 Interactor_int__PlayersHero_"]{
+class factory37["🏭 Interactor_int__PlayersHero_"]{
     EquipInteractor()
     IDProvider
     PlayersMapper
 }
 
-class factory36["🏭 Interactor_ShopSearch__list_Good__"]{
+class factory38["🏭 Interactor_ShopSearch__list_Good__"]{
     SearchOffer()
     Shop
 }
 
-class factory37["🏭 AsyncInteractor_BuyCommand__Player_"]{
+class factory39["🏭 AsyncInteractor_BuyCommand__Player_"]{
     BuyInteractor()
     Shop
     PlayersMapper
@@ -180,59 +195,81 @@ class factory37["🏭 AsyncInteractor_BuyCommand__Player_"]{
     StatisticsWriter
 }
 
-class factory38["🏭 Ⓘ StatisticsWriter"]{
+class factory40["🏭 Interactor_HeroClass__NoneType_"]{
+    WaitForOpponentInteractor()
+    PlayersMapper
+    IDProvider
+    WaitingBattleGatewayProto
+}
+
+class factory41["🏭 Ⓘ WaitingBattleDTOReader"]{
+    WaitingBattleGateway()
+    defaultdict
+}
+
+class factory42["🏭 Ⓘ StatisticsWriter"]{
     IoC.stats_writer()
     AppConfig
 }
 
-class factory39["🏭 Ⓘ IDProvider"]{
+class factory43["🏭 Ⓘ IDProvider"]{
     IoC.auth_provider()
     dict[str, SessionData]
     Request
 }
 
 
-class factory41["📥 Request"]{
+
+class factory46["📥 Request"]{
  
 }
 
 }
 
-factory7 <.. factory21
-factory30 <.. factory21
-factory39 <.. factory21
-factory23 <.. factory22
-factory5 <.. factory23
-factory12 <.. factory24
+factory9 <.. factory23
+factory31 <.. factory23
+factory43 <.. factory23
 factory25 <.. factory24
-factory11 <.. factory24
-factory12 <.. factory25
-factory29 <.. factory26
-factory24 <.. factory26
-factory25 <.. factory26
-factory29 <.. factory27
-factory7 <.. factory27
-factory24 <.. factory27
-factory25 <.. factory27
-factory23 <.. factory28
-factory5 <.. factory29
-factory6 <.. factory31
-factory7 <.. factory31
-factory7 <.. factory32
-factory24 <.. factory32
-factory39 <.. factory32
+factory42 <.. factory24
+factory6 <.. factory25
+factory14 <.. factory26
+factory5 <.. factory26
+factory13 <.. factory26
+factory30 <.. factory27
+factory26 <.. factory27
+factory5 <.. factory27
+factory30 <.. factory28
+factory9 <.. factory28
+factory26 <.. factory28
+factory5 <.. factory28
+factory25 <.. factory29
+factory6 <.. factory30
+factory8 <.. factory32
+factory43 <.. factory32
 factory7 <.. factory33
-factory7 <.. factory34
-factory39 <.. factory35
-factory7 <.. factory35
-factory10 <.. factory36
-factory10 <.. factory37
-factory7 <.. factory37
-factory39 <.. factory37
-factory38 <.. factory37
+factory9 <.. factory33
+factory8 <.. factory33
+factory41 <.. factory33: 🔗 WaitingBattleGatewayProto
+factory43 <.. factory33
+factory9 <.. factory34
+factory26 <.. factory34
+factory43 <.. factory34
+factory9 <.. factory35
+factory9 <.. factory36
+factory43 <.. factory37
+factory9 <.. factory37
 factory12 <.. factory38
-factory11 <.. factory39
-factory41 <.. factory39
+factory12 <.. factory39
+factory9 <.. factory39
+factory43 <.. factory39
+factory42 <.. factory39
+factory9 <.. factory40
+factory43 <.. factory40
+factory41 <.. factory40: 🔗 WaitingBattleGatewayProto
+factory6 <.. factory41
+factory14 <.. factory42
+factory13 <.. factory43
+factory46 <.. factory43
 
 </pre>
 

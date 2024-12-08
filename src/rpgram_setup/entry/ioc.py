@@ -94,6 +94,7 @@ from rpgram_setup.infrastructure.data.mappers import (
     BattleResultMemoryMapper,
     UserMemoryMapper,
 )
+from rpgram_setup.infrastructure.models import BattleStarted
 from rpgram_setup.infrastructure.session import RSessionIDManagerImpl, IDProviderImpl
 
 
@@ -101,7 +102,7 @@ class IoC(FastapiProvider):
 
     session = provide(
         source=SessionManager,
-        provides=ConnectorProto[RequestData[BattleId], BattleId],
+        provides=ConnectorProto[RequestData[BattleStarted], BattleStarted],
         scope=Scope.APP,
     )
 
