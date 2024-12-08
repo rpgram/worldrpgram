@@ -1,4 +1,4 @@
-from rpgram_setup.application.identity import RSessionIDManager
+from rpgram_setup.application.identity import SessionManager
 from rpgram_setup.domain.player import Player
 from rpgram_setup.domain.protocols.data.battle import UserMapper
 from rpgram_setup.domain.protocols.data.players import (
@@ -39,7 +39,9 @@ class HasherStub(Hasher):
         return HASH
 
 
-class IdMStub(RSessionIDManager):
+class MStub(SessionManager):
+    __cookie_key__: str = "RSESSION_ID"
+
     def assign_session(self, player_id: PlayerId):
         pass
 

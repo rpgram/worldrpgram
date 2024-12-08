@@ -1,7 +1,7 @@
 import pytest
 
 from rpgram_setup.domain.economics import Token
-from rpgram_setup.domain.exceptions import WorldException
+from rpgram_setup.domain.exceptions import WorldError
 from .fixtures.currency import empty_balance, start_balance
 
 
@@ -19,7 +19,7 @@ def test_ops(start_balance):
 
 
 def test_raises(start_balance):
-    with pytest.raises(WorldException):
+    with pytest.raises(WorldError):
         start_balance -= Token(300)
     with pytest.raises(AssertionError):
         start_balance -= 100

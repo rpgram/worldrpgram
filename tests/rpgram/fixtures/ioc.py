@@ -7,7 +7,7 @@ from rpgram_setup.application.auth import (
     UserLoginInteractor,
     UserLoginDTO,
 )
-from rpgram_setup.application.identity import RSessionIDManager
+from rpgram_setup.application.identity import SessionManager
 from rpgram_setup.application.players.read import (
     ReadPlayersInteractor,
     ReadPlayerInteractor,
@@ -22,7 +22,7 @@ from rpgram_setup.domain.protocols.data.players import (
 )
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user import User
-from ..stubs import PlayersMapperStub, UserMapperStub, HasherStub, IdMStub
+from ..stubs import PlayersMapperStub, UserMapperStub, HasherStub, MStub
 
 
 class FakeProvider(Provider):
@@ -30,7 +30,7 @@ class FakeProvider(Provider):
     player_mapper = provide(PlayersMapperStub, provides=PlayersMapper)
     user_mapper = provide(UserMapperStub, provides=UserMapper)
     hasher = provide(HasherStub, provides=Hasher)
-    idm = provide(IdMStub, provides=RSessionIDManager)
+    idm = provide(MStub, provides=SessionManager)
 
 
 class InteractorProvider(Provider):

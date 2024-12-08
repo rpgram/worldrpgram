@@ -4,7 +4,7 @@ import os
 
 from asynch import connect
 
-from clickhouse import trade, results, add_ts_key
+from clickhouse import trade, add_ts_key
 
 # Migrations
 
