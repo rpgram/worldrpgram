@@ -20,7 +20,7 @@ from rpgram_setup.presentation.api.errors import exceptions_handler
 from rpgram_setup.presentation.api.results import results_router
 from rpgram_setup.presentation.fs.taker import make_rabbit_router
 from rpgram_setup.presentation.hero import hero_router
-from rpgram_setup.presentation.middlewares import session_middleware
+from rpgram_setup.presentation.middlewares import logging_middleware, session_middleware
 from rpgram_setup.presentation.player import player_router
 
 
@@ -49,6 +49,7 @@ def create_app() -> FastAPI:
     app.include_router(results_router)
     app.include_router(user_router)
     app.include_router(equip_router)
+    app.middleware("http")(logging_middleware)
     app.middleware("http")(session_middleware)
     setup_dishka(container=container, app=app)
     return app

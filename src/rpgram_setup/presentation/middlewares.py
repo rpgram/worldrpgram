@@ -1,7 +1,9 @@
+import contextvars
+
 from starlette.requests import Request
 from starlette.responses import Response
 
-from rpgram_setup.application.identity import SessionManager
+from rpgram_setup.application.identity import IDProvider, SessionManager
 
 
 async def session_middleware(request: Request, call_next):
@@ -15,4 +17,15 @@ async def session_middleware(request: Request, call_next):
             idm.new_session.rsession_id,
             expires=idm.new_session.expires_at,
         )
+    return response
+
+
+log_context: contextvars.ContextVar = contextvars.ContextVar("logs")
+
+
+async def logging_middleware(request: Request, call_next):
+    idp: IDProvider = await request.state.dishka_container.get(IDProvider)
+    player_id = idp.get_payer_identity()
+    log_context.set({"player_id": player_id})
+    response: Response = await call_next(request)
     return response
