@@ -9,7 +9,7 @@ from rpgram_setup.presentation.middlewares import log_context
 class ContextFilter(logging.Filter):
     def filter(self, record):
         log_data = log_context.get()
-        record.playerId = int(log_data["player_id"])
+        record.playerId = log_data["player_id"]
         record.requestId = str(log_data["request_id"])
         return True
 
