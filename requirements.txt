@@ -7,4 +7,5 @@ fastapi
 faststream
 aio-pika
 aiohttp
+uuid7
 prometheus-fastapi-instrumentator~=7.0.0
