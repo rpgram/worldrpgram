@@ -16,7 +16,6 @@ class TradeEvent:
 
 
 class StatisticsWriter(Protocol):
-
     @abc.abstractmethod
     async def trade(self, event: TradeEvent) -> None: ...
 

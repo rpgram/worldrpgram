@@ -58,7 +58,6 @@ class SessionManagerImpl(SessionManager):
 
 
 class IDProviderImpl(IDProvider):
-
     def __init__(self, cookie: str | None, db: SessionDB):
         self.db = db
         self.cookie = cookie

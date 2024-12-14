@@ -15,7 +15,6 @@ logger = logging.getLogger(__name__)
 
 
 class WaitingBattleDTOReader(Protocol):
-
     @abc.abstractmethod
     def get_battles(self) -> list[WaitingBattle]: ...
 

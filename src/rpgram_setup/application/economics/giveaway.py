@@ -1,11 +1,13 @@
 from dishka import AsyncContainer
 
 from rpgram_setup.domain.protocols.core import Interactor
-from rpgram_setup.domain.protocols.data.players import GetPlayersQuery, PlayersMapper
+from rpgram_setup.domain.protocols.data.players import PlayersMapper
 
 
 class GiveawayInteractor(Interactor[None, None]):
-    def __init__(self, players_mapper: PlayersMapper, request_container: AsyncContainer):
+    def __init__(
+        self, players_mapper: PlayersMapper, request_container: AsyncContainer
+    ):
         self.request_container = request_container
         self.players_mapper = players_mapper
 

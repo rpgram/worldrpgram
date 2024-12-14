@@ -2,6 +2,7 @@ import contextvars
 
 from starlette.requests import Request
 from starlette.responses import Response
+from uuid_extensions import uuid7
 
 from rpgram_setup.application.identity import IDProvider, SessionManager
 
@@ -26,6 +27,11 @@ log_context: contextvars.ContextVar = contextvars.ContextVar("logs")
 async def logging_middleware(request: Request, call_next):
     idp: IDProvider = await request.state.dishka_container.get(IDProvider)
     player_id = idp.get_payer_identity()
-    log_context.set({"player_id": player_id})
+    log_context.set({"player_id": player_id, "request_id": request.state.request_id})
     response: Response = await call_next(request)
     return response
+
+
+async def request_id_middleware(req: Request, call_next):
+    req.state.request_id = uuid7()
+    return await call_next(req)

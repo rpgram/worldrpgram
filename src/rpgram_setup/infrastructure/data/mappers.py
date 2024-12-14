@@ -16,7 +16,6 @@ from rpgram_setup.domain.user_types import DBS, BattleId, PlayerId
 
 
 class PlayerMemoryMapper(PlayersMapper):
-
     db: list[Player]
 
     def __init__(self, dbs: DBS):
@@ -58,7 +57,6 @@ class PlayerMemoryMapper(PlayersMapper):
 
 
 class BattleResultMemoryMapper(BattleResultMapper):
-
     def __init__(self, dbs: DBS):
         self.db: list[BattleResult] = dbs[BattleResult]
 
@@ -79,7 +77,6 @@ class BattleResultMemoryMapper(BattleResultMapper):
 
 
 class UserMemoryMapper(UserMapper):
-
     def insert_user(self, user: User):
         self.db.append(user)
 

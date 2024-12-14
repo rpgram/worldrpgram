@@ -7,6 +7,5 @@ class Display(Protocol):
 
 
 class Hasher(Protocol):
-
     @abc.abstractmethod
     def hash(self, value: str) -> str: ...

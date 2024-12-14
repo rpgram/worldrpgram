@@ -1,5 +1,4 @@
 from contextlib import suppress
-from typing import Mapping
 
 from rpgram_setup.application.battle.wait import WaitingBattleDTOReader
 from rpgram_setup.domain.battle import WaitingBattle

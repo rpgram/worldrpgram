@@ -35,7 +35,6 @@ Ledger = dict[type[Currency], Currency]
 
 
 class Token(Currency):
-
     def __init__(self, units: int):
         self.units = units
 

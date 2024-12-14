@@ -41,7 +41,6 @@ class UserRegisterDTO(UserLoginDTO):
 
 
 class UserLoginInteractor(Interactor[UserLoginDTO, User]):
-
     def __init__(
         self,
         user_getter: UserMapper,

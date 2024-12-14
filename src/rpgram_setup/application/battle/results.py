@@ -5,7 +5,6 @@ from rpgram_setup.domain.protocols.data.battle import BattleResultMapper
 
 
 class BattleResultsInteractor(Interactor[BattleResultsQuery, list[BattleResult]]):
-
     def __init__(self, results_mapper: BattleResultMapper):
         self.results_mapper = results_mapper
 

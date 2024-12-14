@@ -1,18 +1,18 @@
 import abc
-from typing import Any, Protocol, TypeVar
+from typing import Protocol, TypeVar, Any
 
 from rpgram_setup.domain.entities import Shop
 from rpgram_setup.domain.heroes import PlayersHero
 from rpgram_setup.domain.player import Player
 from rpgram_setup.infrastructure.models import BattleStarted
 
-I = TypeVar("I", bound=Any, contravariant=True)
-O = TypeVar("O", bound=Any, covariant=True)
+Input = TypeVar("Input", bound=Any, contravariant=True)
+Output = TypeVar("Output", bound=Any, covariant=True)
 
 
-class ConnectorProto(Protocol[I, O]):
+class ConnectorProto(Protocol[Input, Output]):
     @abc.abstractmethod
-    async def make_call(self, call_data: I) -> O: ...
+    async def make_call(self, call_data: Input) -> Output: ...
 
 
 class ClientProto(Protocol):
@@ -28,19 +28,24 @@ class ClientProto(Protocol):
     ) -> BattleStarted: ...
 
 
-class Interactor(Protocol[I, O]):
+SyncInteractorInput = TypeVar("SyncInteractorInput", bound=Any, contravariant=True)
+SyncInteractorOutput = TypeVar("SyncInteractorOutput", bound=Any, covariant=True)
 
+
+class Interactor(Protocol[SyncInteractorInput, SyncInteractorOutput]):
     @abc.abstractmethod
-    def execute(self, in_dto: I) -> O: ...
+    def execute(self, in_dto: SyncInteractorInput) -> SyncInteractorOutput: ...
 
 
-class AsyncInteractor(Protocol[I, O]):
+AsyncInteractorInput = TypeVar("AsyncInteractorInput", bound=Any, contravariant=True)
+AsyncInteractorOutput = TypeVar("AsyncInteractorOutput", bound=Any, covariant=True)
 
+
+class AsyncInteractor(Protocol[AsyncInteractorInput, AsyncInteractorOutput]):
     @abc.abstractmethod
-    async def execute(self, in_dto: I) -> O: ...
+    async def execute(self, in_dto: AsyncInteractorInput) -> AsyncInteractorOutput: ...
 
 
 class ShopFactory(Protocol):
-
     @abc.abstractmethod
     def create_shop(self) -> Shop: ...

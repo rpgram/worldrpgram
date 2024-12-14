@@ -20,7 +20,6 @@ class BattleResultMapper(Protocol):
 
 
 class UserMapper(Protocol):
-
     db: Any
 
     @abc.abstractmethod
@@ -31,7 +30,6 @@ class UserMapper(Protocol):
 
 
 class WaitingBattleGatewayProto(Protocol):
-
     @abc.abstractmethod
     def insert_battle(self, waiting_battle: WaitingBattle): ...
 

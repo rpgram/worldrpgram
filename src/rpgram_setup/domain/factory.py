@@ -8,7 +8,6 @@ from rpgram_setup.domain.vos.in_game import Equipment, Good, Hero, HeroClass, He
 
 
 class HeroFactory:
-
     def create_warrior(self) -> Hero:
         hero_stats = HeroStats(10, 13, 25)
         per_level = HeroStats(10, 1, 2)
@@ -25,7 +24,6 @@ TargetItem = TypeVar("TargetItem", covariant=True, bound=Good)
 
 
 class ItemFactory(Protocol[TargetItem, Ingredients]):
-
     @abc.abstractmethod
     def create_item(self, ingredients: Ingredients) -> TargetItem:
         """Returns quantity of created items"""

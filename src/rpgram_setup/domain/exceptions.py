@@ -30,7 +30,6 @@ class NotUniqueError(WorldError):
 
 
 class ActionFailedError(WorldError):
-
     def __str__(self):
         return """Unbelievable happens."""
 

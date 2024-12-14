@@ -14,7 +14,6 @@ from rpgram_setup.infrastructure.models import BattleStarted
 
 
 class HTTPSessionManager(ConnectorProto[RequestData[T], T]):
-
     def __init__(self):
         self.session = aiohttp.ClientSession()
 

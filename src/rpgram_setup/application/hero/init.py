@@ -1,4 +1,5 @@
 import dataclasses
+import logging
 
 from rpgram_setup.application.identity import IDProvider
 from rpgram_setup.application.services import init_hero
@@ -9,13 +10,15 @@ from rpgram_setup.domain.protocols.data.players import GetPlayerQuery, PlayersMa
 from rpgram_setup.domain.vos.in_game import HeroClass
 
 
+logger = logging.getLogger(__name__)
+
+
 @dataclasses.dataclass
 class CreateHeroDTO:
     hero_class: HeroClass
 
 
 class InitHeroInteractor(AsyncInteractor[CreateHeroDTO, None]):
-
     def __init__(
         self, player_mapper: PlayersMapper, hero_factory: HeroFactory, idp: IDProvider
     ):
@@ -34,3 +37,4 @@ class InitHeroInteractor(AsyncInteractor[CreateHeroDTO, None]):
             if hero.born.class_ == in_dto.hero_class:
                 raise NotUniqueError("hero", in_dto.hero_class)
         init_hero(self.hero_factory, player, in_dto.hero_class)
+        logger.info("Player got hero %d", in_dto.hero_class)

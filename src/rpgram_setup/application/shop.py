@@ -15,7 +15,6 @@ class ShopSearch:
 
 
 class SearchOffer(Interactor[ShopSearch, list[Good]]):
-
     def __init__(self, shop: Shop):
         self.shop = shop
 

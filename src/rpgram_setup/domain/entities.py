@@ -50,7 +50,6 @@ class Shop(abc.ABC):
 
 
 class CentralShop(Shop):
-
     def __init__(self, shelf: list[Good]):
         self._shelf = shelf
 

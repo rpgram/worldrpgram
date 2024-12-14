@@ -19,7 +19,6 @@ class NewSessionData:
 
 
 class IDProvider(Protocol):
-
     @abc.abstractmethod
     def authenticated_only(self): ...
 

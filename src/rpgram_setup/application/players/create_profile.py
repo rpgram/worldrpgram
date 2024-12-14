@@ -1,7 +1,7 @@
 from rpgram_setup.application.identity import IDProvider, SessionManager
 from rpgram_setup.domain.exceptions import ActionFailedError
 from rpgram_setup.domain.player import Player
-from rpgram_setup.domain.protocols.core import I, Interactor
+from rpgram_setup.domain.protocols.core import Interactor, Input
 from rpgram_setup.domain.protocols.data.players import (
     CreatePlayer,
     GetPlayerQuery,
@@ -17,7 +17,7 @@ class NewPlayerInteractor(Interactor[CreatePlayer, Player]):
         self._player_mapper = player_mapper
         self._idp: IDProvider = idp
 
-    def execute(self, in_dto: I) -> Player:
+    def execute(self, in_dto: Input) -> Player:
         if self._idp and self._idp.get_payer_identity() is not None:
             raise ActionFailedError
         player_id = self._player_mapper.add_player(in_dto)

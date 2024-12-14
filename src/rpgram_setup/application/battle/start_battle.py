@@ -61,7 +61,9 @@ class StartBattleInteractor(AsyncInteractor[StartBattleDTO, BattleId]):
                 h for h in player.heroes if h.born.class_ == existing_battle.hero_class
             )
             opponents_hero = next(
-                h for h in opponent.heroes if h.born.class_ == existing_battle.hero_class
+                h
+                for h in opponent.heroes
+                if h.born.class_ == existing_battle.hero_class
             )
         except StopIteration:
             raise SomethingIsMissingError("hero")
