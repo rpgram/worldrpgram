@@ -12,7 +12,9 @@ FAKE_PLAYER = Player(Balance({}), [], [], "PyTester", PlayerId(1))
 
 FAKE_USER = User(PlayerId(1), login="Login", password_hash=HASH, telegram_id=None)
 
-USER_DATA = UserRegisterDTO(username="PyTester", login=NEW_LOGIN, password="VeryS3cure!")
+USER_DATA = UserRegisterDTO(
+    username="PyTester", login=NEW_LOGIN, password="VeryS3cure!"
+)
 
 USER_LOGIN = UserLoginDTO("Login", password="ANY")
 
