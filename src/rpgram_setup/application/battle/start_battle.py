@@ -1,6 +1,6 @@
 import dataclasses
 import logging
-from typing import cast
+from typing import cast, TypeVar, Generic
 
 from rpgram_setup.application.identity import IDProvider
 from rpgram_setup.domain.exceptions import ActionFailedError, SomethingIsMissingError
@@ -20,10 +20,14 @@ class StartBattleDTO:
     hero_class: HeroClass | None
 
 
-class StartBattleInteractor(AsyncInteractor[StartBattleDTO, BattleId]):
+I = TypeVar("I")  # noqa: E741
+O = TypeVar("O")  # noqa: E741
+
+
+class StartBattleInteractor(AsyncInteractor[StartBattleDTO, BattleId], Generic[I, O]):
     def __init__(
         self,
-        battlefield_gateway: ClientProto,
+        battlefield_gateway: ClientProto[I, O],
         player_data_mapper: PlayersMapper,
         battle_keys: BattleKeysGateway,
         waiters: WaitingBattleGatewayProto,

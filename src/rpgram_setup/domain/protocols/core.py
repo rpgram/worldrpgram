@@ -15,8 +15,12 @@ class ConnectorProto(Protocol[Input, Output]):
     async def make_call(self, call_data: Input) -> Output: ...
 
 
-class ClientProto(Protocol):
-    _connector: ConnectorProto
+I = TypeVar("I")  # noqa: E741
+O = TypeVar("O")  # noqa: E741
+
+
+class ClientProto(Protocol[I, O]):
+    _connector: ConnectorProto[I, O]
 
     @abc.abstractmethod
     async def start_battle(

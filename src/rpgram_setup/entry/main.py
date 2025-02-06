@@ -1,4 +1,5 @@
 import contextlib
+from typing import AsyncGenerator
 
 from dishka import AsyncContainer
 from dishka.integrations.fastapi import setup_dishka
@@ -29,7 +30,7 @@ from rpgram_setup.presentation.player import player_router
 
 
 @contextlib.asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     configure_logs()
     container = app.state.dishka_container
     fs = await create_faststream(container)

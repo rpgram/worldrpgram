@@ -1,7 +1,7 @@
 import collections
-from typing import AsyncIterable
+from typing import AsyncIterable, Any
 
-from asynch import connect  # type:ignore[import-untyped]
+from asynch import connect
 from dishka import (
     AnyOf,
     AsyncContainer,
@@ -136,7 +136,7 @@ class IoC(FastapiProvider):
     )
 
     @provide(scope=Scope.APP)
-    def db(self) -> DBS:
+    def db(self) -> DBS[Any, list[Any]]:
         return collections.defaultdict(list)
 
     user_mapper = provide(UserMemoryMapper, provides=UserMapper)

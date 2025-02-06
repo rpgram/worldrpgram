@@ -16,7 +16,7 @@ hero_router = APIRouter(prefix="/hero")
 async def get_players_hero(
     hero_class: HeroClass,
     interactor: FromDishka[AsyncInteractor[CreateHeroDTO, None]],
-):
+) -> None:
     try:
         await interactor.execute(CreateHeroDTO(hero_class))
     except SomethingIsMissingError:

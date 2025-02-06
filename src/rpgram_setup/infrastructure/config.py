@@ -3,7 +3,7 @@ import os
 from rpgram_setup.application.configuration import AppConfig
 
 
-def read_config():
+def read_config() -> AppConfig:
     return AppConfig(
         battle_url=os.environ["BATTLE_URL"],
         session_expires_in_sec=360 * 60,

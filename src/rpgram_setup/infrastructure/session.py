@@ -26,7 +26,7 @@ class SessionManagerImpl(SessionManager):
         self.expires_interval_sec = app_config.session_expires_in_sec
         self.hasher = hasher
 
-    def refresh_session(self, old_session: str | None):
+    def refresh_session(self, old_session: str | None) -> None:
         if old_session is None:
             return
         session_data = self.db.get(old_session)
@@ -46,7 +46,7 @@ class SessionManagerImpl(SessionManager):
         data = f"{player_id}%{expire_at.isoformat()}"
         return self.hasher.hash(data)
 
-    def assign_session(self, player_id: PlayerId):
+    def assign_session(self, player_id: PlayerId) -> None:
         expire_at = (
             datetime.datetime.utcnow()
             + datetime.timedelta(seconds=self.expires_interval_sec)
@@ -62,7 +62,7 @@ class IDProviderImpl(IDProvider):
         self.db = db
         self.cookie = cookie
 
-    def authenticated_only(self):
+    def authenticated_only(self) -> None:
         if self.get_payer_identity() is None:
             raise NotAuthenticatedError
 

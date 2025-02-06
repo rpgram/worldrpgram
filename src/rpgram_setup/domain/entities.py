@@ -50,10 +50,10 @@ class Shop(abc.ABC):
 
 
 class CentralShop(Shop):
-    def __init__(self, shelf: list[Good]):
+    def __init__(self, shelf: list[Good]) -> None:
         self._shelf = shelf
 
-    def _check_availability(self, item: Good):
+    def _check_availability(self, item: Good) -> None:
         for g in self._shelf:
             if g.name == item.name:
                 break

@@ -7,14 +7,14 @@ from rpgram_setup.presentation.middlewares import log_context
 
 
 class ContextFilter(logging.Filter):
-    def filter(self, record):
+    def filter(self, record: logging.LogRecord) -> bool:
         log_data = log_context.get()
         record.playerId = log_data["player_id"]
         record.requestId = str(log_data["request_id"])
         return True
 
 
-def configure_logs():
+def configure_logs() -> None:
     logger = logging.getLogger()
     log_level = int(os.environ["LOG_LEVEL"])
     logger.setLevel(log_level)

@@ -18,7 +18,7 @@ from rpgram_setup.domain.user_types import DBS, BattleId, PlayerId
 class PlayerMemoryMapper(PlayersMapper):
     db: list[Player]
 
-    def __init__(self, dbs: DBS):
+    def __init__(self, dbs: DBS[type, list[Player]]) -> None:
         self.db = dbs[Player]
 
     def _apply_get_player(self, query: GetPlayerQuery, player: Player) -> bool:
@@ -57,10 +57,10 @@ class PlayerMemoryMapper(PlayersMapper):
 
 
 class BattleResultMemoryMapper(BattleResultMapper):
-    def __init__(self, dbs: DBS):
+    def __init__(self, dbs: DBS[type, list[BattleResult]]) -> None:
         self.db: list[BattleResult] = dbs[BattleResult]
 
-    def save_result(self, result: BattleResult):
+    def save_result(self, result: BattleResult) -> None:
         self.db.append(result)
 
     def get_results(self, player_id: PlayerId | None = None) -> list[BattleResult]:
@@ -77,10 +77,10 @@ class BattleResultMemoryMapper(BattleResultMapper):
 
 
 class UserMemoryMapper(UserMapper):
-    def insert_user(self, user: User):
+    def insert_user(self, user: User) -> None:
         self.db.append(user)
 
-    def __init__(self, dbs: DBS):
+    def __init__(self, dbs: DBS[type, list[User]]) -> None:
         self.db: list[User] = dbs[User]
 
     def get_user(self, login: str) -> User | None:

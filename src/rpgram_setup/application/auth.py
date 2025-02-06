@@ -30,10 +30,10 @@ class UserLoginDTO:
 class UserRegisterDTO(UserLoginDTO):
     username: str
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self._validate()
 
-    def _validate(self):
+    def _validate(self) -> None:
         if len(self.password.value) < 10:
             raise ValidationError("password", "at least 10 characters")
         if not (self.login and self.username):

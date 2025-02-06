@@ -35,7 +35,7 @@ async def start_battle(
 @inject
 async def start_waiting(
     hero_class: HeroClass, interactor: FromDishka[Interactor[HeroClass, None]]
-):
+) -> None:
     return interactor.execute(hero_class)
 
 

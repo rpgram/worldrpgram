@@ -16,7 +16,7 @@ from rpgram_setup.domain.exceptions import (
 logger = logging.getLogger(__name__)
 
 
-async def exceptions_handler(request: Request, exc: WorldError):
+async def exceptions_handler(request: Request, exc: WorldError) -> None:
     et = type(exc)
     if et is SomethingIsMissingError:
         raise HTTPException(status.HTTP_404_NOT_FOUND, str(exc))

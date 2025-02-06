@@ -43,5 +43,5 @@ class PlayersHero:
         self.take_off()
         self._wear(item)
 
-    def level_up(self):
+    def level_up(self) -> None:
         self.born.level_up(self.hero_stats)

@@ -25,7 +25,8 @@ class User:
     password_hash: str
     telegram_id: int | None = None
 
-    def check_password(self, password: str, hasher: Callable[[str], str]):
+    def check_password(self, password: str, hasher: Callable[[str], str]) -> bool:
+        # fixme unsafe password check
         return hasher(password) == self.password_hash
 
     def get_telegram_link(self) -> str:

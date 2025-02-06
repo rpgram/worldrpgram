@@ -25,12 +25,12 @@ class NotUniqueError(WorldError):
         self.subject = subject
         self.value = value
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"""{self.subject} is not unique({self.value} already exists)."""
 
 
 class ActionFailedError(WorldError):
-    def __str__(self):
+    def __str__(self) -> str:
         return """Unbelievable happens."""
 
 
@@ -38,16 +38,16 @@ class SomethingIsMissingError(WorldError):
     def __init__(self, subject: Display):
         self.subject = subject
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Seems {self.subject} is missing..."
 
 
 class ValidationError(WorldError):
-    def __init__(self, subject: Display, hint: Display | None = None):
+    def __init__(self, subject: Display, hint: Display | None = None) -> None:
         self.subject = subject
         self.hint = hint
 
-    def __str__(self):
+    def __str__(self) -> str:
         error_text = f"Validation failed for {self.subject}."
         if self.hint:
             error_text += f"Try this: {self.hint}."

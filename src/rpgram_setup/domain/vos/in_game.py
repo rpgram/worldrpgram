@@ -38,7 +38,7 @@ class Hero:
     class_: HeroClass
     equipment: Equipment | None = None
 
-    def level_up(self, hero_stats: HeroStats):
+    def level_up(self, hero_stats: HeroStats) -> None:
         hero_stats.armor += self.per_level_stats.armor
         hero_stats.health += self.per_level_stats.health
         hero_stats.damage += self.per_level_stats.damage

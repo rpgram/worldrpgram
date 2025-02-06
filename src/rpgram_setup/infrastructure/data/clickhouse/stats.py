@@ -1,9 +1,9 @@
 import time
 import uuid
 from collections import defaultdict
-from typing import Mapping
+from typing import Mapping, Any
 
-from asynch import Connection  # type: ignore[import-untyped]
+from asynch import Connection
 
 from . import models
 from rpgram_setup.domain.battle import BattleResult
@@ -16,16 +16,16 @@ from rpgram_setup.domain.protocols.data.statisctics import (
 
 
 class ClickHouseBatcher(AnalyticsBatcher):
-    def __init__(self, connection: Connection):
+    def __init__(self, connection: Connection) -> None:
         self.connection = connection
-        self.tables_with_data: defaultdict[type[Mapping], list[Mapping]] = defaultdict(
-            list
-        )
+        self.tables_with_data: defaultdict[
+            type[Mapping[str, Any]], list[Mapping[str, Any]]
+        ] = defaultdict(list)
 
     def add_one(self, table: type[T], record: T) -> None:
         self.tables_with_data[table].append(record)
 
-    async def _flush_battle_result(self, data: list[Mapping]):
+    async def _flush_battle_result(self, data: list[Mapping[str, Any]]) -> None:
         async with self.connection.cursor() as cursor:
             await cursor.execute(
                 """
@@ -42,7 +42,7 @@ class ClickHouseBatcher(AnalyticsBatcher):
                 data,
             )
 
-    async def _flush_trade_results(self, data: list[Mapping]):
+    async def _flush_trade_results(self, data: list[Mapping[str, Any]]) -> None:
         async with self.connection.cursor() as cursor:
             await cursor.execute(
                 """
@@ -58,7 +58,7 @@ class ClickHouseBatcher(AnalyticsBatcher):
                 data,
             )
 
-    async def _flush_table(self, table: type[Mapping]) -> None:
+    async def _flush_table(self, table: type[Mapping[str, Any]]) -> None:
         data = self.tables_with_data.get(table)
         if not data:
             return

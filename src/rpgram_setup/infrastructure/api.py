@@ -14,7 +14,7 @@ from rpgram_setup.infrastructure.models import BattleStarted
 
 
 class HTTPSessionManager(ConnectorProto[RequestData[T], T]):
-    def __init__(self):
+    def __init__(self) -> None:
         self.session = aiohttp.ClientSession()
 
     async def make_call(self, call_data: RequestData[T]) -> T:
@@ -38,11 +38,11 @@ class HTTPSessionManager(ConnectorProto[RequestData[T], T]):
             return call_data.return_type(**data)  # type:ignore[return-value]
         return call_data.return_type(data)  # type:ignore[call-arg]
 
-    def _refresh(self):
+    def _refresh(self) -> None:
         pass
 
 
-class BattleAPIClient(ClientProto):
+class BattleAPIClient(ClientProto[RequestData[BattleStarted], BattleStarted]):
     def __init__(
         self,
         manager: ConnectorProto[RequestData[BattleStarted], BattleStarted],

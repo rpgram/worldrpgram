@@ -6,5 +6,5 @@ class BadRequest(WorldError):
         self.service = service
         self.details = details
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Cross service interaction error. {self.service} responded with {self.details}."

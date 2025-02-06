@@ -10,7 +10,7 @@ class BattleKeysGateway:
     def __init__(self) -> None:
         self.db: dict[PlayerId, str] = {}
 
-    def add_key(self, player_id: PlayerId, key: str):
+    def add_key(self, player_id: PlayerId, key: str) -> None:
         self.db[player_id] = key
 
     def get_key(self, player_id: PlayerId) -> str | None:
@@ -18,10 +18,10 @@ class BattleKeysGateway:
 
 
 class WaitingBattleGateway(WaitingBattleGatewayProto, WaitingBattleDTOReader):
-    def __init__(self, db: DBS):
+    def __init__(self, db: DBS[type, list[WaitingBattle]]) -> None:
         self.db: list[WaitingBattle] = db[WaitingBattle]
 
-    def insert_battle(self, battle: WaitingBattle):
+    def insert_battle(self, battle: WaitingBattle) -> None:
         self.db.append(battle)
 
     def get_battles(self) -> list[WaitingBattle]:
@@ -32,5 +32,5 @@ class WaitingBattleGateway(WaitingBattleGatewayProto, WaitingBattleDTOReader):
             return next(wb for wb in self.db if wb.player_id == player_id)
         return None
 
-    def remove_battle(self, player_id: PlayerId):
+    def remove_battle(self, player_id: PlayerId) -> None:
         self.db = [wb for wb in self.db if wb.player_id != player_id]

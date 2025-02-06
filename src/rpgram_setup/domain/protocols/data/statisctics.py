@@ -1,6 +1,6 @@
 import abc
 import dataclasses
-from typing import Protocol, TypeVar, Mapping
+from typing import Protocol, TypeVar, Mapping, Any
 
 from rpgram_setup.domain.battle import BattleResult
 from rpgram_setup.domain.economics import Money
@@ -23,7 +23,7 @@ class StatisticsWriter(Protocol):
     async def save_battle_result(self, battle_result: BattleResult) -> None: ...
 
 
-T = TypeVar("T", bound=Mapping)
+T = TypeVar("T", bound=Mapping[str, Any])
 
 
 class AnalyticsBatcher(Protocol):
@@ -31,7 +31,7 @@ class AnalyticsBatcher(Protocol):
     def add_one(self, table: type[T], record: T) -> None: ...
 
     @abc.abstractmethod
-    async def _flush_table(self, table: type[Mapping]) -> None: ...
+    async def _flush_table(self, table: type[Mapping[str, Any]]) -> None: ...
 
     @abc.abstractmethod
     async def flush_all(self) -> None: ...
