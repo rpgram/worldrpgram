@@ -13,7 +13,7 @@ from rpgram_setup.domain.protocols.core import Interactor
 from rpgram_setup.domain.protocols.data.battle import UserMapper
 from rpgram_setup.domain.protocols.data.players import CreatePlayer, PlayersMapper
 from rpgram_setup.domain.protocols.general import Hasher
-from rpgram_setup.domain.user import User
+from rpgram_setup.domain.user import User, Sensitive
 from rpgram_setup.domain.user_types import PlayerId
 from rpgram_setup.infrastructure.data.gateways import BattleKeysGateway
 
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 @dataclasses.dataclass
 class UserLoginDTO:
     login: str
-    password: str
+    password: Sensitive[str]
 
 
 @dataclasses.dataclass
@@ -34,7 +34,7 @@ class UserRegisterDTO(UserLoginDTO):
         self._validate()
 
     def _validate(self):
-        if len(self.password) < 10:
+        if len(self.password.value) < 10:
             raise ValidationError("password", "at least 10 characters")
         if not (self.login and self.username):
             raise ValidationError("input", "non-empty only")
@@ -56,7 +56,7 @@ class UserLoginInteractor(Interactor[UserLoginDTO, User]):
         if user is None:
             logger.debug("Wrong login.")
             raise NotAuthenticatedError
-        if not user.check_password(in_dto.password, self.hasher.hash):
+        if not user.check_password(in_dto.password.value, self.hasher.hash):
             logger.debug("Wrong password.")
             raise NotAuthenticatedError
         self.idm.assign_session(user.player_id)
@@ -82,7 +82,7 @@ class UserRegisterInteractor(Interactor[UserRegisterDTO, User]):
         if conflict is not None:
             raise NotUniqueError("assign_session", in_dto.login)
         player_id = self.players_mapper.add_player(CreatePlayer(in_dto.username))
-        password_hash = self.hasher.hash(in_dto.password)
+        password_hash = self.hasher.hash(in_dto.password.value)
         user = User(player_id, in_dto.login, password_hash)
         self.user_mapper.insert_user(user)
         logger.info(

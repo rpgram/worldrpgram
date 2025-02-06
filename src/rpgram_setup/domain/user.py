@@ -1,7 +1,21 @@
 import dataclasses
-from typing import Callable
+from typing import Callable, TypeVar, Generic
 
 from rpgram_setup.domain.user_types import PlayerId
+
+
+S = TypeVar("S")
+
+
+class Sensitive(Generic[S]):
+    def __init__(self, value: S) -> None:
+        self.value = value
+
+    def __str__(self) -> str:
+        return "*" * 16
+
+    def __repr__(self) -> str:
+        return "*" * 16
 
 
 @dataclasses.dataclass

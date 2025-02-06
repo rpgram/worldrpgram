@@ -10,7 +10,7 @@ from rpgram_setup.application.auth import (
 )
 from rpgram_setup.domain.exceptions import NotUniqueError
 from rpgram_setup.domain.protocols.core import Interactor
-from rpgram_setup.domain.user import User
+from rpgram_setup.domain.user import User, Sensitive
 from rpgram_setup.domain.user_types import PlayerId
 from rpgram_setup.presentation.models import UserDTO
 
@@ -40,4 +40,4 @@ async def get_key(interactor: FromDishka[GetKeyInteractor]) -> str:
 async def login_controller(
     login: str, password: str, interactor: FromDishka[Interactor[UserLoginDTO, User]]
 ) -> PlayerId:
-    return interactor.execute(UserLoginDTO(login, password)).player_id
+    return interactor.execute(UserLoginDTO(login, Sensitive(password))).player_id

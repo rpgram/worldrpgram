@@ -72,7 +72,10 @@ from rpgram_setup.domain.protocols.data.players import (
     GetPlayersQuery,
     PlayersMapper,
 )
-from rpgram_setup.domain.protocols.data.statisctics import StatisticsWriter
+from rpgram_setup.domain.protocols.data.statisctics import (
+    StatisticsWriter,
+    AnalyticsBatcher,
+)
 from rpgram_setup.domain.protocols.general import Hasher
 from rpgram_setup.domain.user import User
 from rpgram_setup.domain.user_types import DBS, BattleId
@@ -80,7 +83,10 @@ from rpgram_setup.domain.vos.in_game import Good, HeroClass
 from rpgram_setup.infrastructure.api import BattleAPIClient, HTTPSessionManager
 from rpgram_setup.infrastructure.config import read_config
 from rpgram_setup.infrastructure.consts import SESSION_NAME
-from rpgram_setup.infrastructure.data.clickhouse_stats import ClickHouseWriter
+from rpgram_setup.infrastructure.data.clickhouse.stats import (
+    AnalyticsWriteRepository,
+    ClickHouseBatcher,
+)
 from rpgram_setup.infrastructure.data.gateways import (
     BattleKeysGateway,
     WaitingBattleGateway,
@@ -186,12 +192,15 @@ class IoC(FastapiProvider):
         provides=AnyOf[WaitingBattleDTOReader, WaitingBattleGatewayProto],
     )
 
-    @provide
-    async def stats_writer(self, config: AppConfig) -> AsyncIterable[StatisticsWriter]:
+    @provide(scope=Scope.APP)
+    async def stats_batcher(self, config: AppConfig) -> AsyncIterable[AnalyticsBatcher]:
         con = await connect(config.ch_dsn)
-        async with con.cursor() as cursor:
-            yield ClickHouseWriter(cursor)
+        yield ClickHouseBatcher(con)
         await con.close()
+
+    @provide
+    async def stats_writer(self, batcher: AnalyticsBatcher) -> StatisticsWriter:
+        return AnalyticsWriteRepository(batcher)
 
     @provide(scope=Scope.APP)
     def shop(self, shop_fac: CentralShopFactory) -> Shop:
